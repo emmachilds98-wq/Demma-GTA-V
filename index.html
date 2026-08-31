@@ -394,7 +394,7 @@ body:has(#own-toreador:not(:checked)) .emp-toreador{opacity:.4}
 </section>
 <section class="panel" id="p-week" data-name="This week">
 <div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Auto Shop Robbery Contracts pay double all week.</h2><p id="wk-sub">Everything else boosted is racing. Run contracts for the money, take the flat $100k drift challenge, and get the weekly first-run heists done before anything else.</p></div>
-<div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><button class="btn go js-only" id="refresh" style="margin-left:auto">Refresh this week</button></div>
+<div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><span class="sub" style="margin-left:auto">Weekly plan · update when you next choose a run</span></div>
 <div class="sub js-only" id="wk-stamp" style="margin-top:6px"></div>
 <details class="bk js-only" id="wk-hist" style="margin-top:12px"><summary>Previous weeks</summary>
 <div class="pad">
@@ -700,14 +700,8 @@ function doRefresh(auto){
   }
  });
 }
-btn.addEventListener("click",function(){doRefresh(false);});
-function maybeAutoRefresh(){
- var wk=weekKey();
- if(SH.wkKey===wk)return;
- if(autoTriedFor===wk)return;
- autoTriedFor=wk;
- doRefresh(true);
-}
+if(btn)btn.addEventListener("click",function(){doRefresh(false);});
+function maybeAutoRefresh(){return;}
 
 /* ---- shared polling ---- */
 function pollShared(){
@@ -726,9 +720,9 @@ function pollShared(){
 function status(){
  var n=document.getElementById("stat");if(!n)return;
  var m={claude:["Shared board active.","The Cayo board and week notes sync between both of you. Daily ticks stay private."],
-  local:["Saved on this device.","No syncing — open the board in Claude to share it with the other player."],
-  session:["Saving for this session only.","Open the file in Safari to keep ticks."],
-  memory:["Not saving.","Quick Look blocks storage. Share the file to Safari, or open the board in Claude."]}[BACKEND];
+  local:["Saved on this iPhone.","To copy the plan to the other phone, use Back up or move your setup under Empire."],
+  session:["Saving for this session only.","Open the board in Safari to keep ticks."],
+  memory:["Not saving.","Open the board in Safari, then add it to your Home Screen."]}[BACKEND];
  n.className="stat"+(BACKEND==="local"||BACKEND==="claude"?"":" warn");
  n.innerHTML="<b>"+m[0]+"</b> "+m[1];
 }
