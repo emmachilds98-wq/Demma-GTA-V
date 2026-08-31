@@ -33,6 +33,9 @@ header.top{position:sticky;top:0;z-index:40;background:rgba(14,17,22,.97);
 .brand{font-size:23px;line-height:1}.brand em{font-style:normal;color:var(--hot)}
 .sub{color:var(--muted);font-size:12.5px}
 .brandrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.crew-switch{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.crew-switch button{-webkit-appearance:none;appearance:none;border:0;border-radius:999px;background:transparent;color:var(--muted);padding:5px 10px;min-height:30px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.crew-switch button[aria-pressed="true"]{background:var(--text);color:var(--ink)}
 .tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tabs label{flex:0 0 auto;color:var(--muted);font-weight:600;font-size:14.5px;padding:11px 14px;
@@ -381,7 +384,7 @@ body:has(#own-toreador:not(:checked)) .emp-toreador{opacity:.4}
 <div class="state"><input type="radio" name="tab" id="t-week" checked><input type="radio" name="tab" id="t-day"><input type="radio" name="tab" id="t-cayo"><input type="radio" name="tab" id="t-emp"></div>
 <header class="top"><div class="topin">
 <div class="brandrow"><span class="brand">Los Santos <em>ops board</em></span>
-<span class="sub">GTA V Legacy &middot; PC</span></div>
+<span class="sub">GTA V Legacy &middot; PC</span><span class="crew-switch js-only" role="group" aria-label="Private board profile"><button type="button" data-player="emma" aria-pressed="true">Emma</button><button type="button" data-player="dave" aria-pressed="false">Dave</button></span></div>
 <div class="tabs">
 <label class="tab-week" for="t-week">This week</label>
 <label class="tab-day" for="t-day">Daily run</label>
@@ -443,13 +446,18 @@ body:has(#own-toreador:not(:checked)) .emp-toreador{opacity:.4}
 "use strict";
 document.documentElement.className+=" hasjs";
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("service-worker.js").catch(function(){});});}
-var PKEY="gta-ops-personal-v3", SKEY="gta-ops-shared-v3";
+var PKEY_BASE="gta-ops-personal-v4-", PKEY="", SKEY="gta-ops-shared-v3", PLAYER_KEY="gta-ops-active-player-v1", activePlayer="emma";
 var BACKEND="memory", CANSHARE=false, S={v:{},day:"",week:"",seen:0}, SH={v:{},week:"",wk:null,stamp:0,history:[{wkKey:"2026-08-06",stamp:Date.UTC(2026,7,6,9,0,0),wk:{week_label:"30 July – 5 August 2026",headline:"3X on the Community Mission Series, plus two free-car chances.",summary:"A quieter week between events. Best value was the Community Series multiplier and a couple of claimable cars.",bonuses:[{title:"3X GTA$ and RP — Community Mission Series",detail:"All week.",tag:"All week"}],claims:[{title:"Podium Vehicle — Übermacht Cypher",detail:"Daily Casino spin. Normally $1,550,000 at Legendary Motorsport.",tag:""},{title:"Claimable Pfister Comet S2 Cabrio",detail:"Free this week — check the in-game conditions.",tag:"Free car"},{title:"Chance to unlock the Karin Boor for free",detail:"Claimable this week — check the in-game conditions.",tag:"Free car"}],discounts:[{name:"Selected vehicles and properties",price:"Up to 60% off"}],gun_van:""}},{wkKey:"2026-08-13",stamp:Date.UTC(2026,7,13,9,0,0),wk:{week_label:"6 – 12 August 2026",headline:"Panther Statue guaranteed on Cayo Perico, plus a free $1,000,000 for logging in.",summary:"Second week of the Summer Heist Event. Guaranteed top-value Cayo Perico loot and a big login giveaway.",bonuses:[{title:"Weekly completion bonuses reset",detail:"Bigger first-time payout across every Heist and Contact Mission except Cayo Perico.",tag:""}],claims:[{title:"Panther Statue guaranteed — Cayo Perico Heist Finale",detail:"100% spawn chance on your first completion this week. Also unlocks the Panther Tour Jacket.",tag:"Guaranteed"},{title:"End of Summer Giveaway",detail:"Log in between 6–12 August for $1,000,000 within 72 hours, plus two cosmetics.",tag:"Free $1M"},{title:"Cayo Perico Survival — three waves",detail:"Noise Rockstar Logo Aged Tee plus $100,000.",tag:""},{title:"Assault on Cayo Perico and Cayo Perico Zombie Survival return",detail:"Both pay bonus rewards this week.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-20",stamp:Date.UTC(2026,7,20,9,0,0),wk:{week_label:"13 – 19 August 2026",headline:"Brand Wars kicks off — 4X on Hotring Circuit and Freemode, big Twitch Drops running.",summary:"First week of the two-week Sprunk vs eCola event. Free branded gear just for logging in, plus reset completion bonuses.",bonuses:[{title:"4X GTA$ and RP — Hotring Circuit Series and Freemode Events",detail:"Runs through 26 August.",tag:"To 26 Aug"},{title:"3X GTA$ and RP — Odd Jobs and Community Series",detail:"Paper Route, Firefighter, Forklift Operator, QuickiePharm and Safeguard Deliveries.",tag:""},{title:"Heist and Mission completion bonuses reset",detail:"Bigger first-time payout across a range of Heists and Contact Missions.",tag:""}],claims:[{title:"Weekly Challenge — three Business Battles",detail:"Impotent Rage Sweatsuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Free Declasse Hotring Sabre",detail:"Sprunk x eCola livery and branded plates. Log in any time through 26 August.",tag:"Free car"},{title:"Free Sprunk and eCola bodysuits",detail:"Clothing stores around the city, for the event's duration.",tag:""},{title:"Brand Wars Twitch Drops begin",detail:"Link Twitch and Rockstar accounts, pick a side. Up to $2,000,000 total through 26 August.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-27",stamp:Date.UTC(2026,7,27,9,0,0),wk:{week_label:"20 – 26 August 2026",headline:"Brand Wars finale — 5X GTA$ and RP on VIP Work, plus a reset Kortz Center bonus.",summary:"Second half of the two-week Brand Wars event. Big VIP Work weekend, Kortz Center resets with a no-death bonus, and the Warden goes on general sale.",bonuses:[{title:"5X GTA$ and RP — VIP Work",detail:"Weekend only, 21–23 August.",tag:"Weekend"},{title:"4X GTA$ and RP — Hotring Circuit Series and select Freemode",detail:"Runs the full week.",tag:"All week"},{title:"Kortz Center Heist bonus reset",detail:"New Primary Targets. A no-death completion adds an extra $400,000.",tag:""}],claims:[{title:"Weekly Challenge — win three Races",detail:"Princess Racing Tracksuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Gallivanter Warden now on general sale",detail:"$1,597,500 at Legendary Motorsport.",tag:""},{title:"FIB Priority File — The Brute Force File",detail:"Pays more than the standard files.",tag:""},{title:"Brand Wars Twitch Drops close out",detail:"Link Twitch and Rockstar accounts. Up to $2,000,000 total across the full event.",tag:""}],discounts:[{name:"Emperor ETR1",price:"Discounted this week"}],gun_van:""}}]};
 
 /* shared = the Cayo board and week notes. Everything else stays private. */
 function isShared(id){return id.indexOf("cy-")===0;}
 function probe(k){try{var s=k==="l"?localStorage:sessionStorage;if(!s)return null;
  s.setItem("__t","1");s.removeItem("__t");return s;}catch(e){return null;}}
+function playerName(){return activePlayer==="dave"?"Dave":"Emma";}
+function setPersonalKey(){PKEY=PKEY_BASE+activePlayer;}
+function restoreActivePlayer(){var ls=probe("l"),p=ls&&ls.getItem(PLAYER_KEY);activePlayer=p==="dave"?"dave":"emma";setPersonalKey();}
+function paintProfile(){[].slice.call(document.querySelectorAll("[data-player]")).forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-player")===activePlayer?"true":"false");});}
+restoreActivePlayer();
 function get(key,shared){
  return new Promise(function(res){
   if(window.storage&&window.storage.get){BACKEND="claude";
@@ -721,7 +729,7 @@ function pollShared(){
 function status(){
  var n=document.getElementById("stat");if(!n)return;
  var m={claude:["Shared board active.","The Cayo board and week notes sync between both of you. Daily ticks stay private."],
-  local:["Saved on this device.","To copy the plan to another iPhone or PC, use Back up or move your setup under Empire."],
+  local:[playerName()+"'s private board saved.","Switch between Emma and Dave at the top. To move a plan to another device, use Back up or move your setup under Empire."],
   session:["Saving for this session only.","Open the board in a full browser to keep ticks."],
   memory:["Not saving.","Open the board in a full browser, then install or add it to your Home Screen."]}[BACKEND];
  n.className="stat"+(BACKEND==="local"||BACKEND==="claude"?"":" warn");
@@ -792,6 +800,19 @@ document.getElementById("bkreset").addEventListener("click",function(){
   else n.value="";});
  savePersonal();saveShared();refreshAll();});
 
+function loadPersonalProfile(){return get(PKEY,false).then(function(raw){return raw||activePlayer!=="emma"?raw:get("gta-ops-personal-v3",false);});}
+function switchProfile(next){
+ if(next===activePlayer)return;
+ clearTimeout(pt);collect();S.seen=1;put(PKEY,JSON.stringify(S),false);
+ activePlayer=next;setPersonalKey();var ls=probe("l");if(ls)ls.setItem(PLAYER_KEY,activePlayer);
+ S={v:{},day:"",week:"",seen:0};
+ loadPersonalProfile().then(function(raw){
+  if(raw){try{var p=JSON.parse(raw);if(p&&p.v)S=p;}catch(e){}}
+  rollover();apply();refreshAll();status();paintProfile();
+ });
+}
+[].slice.call(document.querySelectorAll("[data-player]")).forEach(function(b){b.addEventListener("click",function(){switchProfile(b.getAttribute("data-player"));});});
+
 document.addEventListener("visibilitychange",function(){
  if(document.visibilityState!=="visible")return;
  if(rollover()){apply();savePersonal();}
@@ -800,12 +821,12 @@ setInterval(clock,1000);
 setInterval(pollShared,15000);
 setInterval(function(){if(rollover()){apply();savePersonal();refreshAll();}maybeAutoRefresh();},60000);
 
-get(PKEY,false).then(function(raw){
+loadPersonalProfile().then(function(raw){
  if(raw){try{var p=JSON.parse(raw);if(p&&p.v)S=p;}catch(e){}}
  return get(SKEY,true);
 }).then(function(raw){
  if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
- rollover();apply();clock();refreshAll();status();maybeAutoRefresh();
+ rollover();apply();clock();refreshAll();status();paintProfile();maybeAutoRefresh();
 },function(){clock();refreshAll();status();});
 })();
 </script></body></html>
