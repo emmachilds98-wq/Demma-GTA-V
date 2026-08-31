@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E1116">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ops Board">
+<meta name="format-detection" content="telephone=no">
+<title>Los Santos Ops Board</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230E1116'/%3E%3Crect x='30' y='42' width='120' height='14' rx='7' fill='%235FD48A'/%3E%3Crect x='30' y='83' width='120' height='14' rx='7' fill='%23FF3F7F'/%3E%3Crect x='30' y='124' width='72' height='14' rx='7' fill='%23374252'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--ink:#0E1116;--panel:#151B24;--panel2:#1C2432;--line:#28303D;--line2:#3A4557;
+ --text:#E6E9EE;--muted:#8C97A8;--cash:#5FD48A;--hot:#FF3F7F;--amber:#FFB43D;
+ --sky:#5AB6FF;--dave:#5AB6FF;--emma:#C88BFF;--r:10px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+body{margin:0;background:var(--ink);color:var(--text);
+ font-family:-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Roboto,sans-serif;
+ font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+ -webkit-tap-highlight-color:transparent;overflow-x:hidden}
+h1,h2,h3{font-family:'Avenir Next Condensed','Arial Narrow',-apple-system,sans-serif;
+ font-weight:700;letter-spacing:-.01em;margin:0}
+button,input,textarea,select{font-family:inherit}
+.state{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.wrap{max-width:1080px;margin:0 auto;
+ padding:0 max(16px,env(safe-area-inset-left)) calc(90px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right))}
+header.top{position:sticky;top:0;z-index:40;background:rgba(14,17,22,.97);
+ -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+ border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.topin{max-width:1080px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+.brand{font-size:23px;line-height:1}.brand em{font-style:normal;color:var(--hot)}
+.sub{color:var(--muted);font-size:12.5px}
+.brandrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs label{flex:0 0 auto;color:var(--muted);font-weight:600;font-size:14.5px;padding:11px 14px;
+ min-height:44px;display:flex;align-items:center;cursor:pointer;border-bottom:2px solid transparent;
+ border-radius:6px 6px 0 0;white-space:nowrap;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.panel{display:none}
+body:has(#t-week:checked) #p-week,body:has(#t-day:checked) #p-day,
+body:has(#t-cayo:checked) #p-cayo,body:has(#t-emp:checked) #p-emp{display:block}
+body:has(#t-week:checked) .tab-week,body:has(#t-day:checked) .tab-day,
+body:has(#t-cayo:checked) .tab-cayo,body:has(#t-emp:checked) .tab-emp
+ {color:var(--text);border-bottom-color:var(--hot);background:var(--panel)}
+.grid{display:grid;gap:12px;margin-top:14px}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);overflow:hidden}
+.card>.head{display:flex;align-items:baseline;gap:9px;padding:12px 15px;
+ border-bottom:1px solid var(--line);background:var(--panel2);flex-wrap:wrap}
+.card>.head h3{font-size:16px}
+.card>.head .mins{margin-left:auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .pad{padding:14px 15px}
+.stage-n{display:inline-grid;place-content:center;width:22px;height:22px;border-radius:6px;
+ background:var(--hot);color:#0E1116;font-size:12.5px;font-weight:800;flex:0 0 auto}
+.task{display:flex;gap:12px;padding:11px 13px 11px 15px;min-height:52px;align-items:flex-start;
+ border-bottom:1px solid rgba(40,48,61,.55)}
+.task:last-child{border-bottom:0}
+.task .txt{flex:1;min-width:0;display:block}
+.task .t{font-size:14.5px;font-weight:500;display:block}
+.task .d{font-size:12.5px;color:var(--muted);margin-top:3px;display:block}
+.tick{display:flex;flex:1;gap:12px;cursor:pointer;-webkit-user-select:none;user-select:none;
+ touch-action:manipulation;margin:-11px 0 -11px -15px;padding:11px 0 11px 15px}
+.task:has(.tickbox:checked) .t,.task:has(.tickbox:checked) .d{color:#3C4657;text-decoration:line-through}
+.task:has(.tickbox:checked) .badge{opacity:.3}
+.task:has(.skipbox:checked){opacity:.4}
+.task:has(.skipbox:checked) .t{text-decoration:line-through;text-decoration-style:dotted}
+body:has(#hidedone:checked) .task:has(.tickbox:checked){display:none}
+body:has(#hideskip:checked) .task:has(.skipbox:checked){display:none}
+input[type=checkbox],input[type=radio]{-webkit-appearance:none;appearance:none;flex:0 0 auto;
+ width:24px;height:24px;margin:0;border:1.5px solid var(--line2);border-radius:6px;background:var(--ink);
+ cursor:pointer;display:grid;place-content:center;touch-action:manipulation}
+input[type=radio]{border-radius:50%}
+input[type=checkbox]:checked{background:var(--cash);border-color:var(--cash)}
+input[type=checkbox]:checked::after{content:"";width:11px;height:6px;border:2.5px solid #0E1116;
+ border-top:0;border-right:0;transform:rotate(-45deg) translateY(-1px)}
+input:focus-visible,select:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.skip{flex:0 0 auto;width:34px;min-height:34px;display:grid;place-content:center;cursor:pointer;
+ color:var(--line2);font-size:12px;font-weight:700;align-self:center;border:1px solid var(--line);
+ border-radius:8px;touch-action:manipulation}
+.skip input{position:absolute;opacity:0;width:0;height:0}
+.task:has(.skipbox:checked) .skip{color:var(--amber);border-color:var(--amber)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px;
+ margin-left:7px;white-space:nowrap;vertical-align:1px}
+.b-bonus{background:rgba(95,212,138,.16);color:var(--cash);border:1px solid rgba(95,212,138,.35)}
+.b-week{background:rgba(90,182,255,.14);color:var(--sky);border:1px solid rgba(90,182,255,.32)}
+.b-hot{background:rgba(255,63,127,.16);color:var(--hot);border:1px solid rgba(255,63,127,.35)}
+.b-time{background:rgba(255,180,61,.14);color:var(--amber);border:1px solid rgba(255,180,61,.32)}
+.b-dead{background:rgba(140,151,168,.1);color:var(--muted);border:1px solid var(--line2)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 2px}
+.chip{background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:13.5px;
+ font-weight:500;padding:9px 14px;border-radius:999px;cursor:pointer;display:inline-flex;
+ align-items:center;min-height:40px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.chip input{position:absolute;opacity:0;width:0;height:0}
+body:has(#f-all:checked) .c-all,body:has(#f-collect:checked) .c-collect,
+body:has(#f-restock:checked) .c-restock,body:has(#f-sell:checked) .c-sell,
+body:has(#f-earn:checked) .c-earn,body:has(#hidedone:checked) .c-hidedone,
+body:has(#hideskip:checked) .c-hideskip,.chip:has(#cy-hard:checked){background:var(--text);color:var(--ink);border-color:var(--text);font-weight:600}
+body:has(#f-collect:checked) #p-day .task:not(.f-collect){display:none}
+body:has(#f-restock:checked) #p-day .task:not(.f-restock){display:none}
+body:has(#f-sell:checked) #p-day .task:not(.f-sell){display:none}
+body:has(#f-earn:checked) #p-day .task:not(.f-earn){display:none}
+body:has(#f-collect:checked) #p-day .card:not(:has(.f-collect)){display:none}
+body:has(#f-restock:checked) #p-day .card:not(:has(.f-restock)){display:none}
+body:has(#f-sell:checked) #p-day .card:not(:has(.f-sell)){display:none}
+body:has(#f-earn:checked) #p-day .card:not(:has(.f-earn)){display:none}
+#p-day .card:not(:has(.task)){display:none}
+.emp{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:12px 14px}
+.emp .top2{display:flex;align-items:center;gap:11px}
+.emp .nm{font-weight:600;font-size:14.5px;flex:1}
+.emp .nm small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.upgs{margin-top:8px;padding-top:4px;border-top:1px dashed var(--line2);display:flex;flex-wrap:wrap;gap:0 14px}
+.upg{display:flex;gap:9px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;
+ padding:8px 0;min-height:44px;touch-action:manipulation}
+.upg input{width:21px;height:21px}
+.upg input:checked::after{width:9px;height:5px}
+
+/* ---------- empire categories ---------- */
+.ownsum{font-size:13px;color:var(--muted);margin:10px 0 0;padding:10px 13px;
+ background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.ownsum b{color:var(--cash);font-weight:700}
+.empcat{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);
+ margin-top:12px;overflow:hidden}
+.empcat summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;
+ padding:12px 15px;background:var(--panel2);border-bottom:1px solid var(--line);
+ touch-action:manipulation;min-height:48px}
+.empcat summary::-webkit-details-marker{display:none}
+.empcat summary::before{content:"▸";color:var(--muted);font-size:12px;flex:0 0 auto;
+ transition:transform .15s}
+.empcat[open] summary::before{transform:rotate(90deg)}
+.cattitle{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.cattitle h3{font-size:15px}
+.catsub{font-size:11.5px;color:var(--muted);font-weight:400}
+.catactions{display:flex;gap:6px;flex:0 0 auto}
+.catbtn{-webkit-appearance:none;appearance:none;background:transparent;border:1px solid var(--line2);
+ color:var(--muted);font-size:12px;font-weight:600;padding:6px 10px;border-radius:7px;cursor:pointer;
+ min-height:32px;touch-action:manipulation}
+.catbtn:active{color:var(--text);border-color:var(--text)}
+.empcat .grid.two{margin:12px;margin-top:12px}
+
+/* ---------- selects ---------- */
+select{-webkit-appearance:none;appearance:none;background:var(--ink);color:var(--text);
+ border:1px solid var(--line2);border-radius:8px;font-size:15px;padding:9px 30px 9px 11px;
+ min-height:42px;cursor:pointer;width:100%;
+ background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+ background-position:calc(100% - 16px) 19px,calc(100% - 11px) 19px;
+ background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+select.set{border-color:var(--cash);color:var(--cash);font-weight:600}
+select.who-d{border-color:var(--dave);color:var(--dave);font-weight:600}
+select.who-e{border-color:var(--emma);color:var(--emma);font-weight:600}
+
+/* ---------- target board ---------- */
+.board{margin:16px 0 4px;border:1px solid var(--line2);border-radius:var(--r);
+ background:radial-gradient(130% 150% at 0% 0%,rgba(95,212,138,.12),transparent 60%),var(--panel);
+ overflow:hidden}
+.board .bhead{display:flex;align-items:flex-end;gap:14px;padding:16px 18px;flex-wrap:wrap}
+.board .big{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;
+ font-size:42px;line-height:.9;color:var(--cash);font-variant-numeric:tabular-nums}
+.board .blab{font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.board .prim{margin-left:auto;text-align:right}
+.board .prim .n{font-size:16px;font-weight:600}
+.split{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.split>div{padding:12px 18px}
+.split>div+div{border-left:1px solid var(--line)}
+.split .who{font-size:12.5px;font-weight:700;margin-bottom:3px}
+.split .who.d{color:var(--dave)}.split .who.e{color:var(--emma)}
+.split .amt{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;
+ font-family:'Avenir Next Condensed','Arial Narrow',sans-serif}
+.split .bits{font-size:12px;color:var(--muted);margin-top:2px}
+.warnline{padding:10px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--amber);
+ background:rgba(255,180,61,.07)}
+
+/* ---------- loot rows ---------- */
+.lootrow{display:grid;grid-template-columns:1fr 128px 118px;gap:10px;align-items:center;
+ padding:11px 15px;border-bottom:1px solid rgba(40,48,61,.55)}
+.lootrow:last-child{border-bottom:0}
+.lootrow .nm{font-size:14.5px;font-weight:500}
+.lootrow .nm small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+@media(max-width:560px){
+ .lootrow{grid-template-columns:1fr 1fr;gap:8px}
+ .lootrow .nm{grid-column:1/-1}
+}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;padding:14px 15px}
+.plan label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.opt{display:flex;gap:11px;align-items:center;padding:10px 15px;min-height:48px;
+ border-bottom:1px solid rgba(40,48,61,.4);cursor:pointer;touch-action:manipulation;font-size:14px}
+.opt:last-child{border-bottom:0}
+.notes{width:100%;min-height:78px;background:var(--ink);border:1px solid var(--line2);color:var(--text);
+ font-size:16px;padding:10px 12px;border-radius:8px;resize:vertical;-webkit-appearance:none;appearance:none}
+.nlab{font-size:12.5px;font-weight:700;margin-bottom:6px;display:block}
+.nlab.d{color:var(--dave)}.nlab.e{color:var(--emma)}
+.hero{margin:18px 0 6px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);
+ background:radial-gradient(120% 160% at 100% 0%,rgba(255,63,127,.15),transparent 55%),var(--panel)}
+.hero h2{font-size:18.5px;line-height:1.25}
+.hero p{margin:7px 0 0;color:var(--muted);font-size:13.5px;max-width:62ch}
+.clock{display:flex;gap:9px;margin-bottom:14px}
+.unit{text-align:center;min-width:52px}
+.unit .n{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:34px;
+ line-height:.95;font-variant-numeric:tabular-nums}
+.unit .l{font-size:10.5px;color:var(--muted);margin-top:3px}
+.btn{-webkit-appearance:none;appearance:none;background:transparent;border:1px solid var(--line2);
+ color:var(--muted);font-size:13px;padding:9px 13px;border-radius:8px;cursor:pointer;min-height:40px;
+ touch-action:manipulation}
+.btn:active{color:var(--text);border-color:var(--text)}
+.btn.go{border-color:var(--cash);color:var(--cash)}
+.btn[disabled]{opacity:.4}
+.note{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line2);padding-left:12px;margin:16px 0}
+.kv{display:grid;grid-template-columns:1fr auto;gap:4px 14px;font-size:13px}
+.kv .k{color:var(--muted)}.kv .v{font-variant-numeric:tabular-nums}
+.prog{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:14px 0 4px}
+.prog i{display:block;height:100%;background:var(--cash);width:0;transition:width .25s}
+.stat{font-size:12px;color:var(--muted);margin-top:14px}
+.stat b{color:var(--cash);font-weight:600}.stat.warn b{color:var(--amber)}
+details.bk{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:12px 15px}
+details.bk summary{cursor:pointer;font-size:13.5px;color:var(--muted);min-height:34px;line-height:34px}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+.js-only{display:none}.hasjs .js-only{display:block}.hasjs .nojs-only{display:none}
+.hasjs .bar .js-only{display:inline-flex}
+.hasjs .clock.js-only{display:flex}
+.openhelp{background:rgba(255,180,61,.13);border-bottom:1px solid rgba(255,180,61,.35);
+ color:var(--text);font-size:12.5px;line-height:1.5;
+ padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left))}
+.openhelp b{color:var(--amber)}
+@media(max-width:430px){
+ .tabs label{padding:11px 7px;font-size:13.5px}
+ .tabs{gap:0}
+ .topin{padding-top:10px}
+ .brand{font-size:21px}
+ .unit{min-width:46px}
+ .unit .n{font-size:30px}
+ .app-hero{min-height:204px;margin-top:12px}.app-hero .copy{padding:20px 16px}.app-hero h1{font-size:28px}.app-hero p{max-width:290px}
+}
+.sync{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.app-hero{position:relative;isolation:isolate;min-height:218px;margin:16px 0 4px;border:1px solid var(--line2);border-radius:var(--r);overflow:hidden;background:#07101d}
+.app-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:-2;opacity:.86}
+.app-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,12,21,.97) 0%,rgba(7,12,21,.75) 43%,rgba(7,12,21,.14) 100%),linear-gradient(0deg,rgba(7,12,21,.55),transparent 56%)}
+.app-hero .copy{max-width:410px;padding:22px 20px 18px}.eyebrow{margin:0 0 7px;color:var(--cash);font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.app-hero h1{font-size:31px;line-height:.95;letter-spacing:-.025em}.app-hero h1 em{font-style:normal;color:var(--hot)}.app-hero p{margin:10px 0 0;color:#c5cedb;font-size:13.5px;line-height:1.45}.crew{display:inline-flex;gap:7px;align-items:center;margin-top:15px;padding:6px 9px;border:1px solid rgba(230,233,238,.2);border-radius:999px;background:rgba(14,17,22,.55);font-size:12px;color:var(--text)}.crew i{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 3px rgba(95,212,138,.15)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--line2)}
+.dot.on{background:var(--cash)}
+@supports not selector(:has(*)){
+ .panel{display:block!important;margin-bottom:26px}.tabs{display:none}
+ .panel::before{content:attr(data-name);display:block;margin:20px 0 2px;
+  font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:21px;color:var(--hot)}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+body:has(#own-nightclub:not(:checked)) .b-nightclub{display:none}
+body:has(#own-nightclub:not(:checked)) .emp-nightclub{opacity:.4}
+body:has(#upg-nightclub-staff:not(:checked)) .req-nightclub-staff{display:none}
+body:has(#upg-nightclub-staff:checked) .not-nightclub-staff{display:none}
+body:has(#upg-nightclub-equip:not(:checked)) .req-nightclub-equip{display:none}
+body:has(#upg-nightclub-equip:checked) .not-nightclub-equip{display:none}
+body:has(#upg-nightclub-security:not(:checked)) .req-nightclub-security{display:none}
+body:has(#upg-nightclub-security:checked) .not-nightclub-security{display:none}
+body:has(#own-bunker:not(:checked)) .b-bunker{display:none}
+body:has(#own-bunker:not(:checked)) .emp-bunker{opacity:.4}
+body:has(#upg-bunker-equip:not(:checked)) .req-bunker-equip{display:none}
+body:has(#upg-bunker-equip:checked) .not-bunker-equip{display:none}
+body:has(#upg-bunker-staff:not(:checked)) .req-bunker-staff{display:none}
+body:has(#upg-bunker-staff:checked) .not-bunker-staff{display:none}
+body:has(#upg-bunker-security:not(:checked)) .req-bunker-security{display:none}
+body:has(#upg-bunker-security:checked) .not-bunker-security{display:none}
+body:has(#own-acid:not(:checked)) .b-acid{display:none}
+body:has(#own-acid:not(:checked)) .emp-acid{opacity:.4}
+body:has(#upg-acid-equip:not(:checked)) .req-acid-equip{display:none}
+body:has(#upg-acid-equip:checked) .not-acid-equip{display:none}
+body:has(#own-coke:not(:checked)) .b-coke{display:none}
+body:has(#own-coke:not(:checked)) .emp-coke{opacity:.4}
+body:has(#upg-coke-equip:not(:checked)) .req-coke-equip{display:none}
+body:has(#upg-coke-equip:checked) .not-coke-equip{display:none}
+body:has(#upg-coke-staff:not(:checked)) .req-coke-staff{display:none}
+body:has(#upg-coke-staff:checked) .not-coke-staff{display:none}
+body:has(#upg-coke-security:not(:checked)) .req-coke-security{display:none}
+body:has(#upg-coke-security:checked) .not-coke-security{display:none}
+body:has(#own-meth:not(:checked)) .b-meth{display:none}
+body:has(#own-meth:not(:checked)) .emp-meth{opacity:.4}
+body:has(#upg-meth-equip:not(:checked)) .req-meth-equip{display:none}
+body:has(#upg-meth-equip:checked) .not-meth-equip{display:none}
+body:has(#upg-meth-staff:not(:checked)) .req-meth-staff{display:none}
+body:has(#upg-meth-staff:checked) .not-meth-staff{display:none}
+body:has(#upg-meth-security:not(:checked)) .req-meth-security{display:none}
+body:has(#upg-meth-security:checked) .not-meth-security{display:none}
+body:has(#own-cash:not(:checked)) .b-cash{display:none}
+body:has(#own-cash:not(:checked)) .emp-cash{opacity:.4}
+body:has(#upg-cash-equip:not(:checked)) .req-cash-equip{display:none}
+body:has(#upg-cash-equip:checked) .not-cash-equip{display:none}
+body:has(#upg-cash-staff:not(:checked)) .req-cash-staff{display:none}
+body:has(#upg-cash-staff:checked) .not-cash-staff{display:none}
+body:has(#upg-cash-security:not(:checked)) .req-cash-security{display:none}
+body:has(#upg-cash-security:checked) .not-cash-security{display:none}
+body:has(#own-weed:not(:checked)) .b-weed{display:none}
+body:has(#own-weed:not(:checked)) .emp-weed{opacity:.4}
+body:has(#upg-weed-equip:not(:checked)) .req-weed-equip{display:none}
+body:has(#upg-weed-equip:checked) .not-weed-equip{display:none}
+body:has(#upg-weed-staff:not(:checked)) .req-weed-staff{display:none}
+body:has(#upg-weed-staff:checked) .not-weed-staff{display:none}
+body:has(#upg-weed-security:not(:checked)) .req-weed-security{display:none}
+body:has(#upg-weed-security:checked) .not-weed-security{display:none}
+body:has(#own-docs:not(:checked)) .b-docs{display:none}
+body:has(#own-docs:not(:checked)) .emp-docs{opacity:.4}
+body:has(#upg-docs-equip:not(:checked)) .req-docs-equip{display:none}
+body:has(#upg-docs-equip:checked) .not-docs-equip{display:none}
+body:has(#upg-docs-staff:not(:checked)) .req-docs-staff{display:none}
+body:has(#upg-docs-staff:checked) .not-docs-staff{display:none}
+body:has(#upg-docs-security:not(:checked)) .req-docs-security{display:none}
+body:has(#upg-docs-security:checked) .not-docs-security{display:none}
+body:has(#own-clubhouse:not(:checked)) .b-clubhouse{display:none}
+body:has(#own-clubhouse:not(:checked)) .emp-clubhouse{opacity:.4}
+body:has(#own-agency:not(:checked)) .b-agency{display:none}
+body:has(#own-agency:not(:checked)) .emp-agency{opacity:.4}
+body:has(#upg-agency-weapon:not(:checked)) .req-agency-weapon{display:none}
+body:has(#upg-agency-weapon:checked) .not-agency-weapon{display:none}
+body:has(#upg-agency-vehicle:not(:checked)) .req-agency-vehicle{display:none}
+body:has(#upg-agency-vehicle:checked) .not-agency-vehicle{display:none}
+body:has(#own-autoshop:not(:checked)) .b-autoshop{display:none}
+body:has(#own-autoshop:not(:checked)) .emp-autoshop{opacity:.4}
+body:has(#upg-autoshop-staff:not(:checked)) .req-autoshop-staff{display:none}
+body:has(#upg-autoshop-staff:checked) .not-autoshop-staff{display:none}
+body:has(#own-salvage:not(:checked)) .b-salvage{display:none}
+body:has(#own-salvage:not(:checked)) .emp-salvage{opacity:.4}
+body:has(#upg-salvage-staff:not(:checked)) .req-salvage-staff{display:none}
+body:has(#upg-salvage-staff:checked) .not-salvage-staff{display:none}
+body:has(#own-bail:not(:checked)) .b-bail{display:none}
+body:has(#own-bail:not(:checked)) .emp-bail{opacity:.4}
+body:has(#upg-bail-staff:not(:checked)) .req-bail-staff{display:none}
+body:has(#upg-bail-staff:checked) .not-bail-staff{display:none}
+body:has(#upg-bail-cctv:not(:checked)) .req-bail-cctv{display:none}
+body:has(#upg-bail-cctv:checked) .not-bail-cctv{display:none}
+body:has(#own-garment:not(:checked)) .b-garment{display:none}
+body:has(#own-garment:not(:checked)) .emp-garment{opacity:.4}
+body:has(#upg-garment-staff:not(:checked)) .req-garment-staff{display:none}
+body:has(#upg-garment-staff:checked) .not-garment-staff{display:none}
+body:has(#upg-garment-equip:not(:checked)) .req-garment-equip{display:none}
+body:has(#upg-garment-equip:checked) .not-garment-equip{display:none}
+body:has(#own-arcade:not(:checked)) .b-arcade{display:none}
+body:has(#own-arcade:not(:checked)) .emp-arcade{opacity:.4}
+body:has(#upg-arcade-mct:not(:checked)) .req-arcade-mct{display:none}
+body:has(#upg-arcade-mct:checked) .not-arcade-mct{display:none}
+body:has(#upg-arcade-drone:not(:checked)) .req-arcade-drone{display:none}
+body:has(#upg-arcade-drone:checked) .not-arcade-drone{display:none}
+body:has(#upg-arcade-cctv:not(:checked)) .req-arcade-cctv{display:none}
+body:has(#upg-arcade-cctv:checked) .not-arcade-cctv{display:none}
+body:has(#own-kosatka:not(:checked)) .b-kosatka{display:none}
+body:has(#own-kosatka:not(:checked)) .emp-kosatka{opacity:.4}
+body:has(#upg-kosatka-sonar:not(:checked)) .req-kosatka-sonar{display:none}
+body:has(#upg-kosatka-sonar:checked) .not-kosatka-sonar{display:none}
+body:has(#upg-kosatka-goc:not(:checked)) .req-kosatka-goc{display:none}
+body:has(#upg-kosatka-goc:checked) .not-kosatka-goc{display:none}
+body:has(#upg-kosatka-sparrow:not(:checked)) .req-kosatka-sparrow{display:none}
+body:has(#upg-kosatka-sparrow:checked) .not-kosatka-sparrow{display:none}
+body:has(#own-office:not(:checked)) .b-office{display:none}
+body:has(#own-office:not(:checked)) .emp-office{opacity:.4}
+body:has(#upg-office-large:not(:checked)) .req-office-large{display:none}
+body:has(#upg-office-large:checked) .not-office-large{display:none}
+body:has(#own-vehiclewh:not(:checked)) .b-vehiclewh{display:none}
+body:has(#own-vehiclewh:not(:checked)) .emp-vehiclewh{opacity:.4}
+body:has(#own-hangar:not(:checked)) .b-hangar{display:none}
+body:has(#own-hangar:not(:checked)) .emp-hangar{opacity:.4}
+body:has(#upg-hangar-workshop:not(:checked)) .req-hangar-workshop{display:none}
+body:has(#upg-hangar-workshop:checked) .not-hangar-workshop{display:none}
+body:has(#own-facility:not(:checked)) .b-facility{display:none}
+body:has(#own-facility:not(:checked)) .emp-facility{opacity:.4}
+body:has(#upg-facility-orbital:not(:checked)) .req-facility-orbital{display:none}
+body:has(#upg-facility-orbital:checked) .not-facility-orbital{display:none}
+body:has(#own-casino:not(:checked)) .b-casino{display:none}
+body:has(#own-casino:not(:checked)) .emp-casino{opacity:.4}
+body:has(#own-carmeet:not(:checked)) .b-carmeet{display:none}
+body:has(#own-carmeet:not(:checked)) .emp-carmeet{opacity:.4}
+body:has(#own-terrorbyte:not(:checked)) .b-terrorbyte{display:none}
+body:has(#own-terrorbyte:not(:checked)) .emp-terrorbyte{opacity:.4}
+body:has(#upg-terrorbyte-workshop:not(:checked)) .req-terrorbyte-workshop{display:none}
+body:has(#upg-terrorbyte-workshop:checked) .not-terrorbyte-workshop{display:none}
+body:has(#own-cluckin:not(:checked)) .b-cluckin{display:none}
+body:has(#own-cluckin:not(:checked)) .emp-cluckin{opacity:.4}
+body:has(#own-kortz:not(:checked)) .b-kortz{display:none}
+body:has(#own-kortz:not(:checked)) .emp-kortz{opacity:.4}
+body:has(#own-toreador:not(:checked)) .b-toreador{display:none}
+body:has(#own-toreador:not(:checked)) .emp-toreador{opacity:.4}
+</style></head><body>
+<div class="openhelp nojs-only"><b>This is the flat preview.</b> Discord and WhatsApp can't run the live board inline — download the file, open it, then tap the share icon and choose <b>Open in Safari</b> for ticking, syncing and this week's live numbers. Once it's open in Safari, Share &rarr; <b>Add to Home Screen</b> so it always launches correctly from here on.</div>
+<div class="state"><input type="radio" name="tab" id="t-week" checked><input type="radio" name="tab" id="t-day"><input type="radio" name="tab" id="t-cayo"><input type="radio" name="tab" id="t-emp"></div>
+<header class="top"><div class="topin">
+<div class="brandrow"><span class="brand">Los Santos <em>ops board</em></span>
+<span class="sub">GTA V Legacy &middot; PC</span></div>
+<div class="tabs">
+<label class="tab-week" for="t-week">This week</label>
+<label class="tab-day" for="t-day">Daily run</label>
+<label class="tab-cayo" for="t-cayo">Cayo board</label>
+<label class="tab-emp" for="t-emp">Empire</label>
+</div></div></header><main class="wrap">
+<section class="app-hero" aria-label="Emma and Dave's GTA Online operations board">
+<img src="assets/los-santos-ops-hero.png" alt="Night-time fictional coastal city and island route map">
+<div class="copy"><p class="eyebrow">Legacy crew command</p><h1>Emma &amp; Dave's<br><em>Los Santos</em> board</h1><p>A quick, phone-first plan for tonight's GTA Online run on PC. Choose the job, split the loot and tick it off without losing the plan.</p><span class="crew"><i></i> GTA V Legacy · PC</span></div>
+</section>
+<section class="panel" id="p-week" data-name="This week">
+<div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Auto Shop Robbery Contracts pay double all week.</h2><p id="wk-sub">Everything else boosted is racing. Run contracts for the money, take the flat $100k drift challenge, and get the weekly first-run heists done before anything else.</p></div>
+<div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><button class="btn go js-only" id="refresh" style="margin-left:auto">Refresh this week</button></div>
+<div class="sub js-only" id="wk-stamp" style="margin-top:6px"></div>
+<details class="bk js-only" id="wk-hist" style="margin-top:12px"><summary>Previous weeks</summary>
+<div class="pad">
+<select class="histpick"><option value="">Nothing saved yet — refreshes get archived here</option></select>
+<div id="hist-view"></div>
+</div>
+</details>
+<div class="grid two"><div class="card"><div class="head"><h3>Boosted payouts</h3></div><div id="l-bonus"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb0"><span class="txt"><span class="t">2X GTA$, RP and Car Meet Rep — Auto Shop Robbery Contracts<span class="badge b-week">All week</span></span><span class="d">The only real money on the boosted list. Back-to-back contracts run near $700k an hour.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb1"><span class="txt"><span class="t">3X GTA$ and RP — Random Transform Races<span class="badge b-week">All week</span></span><span class="d">Known Unknowns and Unknown Unknowns playlists. Five new races added this week.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb2"><span class="txt"><span class="t">2X GTA$ and RP — Drift Races<span class="badge b-week">All week</span></span><span class="d">Doubles Car Meet Rep too, which speeds up the Prize Ride.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb3"><span class="txt"><span class="t">6X GTA$ and RP — select Drift and Transform Races<span class="badge b-dead">Ended</span></span><span class="d">Weekend window only, 28–30 August.</span></span></label></div></div></div>
+<div class="card"><div class="head"><h3>Claim before Thursday</h3></div><div id="l-claim"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc0"><span class="txt"><span class="t">Weekly Challenge — three Drift Races for $100,000<span class="badge b-hot">Free $100k</span></span><span class="d">Flat payout, not a multiplier. Best money per minute on the racing side by a distance.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc1"><span class="txt"><span class="t">Free Glitch Camo drift livery</span><span class="d">One Drift Race in the Übermacht Cypher. The same race counts toward the $100k challenge.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc2"><span class="txt"><span class="t">Lucky Wheel podium — Karin Sultan Classic</span><span class="d">One spin per day at the Diamond Casino.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc3"><span class="txt"><span class="t">Prize Ride — Dinka Veto Classic</span><span class="d">Top five in the Car Meet Series on four consecutive days. About $895k saved.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc4"><span class="txt"><span class="t">FIB Priority File — The Fine Art File</span><span class="d">Pays more than the standard files.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc6"><span class="txt"><span class="t">Drift Tuning added to three cars</span><span class="d">Elegy Retro, Coquette and Dominator GTT.</span></span></label></div></div></div></div>
+<div class="grid two"><div class="card"><div class="head"><h3>Weekly resets, do these first</h3></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r1"><span class="txt"><span class="t">Kortz Center Heist — first run of the week</span><span class="d">Around $2M on the first completion. Biggest single payday you have.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r2"><span class="txt"><span class="t">Cluckin&#x27; Bell Farm Raid — first run</span><span class="d">About $600k for roughly 20 minutes.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r3"><span class="txt"><span class="t">Cayo Perico — target value and elite challenge reset</span><span class="d">Scope it before you commit to preps.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r4"><span class="txt"><span class="t">Diamond Casino Heist — first completion bonus</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r5"><span class="txt"><span class="t">Salvage Yard — three robberies back on the board</span></span></label></div></div>
+<div class="card"><div class="head"><h3>Shopping</h3></div><div class="pad" id="l-shop"><p class="sub" style="margin:0">No property or business discounts this week.</p><div class="kv" style="margin-top:12px"><div class="k">Annis ZR350</div><div class="v">$1,130,500</div><div class="k">Cheval Taipan</div><div class="v">$1,386,000</div><div class="k">Invetero Coquette D5</div><div class="v">$1,211,000</div><div class="k">Obey I-Wagen</div><div class="v">$1,210,300</div><div class="k">Vapid Flash GT</div><div class="v">$1,172,500</div><div class="k">RC Bandito</div><div class="v">$1,113,000</div><div class="k">Karin Technical Aqua</div><div class="v">$1,042,720</div><div class="k">Buckingham Howard NX-25</div><div class="v">$907,725</div><div class="k">Western Company Duster 300-H</div><div class="v">$714,000</div></div><p class="note">Gun Van moves daily. 30% off the Military Rifle. Stock includes the Railgun, Grenade Launcher, Heavy Pistol, Crowbar, Pipe Bombs, Tear Gas and Grenades.</p></div></div></div>
+<div class="card" style="margin-top:12px"><div class="head"><h3>Shared notes</h3><span class="sub">both of you see this</span></div><div class="pad"><textarea class="notes" id="cy-weeknotes" placeholder="Anything the refresh missed, or what you agreed to run tonight."></textarea></div></div>
+</section>
+<section class="panel" id="p-day" data-name="Daily run">
+<div class="prog js-only"><i id="progbar"></i></div><div class="sub js-only" id="proglbl" style="margin-bottom:4px"></div>
+<div class="state"><input type="radio" name="f" id="f-all" checked><input type="radio" name="f" id="f-collect"><input type="radio" name="f" id="f-restock"><input type="radio" name="f" id="f-sell"><input type="radio" name="f" id="f-earn"><input type="checkbox" id="hidedone"><input type="checkbox" id="hideskip"></div>
+<div class="bar"><label class="chip c-all" for="f-all">Full route</label><label class="chip c-collect" for="f-collect">Collect</label><label class="chip c-restock" for="f-restock">Restock</label><label class="chip c-sell" for="f-sell">Sell</label><label class="chip c-earn" for="f-earn">Earn</label><label class="chip c-hidedone" for="hidedone">Hide done</label><label class="chip c-hideskip" for="hideskip">Hide skipped</label><button class="btn js-only" id="newday" style="margin-left:auto">New day</button></div>
+<p class="note">Tap the arrow on any line to mark it as not relevant. Skipped lines grey out and vanish under Hide skipped. Your daily ticks are private — only the Cayo board and week notes are shared.</p>
+<div class="grid"><div class="card"><div class="head"><span class="stage-n">1</span><h3>Set up</h3><span class="mins">~3 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">About two minutes. Do it before anything can go wrong.</span></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="s-lobby"><span class="txt"><span class="t">Join a public session, then empty it</span><span class="d">Pause menu, Online, Find New Session, then Solo Public. Full sale bonuses with none of the griefers.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-s-lobby"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="s-reg"><span class="txt"><span class="t">Register as CEO and as MC President</span><span class="d">Both at once. MC president keeps the Terrorbyte and clubhouse menus live while you run CEO work.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-s-reg"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="s-spawn"><span class="txt"><span class="t">Check your spawn is set to Last Location</span><span class="d">Stops the game dumping you across the map every session.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-s-spawn"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="s-snacks"><span class="txt"><span class="t">Restock snacks, armour and the Sparrow</span><span class="d">Interaction menu, Inventory. Do it now, not mid-heist.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-s-snacks"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="s-daily"><span class="txt"><span class="t">Claim the three Daily Objectives</span><span class="d">$50k plus the 28-day streak bonus. Pick ones that overlap what you were doing anyway.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-s-daily"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">2</span><h3>Weekly first-run paydays</h3><span class="mins">~260 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">These reset Thursday and pay the most per minute of anything you own. Biggest money first.</span></div><div class="task f-earn b-kortz"><label class="tick"><input type="checkbox" class="tickbox" id="w-kortz"><span class="txt"><span class="t">Kortz Center Heist</span><span class="d">Around $2M on the first completion of the week. Nothing else you own comes close.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-kortz"><span>&#8595;</span></label></div><div class="task f-earn b-kosatka"><label class="tick"><input type="checkbox" class="tickbox" id="w-cayo"><span class="txt"><span class="t">Cayo Perico</span><span class="d">Scope it on the Cayo board tab first. Hard mode adds ten percent for almost no extra risk.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-cayo"><span>&#8595;</span></label></div><div class="task f-earn b-arcade"><label class="tick"><input type="checkbox" class="tickbox" id="w-casino"><span class="txt"><span class="t">Diamond Casino Heist</span><span class="d">Silent and Sneaky if you trust your crew, Aggressive if you do not.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-casino"><span>&#8595;</span></label></div><div class="task f-earn b-facility"><label class="tick"><input type="checkbox" class="tickbox" id="w-doomsday"><span class="txt"><span class="t">Doomsday Act 3</span><span class="d">Only with a crew you trust. Painful with randoms.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-doomsday"><span>&#8595;</span></label></div><div class="task f-earn b-cluckin"><label class="tick"><input type="checkbox" class="tickbox" id="w-cluckin"><span class="txt"><span class="t">Cluckin&#x27; Bell Farm Raid</span><span class="d">About $600k for twenty minutes. Skip the optional cash register loop if you are short on time.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-cluckin"><span>&#8595;</span></label></div><div class="task f-earn b-bail"><label class="tick"><input type="checkbox" class="tickbox" id="w-bail"><span class="txt"><span class="t">Most Wanted bounty</span><span class="d">Weekly, and the biggest single bail payout. Alive pays more.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-bail"><span>&#8595;</span></label></div><div class="task f-earn b-garment"><label class="tick"><input type="checkbox" class="tickbox" id="w-garment"><span class="txt"><span class="t">FIB Priority File<span class="badge b-bonus">Fine Art File</span></span><span class="d">Rotates Thursday. Pays more than the standard files.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-garment"><span>&#8595;</span></label></div><div class="task f-earn b-salvage"><label class="tick"><input type="checkbox" class="tickbox" id="w-salvage"><span class="txt"><span class="t">All three Salvage Yard robberies</span><span class="d">Three per week. The cheap approach is usually fine — you keep the difference.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-w-salvage"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">3</span><h3>Sell window</h3><span class="mins">~140 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">Empty every full warehouse in one block, then restock right behind it. Never sell part-full unless the timer forces it.</span></div><div class="task f-sell"><label class="tick"><input type="checkbox" class="tickbox" id="sl-check"><span class="txt"><span class="t">Check you are still in a solo public session</span><span class="d">Public pays the bonus. Solo public means nobody can touch the delivery.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-check"><span>&#8595;</span></label></div><div class="task f-sell b-toreador"><label class="tick"><input type="checkbox" class="tickbox" id="sl-tor"><span class="txt"><span class="t">Take the Toreador or Stromberg for sea deliveries</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-tor"><span>&#8595;</span></label></div><div class="task f-sell b-office"><label class="tick"><input type="checkbox" class="tickbox" id="sl-cargo"><span class="txt"><span class="t">Special cargo</span><span class="d">111 crates is about $2.2M with the bonus. Do not sell part-full.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-cargo"><span>&#8595;</span></label></div><div class="task f-sell b-bunker req-bunker-equip"><label class="tick"><input type="checkbox" class="tickbox" id="sl-bunker"><span class="txt"><span class="t">Bunker</span><span class="d">Around $1.05M full and upgraded with the public bonus.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-bunker"><span>&#8595;</span></label></div><div class="task f-sell b-coke"><label class="tick"><input type="checkbox" class="tickbox" id="sl-coke"><span class="txt"><span class="t">Cocaine</span><span class="d">Roughly $420k full and upgraded.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-coke"><span>&#8595;</span></label></div><div class="task f-sell b-vehiclewh"><label class="tick"><input type="checkbox" class="tickbox" id="sl-veh"><span class="txt"><span class="t">Export top-range vehicles</span><span class="d">About $80k each once stacked.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-veh"><span>&#8595;</span></label></div><div class="task f-sell b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="sl-nc"><span class="txt"><span class="t">Nightclub goods</span><span class="d">Sell around half full so it stays a one-vehicle delivery. Three vehicles solo is how sales get failed.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-nc"><span>&#8595;</span></label></div><div class="task f-sell b-acid"><label class="tick"><input type="checkbox" class="tickbox" id="sl-acid"><span class="txt"><span class="t">Acid Lab</span><span class="d">Single vehicle, sells fine from invite-only.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-acid"><span>&#8595;</span></label></div><div class="task f-sell b-meth"><label class="tick"><input type="checkbox" class="tickbox" id="sl-meth"><span class="txt"><span class="t">Meth</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-meth"><span>&#8595;</span></label></div><div class="task f-sell b-cash"><label class="tick"><input type="checkbox" class="tickbox" id="sl-cash"><span class="txt"><span class="t">Counterfeit cash</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-cash"><span>&#8595;</span></label></div><div class="task f-sell b-weed"><label class="tick"><input type="checkbox" class="tickbox" id="sl-weed"><span class="txt"><span class="t">Weed</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-weed"><span>&#8595;</span></label></div><div class="task f-sell b-docs"><label class="tick"><input type="checkbox" class="tickbox" id="sl-docs"><span class="txt"><span class="t">Forged documents</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-docs"><span>&#8595;</span></label></div><div class="task f-sell b-hangar"><label class="tick"><input type="checkbox" class="tickbox" id="sl-hangar"><span class="txt"><span class="t">Air freight cargo</span><span class="d">Slow. Only bother if you were flying anyway.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-sl-hangar"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">4</span><h3>Restock everything</h3><span class="mins">~17 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">If you own the Master Control Terminal this is two minutes, not forty. Biggest earners get resupplied first.</span></div><div class="task f-restock b-arcade req-arcade-mct"><label class="tick"><input type="checkbox" class="tickbox" id="r-mct"><span class="txt"><span class="t">Resupply every business from the Master Control Terminal</span><span class="d">Arcade basement. Buy supplies for every business and launch sales from one menu — the fastest way to restock, full stop. If you own this, skip the rest of this card.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-mct"><span>&#8595;</span></label></div><div class="task f-restock b-terrorbyte not-arcade-mct"><label class="tick"><input type="checkbox" class="tickbox" id="r-tb"><span class="txt"><span class="t">Resupply from the Terrorbyte instead</span><span class="d">Second-best option if you don&#x27;t have the MCT — resupplies every business from one menu.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-tb"><span>&#8595;</span></label></div><div class="task f-restock b-office"><label class="tick"><input type="checkbox" class="tickbox" id="r-cargo"><span class="txt"><span class="t">Buy crates three at a time</span><span class="d">Three-crate buys are the only sensible rate. Run VIP work while the cooldown ticks.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-cargo"><span>&#8595;</span></label></div><div class="task f-restock b-acid"><label class="tick"><input type="checkbox" class="tickbox" id="r-acid"><span class="txt"><span class="t">Resupply the Acid Lab</span><span class="d">Fill it every single session. Best payout-to-effort ratio you own and it sells from invite-only.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-acid"><span>&#8595;</span></label></div><div class="task f-restock b-bunker"><label class="tick"><input type="checkbox" class="tickbox" id="r-bunker"><span class="txt"><span class="t">Buy bunker supplies</span><span class="d">Always buy, never steal. Your time is worth more than $75k.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-bunker"><span>&#8595;</span></label></div><div class="task f-restock b-coke"><label class="tick"><input type="checkbox" class="tickbox" id="r-coke"><span class="txt"><span class="t">Resupply cocaine</span><span class="d">Highest value per bar of the MC businesses.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-coke"><span>&#8595;</span></label></div><div class="task f-restock b-meth"><label class="tick"><input type="checkbox" class="tickbox" id="r-meth"><span class="txt"><span class="t">Resupply meth</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-meth"><span>&#8595;</span></label></div><div class="task f-restock b-cash"><label class="tick"><input type="checkbox" class="tickbox" id="r-cash"><span class="txt"><span class="t">Resupply counterfeit cash</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-cash"><span>&#8595;</span></label></div><div class="task f-restock b-vehiclewh"><label class="tick"><input type="checkbox" class="tickbox" id="r-veh"><span class="txt"><span class="t">Source standard-range cars only</span><span class="d">Standard and mid range source faster and still export as top range once stacked.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-veh"><span>&#8595;</span></label></div><div class="task f-restock b-weed"><label class="tick"><input type="checkbox" class="tickbox" id="r-weed"><span class="txt"><span class="t">Resupply weed</span><span class="d">Low value. Worth stocking only to feed street dealers.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-weed"><span>&#8595;</span></label></div><div class="task f-restock b-docs"><label class="tick"><input type="checkbox" class="tickbox" id="r-docs"><span class="txt"><span class="t">Resupply document forgery</span><span class="d">Lowest earner in the game. Plenty of players idle this one — untick it in Empire if you have.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-r-docs"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">5</span><h3>Collect every safe</h3><span class="mins">~6 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">Roughly $700k in passive cash sitting across your properties. Fast travel to each, in whatever order suits.</span></div><div class="task f-collect b-nightclub req-nightclub-staff"><label class="tick"><input type="checkbox" class="tickbox" id="p-nc"><span class="txt"><span class="t">Nightclub safe</span><span class="d">Caps at $250k with the staff upgrade. Empty it every session or you burn income.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-nc"><span>&#8595;</span></label></div><div class="task f-collect b-nightclub not-nightclub-staff"><label class="tick"><input type="checkbox" class="tickbox" id="p-nc2"><span class="txt"><span class="t">Nightclub safe</span><span class="d">Caps at $100k without the staff upgrade. Buy the staff upgrade — it pays back in about a week.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-nc2"><span>&#8595;</span></label></div><div class="task f-collect b-agency"><label class="tick"><input type="checkbox" class="tickbox" id="p-agency"><span class="txt"><span class="t">Agency safe</span><span class="d">$20k lands per security contract, capped at $250k.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-agency"><span>&#8595;</span></label></div><div class="task f-collect b-arcade"><label class="tick"><input type="checkbox" class="tickbox" id="p-arcade"><span class="txt"><span class="t">Arcade safe</span><span class="d">Rate depends on how many machines you bought.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-arcade"><span>&#8595;</span></label></div><div class="task f-collect b-autoshop"><label class="tick"><input type="checkbox" class="tickbox" id="p-auto"><span class="txt"><span class="t">Auto Shop safe</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-auto"><span>&#8595;</span></label></div><div class="task f-collect b-bail"><label class="tick"><input type="checkbox" class="tickbox" id="p-bail"><span class="txt"><span class="t">Bail Office safe</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-bail"><span>&#8595;</span></label></div><div class="task f-collect b-garment"><label class="tick"><input type="checkbox" class="tickbox" id="p-garment"><span class="txt"><span class="t">Garment Factory safe</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-garment"><span>&#8595;</span></label></div><div class="task f-collect b-salvage"><label class="tick"><input type="checkbox" class="tickbox" id="p-salvage"><span class="txt"><span class="t">Salvage Yard daily income</span><span class="d">Only accrues while the tow truck job is running — start it whenever suits you.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-salvage"><span>&#8595;</span></label></div><div class="task f-collect b-casino"><label class="tick"><input type="checkbox" class="tickbox" id="p-casino"><span class="txt"><span class="t">Lucky Wheel spin and free chips</span><span class="d">Once per real day.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-p-casino"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">6</span><h3>Active earners while the timers run</h3><span class="mins">~86 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">Supplies and cargo cooldowns tick in the background. Fill the gap with these.</span></div><div class="task f-earn b-autoshop"><label class="tick"><input type="checkbox" class="tickbox" id="autoshop-contract"><span class="txt"><span class="t">Auto Shop Robbery Contract<span class="badge b-bonus">2X this week</span></span><span class="d">Prep then finale. Doing preps quietly raises the finale cut. The Union Depository contract pays best.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-autoshop-contract"><span>&#8595;</span></label></div><div class="task f-earn b-agency"><label class="tick"><input type="checkbox" class="tickbox" id="e-payphone"><span class="txt"><span class="t">Payphone hit</span><span class="d">About $85k for five minutes, plus $15k for the optional condition. Do it every time it is off cooldown.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-payphone"><span>&#8595;</span></label></div><div class="task f-earn b-agency"><label class="tick"><input type="checkbox" class="tickbox" id="e-contract"><span class="txt"><span class="t">Security contract</span><span class="d">Feeds the agency safe at $20k a go.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-contract"><span>&#8595;</span></label></div><div class="task f-earn"><label class="tick"><input type="checkbox" class="tickbox" id="e-dealers"><span class="txt"><span class="t">Three street dealers</span><span class="d">Check all three prices first, sell everything at the best one.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-dealers"><span>&#8595;</span></label></div><div class="task f-earn b-terrorbyte"><label class="tick"><input type="checkbox" class="tickbox" id="e-client"><span class="txt"><span class="t">Client Job from the Terrorbyte</span><span class="d">Diamond Shopping and Data Sweep are the quick ones.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-client"><span>&#8595;</span></label></div><div class="task f-earn b-office"><label class="tick"><input type="checkbox" class="tickbox" id="e-vip"><span class="txt"><span class="t">Headhunter or Sightseer between crate buys</span><span class="d">Free money in the cargo cooldown. Sightseer if the Sparrow is already out.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-vip"><span>&#8595;</span></label></div><div class="task f-earn b-clubhouse"><label class="tick"><input type="checkbox" class="tickbox" id="e-mc"><span class="txt"><span class="t">Clubhouse contract</span><span class="d">Decent filler, and it counts toward MC challenges.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-mc"><span>&#8595;</span></label></div><div class="task f-earn b-salvage"><label class="tick"><input type="checkbox" class="tickbox" id="e-tow"><span class="txt"><span class="t">Tow truck job</span><span class="d">Keeps the Salvage Yard daily income switched on.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-tow"><span>&#8595;</span></label></div><div class="task f-collect b-autoshop req-autoshop-staff"><label class="tick"><input type="checkbox" class="tickbox" id="e-autodeliver"><span class="txt"><span class="t">Clear customer vehicle deliveries</span><span class="d">Free money if staff are assigned.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-e-autodeliver"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">7</span><h3>Nightclub popularity, the fast way</h3><span class="mins">~14 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">Floor jobs instead of full popularity missions. Seconds each instead of ten minutes.</span></div><div class="task f-collect b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="nc-floor"><span class="txt"><span class="t">Work the floor jobs before you leave the club</span><span class="d">Throw out the rowdy drunk, kick out the freeloader, clear the rats in the basement, sort the DJ. Each takes under a minute and nudges popularity up. Two or three of these beats a full popularity mission on time spent.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-nc-floor"><span>&#8595;</span></label></div><div class="task f-collect b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="nc-dj"><span class="txt"><span class="t">Dance for a bit if popularity is still low</span><span class="d">A short DJ set tops the bar without leaving the building.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-nc-dj"><span>&#8595;</span></label></div><div class="task f-earn b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="nc-pop"><span class="txt"><span class="t">Only run a full popularity mission if the bar is near empty</span><span class="d">Otherwise it is ten minutes for something the floor jobs do for free.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-nc-pop"><span>&#8595;</span></label></div><div class="task f-restock b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="nc-techs"><span class="txt"><span class="t">Confirm all five technicians are assigned</span><span class="d">Best five: Cargo and Shipments, Sporting Goods, South American Imports, Pharmaceutical Research, Cash Creation. Never assign Printing and Copying.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-nc-techs"><span>&#8595;</span></label></div></div><div class="card"><div class="head"><span class="stage-n">8</span><h3>Before you log off</h3><span class="mins">~1 min</span></div><div class="pad" style="padding-bottom:2px"><span class="sub">Thirty seconds that decide how good tomorrow&#x27;s session is.</span></div><div class="task f-restock"><label class="tick"><input type="checkbox" class="tickbox" id="o-resup"><span class="txt"><span class="t">Leave every business resupplied</span><span class="d">Production runs while you are offline. An empty business overnight is money you gave away.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-o-resup"><span>&#8595;</span></label></div><div class="task f-restock b-nightclub"><label class="tick"><input type="checkbox" class="tickbox" id="o-techs"><span class="txt"><span class="t">Technicians still assigned and popularity topped up</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-o-techs"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="o-safe"><span class="txt"><span class="t">Safes emptied so they refill overnight</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-o-safe"><span>&#8595;</span></label></div><div class="task f-collect"><label class="tick"><input type="checkbox" class="tickbox" id="o-garage"><span class="txt"><span class="t">Put personal vehicles away</span><span class="d">Stops the insurance bill next session.</span></span></label><label class="skip"><input type="checkbox" class="skipbox" id="sk-o-garage"><span>&#8595;</span></label></div></div></div></section>
+<section class="panel" id="p-cayo" data-name="Cayo board">
+<div class="board"><div class="bhead"><div><div class="blab">Estimated take</div><div class="big" id="cy-total">$0</div></div><div class="prim"><div class="blab">Primary</div><div class="n" id="cy-primname">Not scoped yet</div><div class="sub" id="cy-primval"></div></div></div><div class="split"><div><div class="who d">Dave</div><div class="amt" id="cy-amt-d">$0</div><div class="bits" id="cy-bits-d">nothing assigned</div></div><div><div class="who e">Emma</div><div class="amt" id="cy-amt-e">$0</div><div class="bits" id="cy-bits-e">nothing assigned</div></div></div><div class="warnline" id="cy-warn" style="display:none"></div></div>
+<div class="bar"><label class="chip" style="gap:9px"><input type="checkbox" id="cy-hard"><span>Hard mode +10%</span></label><button class="btn js-only" id="cy-clear" style="margin-left:auto">Clear the board</button></div>
+<p class="sub nojs-only" style="margin:10px 0">Gold $328k &middot; Cocaine $220k &middot; Painting $180k &middot; Weed $147k &middot; Cash $88k per stack. Totals add up when the file is opened in Claude or Safari.</p>
+<div class="card"><div class="head"><h3>Secondary loot</h3><span class="sub">what the CCTV and the walk-round turned up</span></div><div class="lootrow"><div class="nm">Compound office<small>Paintings on the wall, cash in the desk</small></div><select id="cy-lt-office" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-office" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">El Rubio&#x27;s bedroom<small>Second painting spawns here</small></div><select id="cy-lt-bedroom" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-bedroom" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Kitchen and pantry</div><select id="cy-lt-kitchen" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-kitchen" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Basement<small>Usually cocaine or cash</small></div><select id="cy-lt-basement" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-basement" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">North gardens</div><select id="cy-lt-gardens" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-gardens" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Main dock<small>Gold and coke pallets</small></div><select id="cy-lt-dock" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-dock" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">North dock</div><select id="cy-lt-north" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-north" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Airstrip hangars</div><select id="cy-lt-airstrip" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-airstrip" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Power station</div><select id="cy-lt-power" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-power" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div><div class="lootrow"><div class="nm">Communications tower</div><select id="cy-lt-comms" class="lt"><option value="" data-v="0">Empty</option><option value="gold" data-v="328000">Gold</option><option value="coke" data-v="220000">Cocaine</option><option value="art" data-v="180500">Painting</option><option value="weed" data-v="147000">Weed</option><option value="cash" data-v="88000">Cash</option></select><select id="cy-who-comms" class="wh"><option value="">Unassigned</option><option value="d">Dave</option><option value="e">Emma</option></select></div></div>
+<div class="card" style="margin-top:12px"><div class="head"><h3>The plan</h3></div><div class="plan"><div><label for="cy-primary">Primary target</label><select id="cy-primary"><option value="" data-v="0">Not scoped yet</option><option value="tequila" data-v="900000">Sinsimito Tequila</option><option value="necklace" data-v="1000000">Ruby Necklace</option><option value="bonds" data-v="1100000">Bearer Bonds</option><option value="files" data-v="1100000">Madrazo Files</option><option value="diamond" data-v="1300000">Pink Diamond</option><option value="panther" data-v="1900000">Panther Statue</option></select></div><div><label for="cy-approach">Approach</label><select id="cy-approach"><option value="">Not decided</option><option value="Kosatka">Kosatka</option><option value="Alkonost drop">Alkonost drop</option><option value="Velum">Velum</option><option value="Annihilator">Annihilator</option><option value="Sparrow">Sparrow</option><option value="Longfin">Longfin</option></select></div><div><label for="cy-entry">Compound entry</label><select id="cy-entry"><option value="">Not decided</option><option value="Drainage tunnel">Drainage tunnel</option><option value="Main gate">Main gate</option><option value="North wall">North wall</option><option value="South wall">South wall</option><option value="Halo jump">Halo jump</option><option value="Grappling hook">Grappling hook</option></select></div><div><label for="cy-escape">Escape route</label><select id="cy-escape"><option value="">Not decided</option><option value="Kosatka pickup">Kosatka pickup</option><option value="Airstrip plane">Airstrip plane</option><option value="Boat at north dock">Boat at north dock</option><option value="Boat at main dock">Boat at main dock</option><option value="Helicopter">Helicopter</option></select></div></div></div>
+<div class="grid two"><div class="card"><div class="head"><h3>Preps and equipment</h3></div><label class="opt"><input type="checkbox" id="cy-prep-cutter"><span>Cutting torch</span></label><label class="opt"><input type="checkbox" id="cy-prep-grapple"><span>Grappling equipment</span></label><label class="opt"><input type="checkbox" id="cy-prep-cloner"><span>Fingerprint cloner</span></label><label class="opt"><input type="checkbox" id="cy-prep-uniform"><span>Guard uniforms</span></label><label class="opt"><input type="checkbox" id="cy-prep-bolt"><span>Bolt cutters</span></label><label class="opt"><input type="checkbox" id="cy-prep-code"><span>Safe code</span></label><label class="opt"><input type="checkbox" id="cy-prep-weapons"><span>Weapon loadout</span></label><label class="opt"><input type="checkbox" id="cy-prep-armour"><span>Body armour</span></label><label class="opt"><input type="checkbox" id="cy-prep-vehicle"><span>Getaway vehicle</span></label><label class="opt"><input type="checkbox" id="cy-prep-drain"><span>Drainage tunnel opened</span></label></div><div class="card"><div class="head"><h3>Scoping done</h3></div><label class="opt"><input type="checkbox" id="cy-intel-cctv"><span>Compound CCTV scoped</span></label><label class="opt"><input type="checkbox" id="cy-intel-guards"><span>Guard patrols noted</span></label><label class="opt"><input type="checkbox" id="cy-intel-cams"><span>Cameras marked</span></label><label class="opt"><input type="checkbox" id="cy-intel-tower"><span>Tower snipers marked</span></label><label class="opt"><input type="checkbox" id="cy-intel-poi"><span>Points of interest photographed</span></label></div></div>
+<div class="card" style="margin-top:12px"><div class="head"><h3>Notes</h3><span class="sub">a column each</span></div><div class="pad"><div class="grid two" style="margin-top:0"><div><span class="nlab d">Dave</span><textarea class="notes" id="cy-note-d" placeholder="Guard positions, camera angles, anything odd."></textarea></div><div><span class="nlab e">Emma</span><textarea class="notes" id="cy-note-e" placeholder="Guard positions, camera angles, anything odd."></textarea></div></div></div></div>
+</section>
+<section class="panel" id="p-emp" data-name="Empire"><div class="bar"><span class="sub">Untick what you do not own. Anything switched off disappears from the daily run and the badges on its tasks. These settings are private to you.</span></div>
+<p class="ownsum" id="emp-summary">Loading…</p><div class="bar"><button type="button" class="btn" id="own-all">Own everything</button><button type="button" class="btn" id="own-none">Own nothing</button><span class="sub" style="margin-left:auto">Tap a category name to collapse it</span></div><details class="empcat" data-cat="nightclub" open><summary><span class="cattitle"><h3>Nightclub &amp; Contraband</h3><span class="catsub">Passive warehouse income and product sale routes.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="nightclub" data-act="all">All</button><button type="button" class="catbtn" data-cat="nightclub" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-nightclub"><div class="top2"><input type="checkbox" id="own-nightclub" checked><label class="nm" for="own-nightclub">Nightclub<small>Passive warehouse and safe</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-nightclub-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-nightclub-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-nightclub-security" checked><span>Security</span></label></div></div><div class="emp emp-acid"><div class="top2"><input type="checkbox" id="own-acid" checked><label class="nm" for="own-acid">Acid Lab<small>Freakshop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-acid-equip" checked><span>Equipment upgrade</span></label></div></div></div></details><details class="empcat" data-cat="mc" open><summary><span class="cattitle"><h3>MC Businesses &amp; Clubhouse</h3><span class="catsub">Gunrunning, product labs, and the clubhouse that runs them.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="mc" data-act="all">All</button><button type="button" class="catbtn" data-cat="mc" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-bunker"><div class="top2"><input type="checkbox" id="own-bunker" checked><label class="nm" for="own-bunker">Bunker<small>Gunrunning</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-bunker-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-bunker-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-bunker-security" checked><span>Security</span></label></div></div><div class="emp emp-coke"><div class="top2"><input type="checkbox" id="own-coke" checked><label class="nm" for="own-coke">Cocaine Lockup<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-coke-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-coke-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-coke-security" checked><span>Security</span></label></div></div><div class="emp emp-meth"><div class="top2"><input type="checkbox" id="own-meth" checked><label class="nm" for="own-meth">Meth Lab<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-meth-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-meth-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-meth-security" checked><span>Security</span></label></div></div><div class="emp emp-cash"><div class="top2"><input type="checkbox" id="own-cash" checked><label class="nm" for="own-cash">Counterfeit Cash<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-cash-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-cash-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-cash-security" checked><span>Security</span></label></div></div><div class="emp emp-weed"><div class="top2"><input type="checkbox" id="own-weed" checked><label class="nm" for="own-weed">Weed Farm<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-weed-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-weed-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-weed-security" checked><span>Security</span></label></div></div><div class="emp emp-docs"><div class="top2"><input type="checkbox" id="own-docs" checked><label class="nm" for="own-docs">Document Forgery<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-docs-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-docs-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-docs-security" checked><span>Security</span></label></div></div><div class="emp emp-clubhouse"><div class="top2"><input type="checkbox" id="own-clubhouse" checked><label class="nm" for="own-clubhouse">Clubhouse<small>MC hub</small></label></div></div></div></details><details class="empcat" data-cat="vip" open><summary><span class="cattitle"><h3>VIP Work &amp; Security Contracts</h3><span class="catsub">Agency, Auto Shop, Salvage Yard, Bail Office, Garment Factory.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="vip" data-act="all">All</button><button type="button" class="catbtn" data-cat="vip" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-agency"><div class="top2"><input type="checkbox" id="own-agency" checked><label class="nm" for="own-agency">Agency<small>Franklin and Chop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-agency-weapon" checked><span>Weapon workshop</span></label><label class="upg"><input type="checkbox" id="upg-agency-vehicle" checked><span>Vehicle workshop</span></label></div></div><div class="emp emp-autoshop"><div class="top2"><input type="checkbox" id="own-autoshop" checked><label class="nm" for="own-autoshop">Auto Shop<small>LS Tuners</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-autoshop-staff" checked><span>Staff for deliveries</span></label></div></div><div class="emp emp-salvage"><div class="top2"><input type="checkbox" id="own-salvage" checked><label class="nm" for="own-salvage">Salvage Yard<small>Chop Shop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-salvage-staff" checked><span>Staff for tow truck</span></label></div></div><div class="emp emp-bail"><div class="top2"><input type="checkbox" id="own-bail" checked><label class="nm" for="own-bail">Bail Office<small>Bottom Dollar Bounties</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-bail-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-bail-cctv" checked><span>Surveillance kit</span></label></div></div><div class="emp emp-garment"><div class="top2"><input type="checkbox" id="own-garment" checked><label class="nm" for="own-garment">Garment Factory<small>Money Fronts</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-garment-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-garment-equip" checked><span>Equipment</span></label></div></div></div></details><details class="empcat" data-cat="heist" open><summary><span class="cattitle"><h3>Heist Bases &amp; Prep</h3><span class="catsub">Arcade, Kosatka, Facility, Terrorbyte — the setups behind the big paydays.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="heist" data-act="all">All</button><button type="button" class="catbtn" data-cat="heist" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-arcade"><div class="top2"><input type="checkbox" id="own-arcade" checked><label class="nm" for="own-arcade">Arcade<small>Casino Heist base</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-arcade-mct" checked><span>Master Control Terminal</span></label><label class="upg"><input type="checkbox" id="upg-arcade-drone" checked><span>Drone station</span></label><label class="upg"><input type="checkbox" id="upg-arcade-cctv" checked><span>Security cameras</span></label></div></div><div class="emp emp-kosatka"><div class="top2"><input type="checkbox" id="own-kosatka" checked><label class="nm" for="own-kosatka">Kosatka<small>Cayo Perico</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-kosatka-sonar" checked><span>Sonar</span></label><label class="upg"><input type="checkbox" id="upg-kosatka-goc" checked><span>Guerrilla Ops Centre</span></label><label class="upg"><input type="checkbox" id="upg-kosatka-sparrow" checked><span>Sparrow</span></label></div></div><div class="emp emp-facility"><div class="top2"><input type="checkbox" id="own-facility" checked><label class="nm" for="own-facility">Facility<small>Doomsday</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-facility-orbital" checked><span>Orbital cannon</span></label></div></div><div class="emp emp-terrorbyte"><div class="top2"><input type="checkbox" id="own-terrorbyte" checked><label class="nm" for="own-terrorbyte">Terrorbyte and MOC<small>Support vehicles</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-terrorbyte-workshop" checked><span>Weapon workshop</span></label></div></div></div></details><details class="empcat" data-cat="cargo" open><summary><span class="cattitle"><h3>Special Cargo &amp; Vehicle Trade</h3><span class="catsub">CEO warehouses, vehicle export, air freight.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="cargo" data-act="all">All</button><button type="button" class="catbtn" data-cat="cargo" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-office"><div class="top2"><input type="checkbox" id="own-office" checked><label class="nm" for="own-office">CEO Office and warehouses<small>Special Cargo</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-office-large" checked><span>Large warehouse</span></label></div></div><div class="emp emp-vehiclewh"><div class="top2"><input type="checkbox" id="own-vehiclewh" checked><label class="nm" for="own-vehiclewh">Vehicle Warehouse<small>Import and Export</small></label></div></div><div class="emp emp-hangar"><div class="top2"><input type="checkbox" id="own-hangar" checked><label class="nm" for="own-hangar">Hangar<small>Air Freight Cargo</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-hangar-workshop" checked><span>Aircraft workshop</span></label></div></div></div></details><details class="empcat" data-cat="social" open><summary><span class="cattitle"><h3>Weekly Heists &amp; Memberships</h3><span class="catsub">Casino, Car Meet, and the weekly heist rotation.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="social" data-act="all">All</button><button type="button" class="catbtn" data-cat="social" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-casino"><div class="top2"><input type="checkbox" id="own-casino" checked><label class="nm" for="own-casino">Casino Penthouse<small>Diamond Casino</small></label></div></div><div class="emp emp-carmeet"><div class="top2"><input type="checkbox" id="own-carmeet" checked><label class="nm" for="own-carmeet">LS Car Meet<small>Membership</small></label></div></div><div class="emp emp-cluckin"><div class="top2"><input type="checkbox" id="own-cluckin" checked><label class="nm" for="own-cluckin">Cluckin&#x27; Bell Farm Raid<small>Weekly heist</small></label></div></div><div class="emp emp-kortz"><div class="top2"><input type="checkbox" id="own-kortz" checked><label class="nm" for="own-kortz">Kortz Center Heist<small>Weekly heist</small></label></div></div><div class="emp emp-toreador"><div class="top2"><input type="checkbox" id="own-toreador" checked><label class="nm" for="own-toreador">Toreador or Stromberg<small>Sale defence</small></label></div></div></div></details>
+<p class="stat js-only" id="stat"></p>
+<p class="stat nojs-only"><b>Quick Look is read-only.</b> Ticks work but will not save. Open the file in Safari, or open the board in Claude to share it.</p>
+<details class="bk js-only"><summary>Back up or move your setup</summary>
+<p class="sub" style="margin:8px 0 0">Copy this and paste it on another device to bring everything across.</p>
+<textarea class="notes" id="bkbox" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+<button class="btn" id="bkshow">Show my setup</button>
+<button class="btn" id="bkload">Load pasted setup</button>
+<button class="btn" id="bkreset">Clear everything</button></div></details>
+<div class="foot">Daily ticks clear when the date changes. Week ticks clear at the Thursday reset. Cayo and Empire settings stay until you change them.</div>
+</section>
+</main>
+<script>
+(function(){
+"use strict";
+document.documentElement.className+=" hasjs";
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("service-worker.js").catch(function(){});});}
+var PKEY="gta-ops-personal-v3", SKEY="gta-ops-shared-v3";
+var BACKEND="memory", CANSHARE=false, S={v:{},day:"",week:"",seen:0}, SH={v:{},week:"",wk:null,stamp:0,history:[{wkKey:"2026-08-06",stamp:Date.UTC(2026,7,6,9,0,0),wk:{week_label:"30 July – 5 August 2026",headline:"3X on the Community Mission Series, plus two free-car chances.",summary:"A quieter week between events. Best value was the Community Series multiplier and a couple of claimable cars.",bonuses:[{title:"3X GTA$ and RP — Community Mission Series",detail:"All week.",tag:"All week"}],claims:[{title:"Podium Vehicle — Übermacht Cypher",detail:"Daily Casino spin. Normally $1,550,000 at Legendary Motorsport.",tag:""},{title:"Claimable Pfister Comet S2 Cabrio",detail:"Free this week — check the in-game conditions.",tag:"Free car"},{title:"Chance to unlock the Karin Boor for free",detail:"Claimable this week — check the in-game conditions.",tag:"Free car"}],discounts:[{name:"Selected vehicles and properties",price:"Up to 60% off"}],gun_van:""}},{wkKey:"2026-08-13",stamp:Date.UTC(2026,7,13,9,0,0),wk:{week_label:"6 – 12 August 2026",headline:"Panther Statue guaranteed on Cayo Perico, plus a free $1,000,000 for logging in.",summary:"Second week of the Summer Heist Event. Guaranteed top-value Cayo Perico loot and a big login giveaway.",bonuses:[{title:"Weekly completion bonuses reset",detail:"Bigger first-time payout across every Heist and Contact Mission except Cayo Perico.",tag:""}],claims:[{title:"Panther Statue guaranteed — Cayo Perico Heist Finale",detail:"100% spawn chance on your first completion this week. Also unlocks the Panther Tour Jacket.",tag:"Guaranteed"},{title:"End of Summer Giveaway",detail:"Log in between 6–12 August for $1,000,000 within 72 hours, plus two cosmetics.",tag:"Free $1M"},{title:"Cayo Perico Survival — three waves",detail:"Noise Rockstar Logo Aged Tee plus $100,000.",tag:""},{title:"Assault on Cayo Perico and Cayo Perico Zombie Survival return",detail:"Both pay bonus rewards this week.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-20",stamp:Date.UTC(2026,7,20,9,0,0),wk:{week_label:"13 – 19 August 2026",headline:"Brand Wars kicks off — 4X on Hotring Circuit and Freemode, big Twitch Drops running.",summary:"First week of the two-week Sprunk vs eCola event. Free branded gear just for logging in, plus reset completion bonuses.",bonuses:[{title:"4X GTA$ and RP — Hotring Circuit Series and Freemode Events",detail:"Runs through 26 August.",tag:"To 26 Aug"},{title:"3X GTA$ and RP — Odd Jobs and Community Series",detail:"Paper Route, Firefighter, Forklift Operator, QuickiePharm and Safeguard Deliveries.",tag:""},{title:"Heist and Mission completion bonuses reset",detail:"Bigger first-time payout across a range of Heists and Contact Missions.",tag:""}],claims:[{title:"Weekly Challenge — three Business Battles",detail:"Impotent Rage Sweatsuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Free Declasse Hotring Sabre",detail:"Sprunk x eCola livery and branded plates. Log in any time through 26 August.",tag:"Free car"},{title:"Free Sprunk and eCola bodysuits",detail:"Clothing stores around the city, for the event's duration.",tag:""},{title:"Brand Wars Twitch Drops begin",detail:"Link Twitch and Rockstar accounts, pick a side. Up to $2,000,000 total through 26 August.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-27",stamp:Date.UTC(2026,7,27,9,0,0),wk:{week_label:"20 – 26 August 2026",headline:"Brand Wars finale — 5X GTA$ and RP on VIP Work, plus a reset Kortz Center bonus.",summary:"Second half of the two-week Brand Wars event. Big VIP Work weekend, Kortz Center resets with a no-death bonus, and the Warden goes on general sale.",bonuses:[{title:"5X GTA$ and RP — VIP Work",detail:"Weekend only, 21–23 August.",tag:"Weekend"},{title:"4X GTA$ and RP — Hotring Circuit Series and select Freemode",detail:"Runs the full week.",tag:"All week"},{title:"Kortz Center Heist bonus reset",detail:"New Primary Targets. A no-death completion adds an extra $400,000.",tag:""}],claims:[{title:"Weekly Challenge — win three Races",detail:"Princess Racing Tracksuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Gallivanter Warden now on general sale",detail:"$1,597,500 at Legendary Motorsport.",tag:""},{title:"FIB Priority File — The Brute Force File",detail:"Pays more than the standard files.",tag:""},{title:"Brand Wars Twitch Drops close out",detail:"Link Twitch and Rockstar accounts. Up to $2,000,000 total across the full event.",tag:""}],discounts:[{name:"Emperor ETR1",price:"Discounted this week"}],gun_van:""}}]};
+
+/* shared = the Cayo board and week notes. Everything else stays private. */
+function isShared(id){return id.indexOf("cy-")===0;}
+function probe(k){try{var s=k==="l"?localStorage:sessionStorage;if(!s)return null;
+ s.setItem("__t","1");s.removeItem("__t");return s;}catch(e){return null;}}
+function get(key,shared){
+ return new Promise(function(res){
+  if(window.storage&&window.storage.get){BACKEND="claude";
+   window.storage.get(key,!!shared).then(function(r){res(r&&r.value?r.value:null);},function(){res(null);});
+   return;}
+  var ls=probe("l");if(ls){BACKEND="local";res(ls.getItem(key));return;}
+  var ss=probe("s");if(ss){BACKEND="session";res(ss.getItem(key));return;}
+  BACKEND="memory";res(null);});
+}
+function put(key,val,shared){
+ try{
+  if(BACKEND==="claude"){return window.storage.set(key,val,!!shared).then(function(){return true;},function(){return false;});}
+  if(BACKEND==="local"){probe("l").setItem(key,val);return Promise.resolve(true);}
+  if(BACKEND==="session"){probe("s").setItem(key,val);return Promise.resolve(true);}
+ }catch(e){BACKEND="memory";}
+ return Promise.resolve(false);
+}
+
+function fields(){return [].slice.call(document.querySelectorAll("input[id],textarea[id],select[id]"));}
+function readNode(n){
+ if(n.type==="checkbox"||n.type==="radio")return n.checked?1:0;
+ return n.value||"";
+}
+function writeNode(n,v){
+ if(n.type==="checkbox"||n.type==="radio")n.checked=!!v;
+ else n.value=v;
+}
+function collect(){
+ var p={},s={};
+ fields().forEach(function(n){
+  var v=readNode(n); if(!v)return;
+  (isShared(n.id)?s:p)[n.id]=v;
+ });
+ S.v=p; SH.v=s;
+}
+function apply(){
+ fields().forEach(function(n){
+  var box=isShared(n.id)?SH.v:S.v, has=Object.prototype.hasOwnProperty.call(box,n.id);
+  if(n.type==="checkbox"||n.type==="radio"){
+   var dflt=(n.id.indexOf("own-")===0||n.id.indexOf("upg-")===0||n.id==="t-week"||n.id==="f-all");
+   n.checked=has?true:((S.seen||isShared(n.id))?false:dflt);
+  } else n.value=has?box[n.id]:"";
+ });
+ if(SH.wk)paintWeek(SH.wk);
+ paintHistPicker();
+}
+var pt,st;
+function savePersonal(){clearTimeout(pt);pt=setTimeout(function(){
+ collect();S.seen=1;put(PKEY,JSON.stringify(S),false).then(status);},200);}
+function saveShared(){clearTimeout(st);st=setTimeout(function(){
+ collect();SH.stamp=Date.now();put(SKEY,JSON.stringify(SH),true).then(function(ok){CANSHARE=ok;status();});},350);}
+
+/* ---- cycles ---- */
+var DAILY=/^(s-|p-|nc-|r-|e-|sl-|o-)/, WEEKLY=/^(w[bc]\d|w-|r\d)/;
+function dayKey(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function lonOff(d){
+ try{var p=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/London",hour12:false,year:"numeric",
+  month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})
+  .formatToParts(d).reduce(function(a,x){a[x.type]=x.value;return a;},{});
+  return Date.UTC(p.year,p.month-1,p.day,p.hour%24,p.minute,p.second)-d.getTime();
+ }catch(e){var m=d.getUTCMonth();return (m>2&&m<9)?3600000:0;}
+}
+function nextReset(){
+ var now=new Date();
+ for(var i=0;i<9;i++){
+  var pr=new Date(now.getTime()+i*86400000),off=lonOff(pr),lon=new Date(pr.getTime()+off);
+  if(lon.getUTCDay()===4){
+   var c=new Date(Date.UTC(lon.getUTCFullYear(),lon.getUTCMonth(),lon.getUTCDate(),10,0,0)-off);
+   if(c.getTime()>now.getTime())return c;}
+ }
+ return new Date(now.getTime()+6048e5);
+}
+function weekKey(){return nextReset().toISOString().slice(0,10);}
+function rollover(){
+ var d=dayKey(),wk=weekKey(),ch=false;
+ if(S.day!==d){Object.keys(S.v).forEach(function(k){if(DAILY.test(k))delete S.v[k];});S.day=d;ch=true;}
+ if(S.week!==wk){Object.keys(S.v).forEach(function(k){if(WEEKLY.test(k))delete S.v[k];});S.week=wk;ch=true;}
+ return ch;
+}
+function clock(){
+ var n=document.getElementById("clock");if(!n)return;
+ var ms=nextReset().getTime()-Date.now();
+ var p=[[Math.floor(ms/864e5),"days"],[Math.floor(ms/36e5)%24,"hours"],
+        [Math.floor(ms/6e4)%60,"mins"],[Math.floor(ms/1e3)%60,"secs"]];
+ n.innerHTML=p.map(function(x){return '<div class="unit"><div class="n">'+("0"+Math.max(0,x[0])).slice(-2)+
+  '</div><div class="l">'+x[1]+"</div></div>";}).join("");
+}
+
+/* ---- daily progress ---- */
+function progress(){
+ var rows=[].slice.call(document.querySelectorAll("#p-day .task")),t=0,d=0;
+ rows.forEach(function(r){
+  if(r.querySelector(".skipbox").checked)return;
+  var tick=r.querySelector(".tickbox");
+  if(getComputedStyle(r).display==="none"&&!tick.checked)return;
+  t++;if(tick.checked)d++;});
+ var pct=t?Math.round(d/t*100):0;
+ document.getElementById("progbar").style.width=pct+"%";
+ document.getElementById("proglbl").textContent=d+" of "+t+" done, skipped lines excluded";
+}
+
+/* ---- cayo target board ---- */
+function money(n){return "$"+Math.round(n).toLocaleString("en-US");}
+function board(){
+ var tot=0,per={d:{v:0,b:{}},e:{v:0,b:{}}},unassigned=0,spots=0;
+ [].slice.call(document.querySelectorAll("select.lt")).forEach(function(sel){
+  sel.className="lt"+(sel.value?" set":"");
+  var who=document.getElementById(sel.id.replace("cy-lt-","cy-who-"));
+  who.className="wh"+(who.value?" who-"+who.value:"");
+  if(!sel.value)return;
+  spots++;
+  var v=+sel.options[sel.selectedIndex].getAttribute("data-v")||0,
+      nm=sel.options[sel.selectedIndex].text;
+  tot+=v;
+  if(who.value){per[who.value].v+=v;per[who.value].b[nm]=(per[who.value].b[nm]||0)+1;}
+  else unassigned++;
+ });
+ var ps=document.getElementById("cy-primary"),
+     pv=+ps.options[ps.selectedIndex].getAttribute("data-v")||0,
+     pn=ps.options[ps.selectedIndex].text;
+ ps.className=ps.value?"set":"";
+ if(document.getElementById("cy-hard").checked)pv=Math.round(pv*1.1);
+ tot+=pv;
+ document.getElementById("cy-total").textContent=money(tot);
+ document.getElementById("cy-primname").textContent=pn;
+ document.getElementById("cy-primval").textContent=pv?money(pv)+(document.getElementById("cy-hard").checked?" hard mode":""):"";
+ ["d","e"].forEach(function(k){
+  document.getElementById("cy-amt-"+k).textContent=money(per[k].v);
+  var b=Object.keys(per[k].b);
+  document.getElementById("cy-bits-"+k).textContent=b.length?
+   b.map(function(x){return per[k].b[x]+"x "+x;}).join(", "):"nothing assigned";
+ });
+ var wn=document.getElementById("cy-warn");
+ if(unassigned){wn.style.display="block";
+  wn.textContent=unassigned+" stack"+(unassigned>1?"s":"")+" marked but not assigned to either of you.";}
+ else if(spots===0){wn.style.display="block";wn.textContent="Nothing scoped yet. Set the loot as you find it.";}
+ else wn.style.display="none";
+}
+
+/* ---- weekly refresh ---- */
+function paintWeek(wk){
+ if(!wk)return;
+ if(wk.week_label)document.getElementById("wk-label").textContent=wk.week_label;
+ if(wk.headline)document.getElementById("wk-head").textContent=wk.headline;
+ if(wk.summary)document.getElementById("wk-sub").textContent=wk.summary;
+ function rows(list,pre,cls){
+  return (list||[]).map(function(it,i){
+   var tag=it.tag?'<span class="badge '+cls+'">'+esc(it.tag)+"</span>":"";
+   return '<div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="'+pre+i+
+    '"><span class="txt"><span class="t">'+esc(it.title||"")+tag+'</span>'+
+    (it.detail?'<span class="d">'+esc(it.detail)+"</span>":"")+"</span></label></div>";}).join("");
+ }
+ if(wk.bonuses&&wk.bonuses.length)document.getElementById("l-bonus").innerHTML=rows(wk.bonuses,"wb","b-week");
+ if(wk.claims&&wk.claims.length)document.getElementById("l-claim").innerHTML=rows(wk.claims,"wc","b-hot");
+ if(wk.discounts&&wk.discounts.length){
+  document.getElementById("l-shop").innerHTML='<div class="kv">'+wk.discounts.map(function(d){
+   return '<div class="k">'+esc(d.name||"")+'</div><div class="v">'+esc(d.price||"")+"</div>";}).join("")+
+   "</div>"+(wk.gun_van?'<p class="note">'+esc(wk.gun_van)+"</p>":"");
+ }
+ var st=document.getElementById("wk-stamp");
+ st.textContent=SH.stamp?"Updated "+new Date(SH.stamp).toLocaleString():"";
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+/* ---- previous weeks ---- */
+function histRows(list,cls){
+ return (list||[]).map(function(it){
+  var tag=it.tag?'<span class="badge '+cls+'">'+esc(it.tag)+"</span>":"";
+  return '<div class="task"><span class="txt"><span class="t">'+esc(it.title||"")+tag+"</span>"+
+   (it.detail?'<span class="d">'+esc(it.detail)+"</span>":"")+"</span></div>";}).join("");
+}
+function paintHistPicker(){
+ var sel=document.querySelector(".histpick");if(!sel)return;
+ var hist=(SH.history||[]).slice().reverse();
+ var view=document.getElementById("hist-view");
+ if(!hist.length){
+  sel.innerHTML='<option value="">Nothing saved yet — refreshes get archived here</option>';
+  if(view)view.innerHTML="";return;
+ }
+ sel.innerHTML='<option value="">Pick a week…</option>'+hist.map(function(h,i){
+  var wk=h.wk||{};
+  return '<option value="'+i+'">'+esc(wk.week_label||h.wkKey||"")+(wk.headline?" — "+esc(wk.headline):"")+"</option>";
+ }).join("");
+}
+function renderHist(idx){
+ var view=document.getElementById("hist-view");if(!view)return;
+ var hist=(SH.history||[]).slice().reverse();
+ var h=idx===""||idx===null?null:hist[+idx];
+ if(!h){view.innerHTML="";return;}
+ var wk=h.wk||{},out="";
+ if(wk.bonuses&&wk.bonuses.length)out+='<div class="card" style="margin-top:10px"><div class="head"><h3>Boosted payouts</h3></div>'+histRows(wk.bonuses,"b-week")+"</div>";
+ if(wk.claims&&wk.claims.length)out+='<div class="card" style="margin-top:10px"><div class="head"><h3>Claim before Thursday</h3></div>'+histRows(wk.claims,"b-hot")+"</div>";
+ if(wk.discounts&&wk.discounts.length)out+='<div class="card" style="margin-top:10px"><div class="head"><h3>Shopping</h3></div><div class="pad"><div class="kv">'+
+  wk.discounts.map(function(d){return '<div class="k">'+esc(d.name||"")+'</div><div class="v">'+esc(d.price||"")+"</div>";}).join("")+
+  "</div>"+(wk.gun_van?'<p class="note">'+esc(wk.gun_van)+"</p>":"")+"</div></div>";
+ view.innerHTML=out||'<p class="sub" style="margin-top:10px">Nothing saved for this week.</p>';
+}
+document.addEventListener("change",function(e){
+ if(e.target.classList&&e.target.classList.contains("histpick"))renderHist(e.target.value);
+});
+
+var btn=document.getElementById("refresh");
+var refreshing=false, autoTriedFor=null;
+function doRefresh(auto){
+ if(refreshing)return;
+ refreshing=true;
+ var stamp=document.getElementById("wk-stamp");
+ if(!auto){btn.disabled=true;btn.textContent="Searching…";}
+ else if(stamp)stamp.textContent="Checking for this week's update…";
+ fetch("https://api.anthropic.com/v1/messages",{
+  method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,
+   tools:[{type:"web_search_20250305",name:"web_search"}],
+   messages:[{role:"user",content:
+    "Search the web for the CURRENT GTA Online weekly update (GTA 5 Online, this week's bonuses). "+
+    "Today is "+new Date().toDateString()+". Return ONLY a JSON object, no markdown, no preamble, shaped exactly:\n"+
+    '{"week_label":"","headline":"","summary":"","bonuses":[{"title":"","detail":"","tag":""}],'+
+    '"claims":[{"title":"","detail":"","tag":""}],"discounts":[{"name":"","price":""}],"gun_van":""}\n'+
+    "bonuses = multiplier boosts (2X/3X etc). claims = podium vehicle, prize ride, weekly challenge, "+
+    "free items, priority file. discounts = discounted vehicles with prices. Keep each detail under 20 words. "+
+    "This crew has base GTA Online only, no GTA+ subscription — leave out any bonus, claim, discount or gun van "+
+    "item that requires GTA+ membership."}]})
+ }).then(function(r){return r.json();}).then(function(data){
+  var txt=(data.content||[]).filter(function(b){return b.type==="text";})
+   .map(function(b){return b.text;}).join("\n").replace(/```json|```/g,"").trim();
+  var m=txt.match(/\{[\s\S]*\}/);
+  if(!m)throw new Error("no json");
+  var wk=JSON.parse(m[0]);
+  if(SH.wk&&SH.wkKey&&SH.wkKey!==weekKey()){
+   SH.history=SH.history||[];
+   SH.history.push({wkKey:SH.wkKey,wk:SH.wk,stamp:SH.stamp});
+   if(SH.history.length>12)SH.history=SH.history.slice(-12);
+  }
+  SH.wk=wk;SH.stamp=Date.now();SH.wkKey=weekKey();
+  Object.keys(S.v).forEach(function(k){if(WEEKLY.test(k))delete S.v[k];});
+  paintWeek(wk);paintHistPicker();apply();saveShared();savePersonal();
+  refreshing=false;
+  if(!auto){btn.textContent="Refresh this week";btn.disabled=false;}
+ }).catch(function(){
+  refreshing=false;
+  if(!auto){
+   btn.textContent="Refresh this week";btn.disabled=false;
+   if(stamp)stamp.textContent="Refresh needs the board open in Claude with a connection. Nothing was changed.";
+  }else if(stamp&&!SH.wk){
+   stamp.textContent="Auto-update needs the board open in Claude. Tap Refresh this week once you're there.";
+  }else if(stamp){
+   stamp.textContent=(SH.stamp?"Updated "+new Date(SH.stamp).toLocaleString()+" — ":"")+"couldn't check for a newer week just now.";
+  }
+ });
+}
+btn.addEventListener("click",function(){doRefresh(false);});
+function maybeAutoRefresh(){
+ var wk=weekKey();
+ if(SH.wkKey===wk)return;
+ if(autoTriedFor===wk)return;
+ autoTriedFor=wk;
+ doRefresh(true);
+}
+
+/* ---- shared polling ---- */
+function pollShared(){
+ if(BACKEND!=="claude")return;
+ get(SKEY,true).then(function(raw){
+  if(!raw)return;
+  try{
+   var inc=JSON.parse(raw);
+   if(!inc||typeof inc.stamp!=="number"||inc.stamp<=SH.stamp)return;
+   if(document.activeElement&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
+   SH=inc;apply();board();
+  }catch(e){}
+ });
+}
+
+function status(){
+ var n=document.getElementById("stat");if(!n)return;
+ var m={claude:["Shared board active.","The Cayo board and week notes sync between both of you. Daily ticks stay private."],
+  local:["Saved on this device.","No syncing — open the board in Claude to share it with the other player."],
+  session:["Saving for this session only.","Open the file in Safari to keep ticks."],
+  memory:["Not saving.","Quick Look blocks storage. Share the file to Safari, or open the board in Claude."]}[BACKEND];
+ n.className="stat"+(BACKEND==="local"||BACKEND==="claude"?"":" warn");
+ n.innerHTML="<b>"+m[0]+"</b> "+m[1];
+}
+function empSummary(){
+ var el=document.getElementById("emp-summary");if(!el)return;
+ var owns=[].slice.call(document.querySelectorAll('#p-emp input[id^="own-"]'));
+ var n=owns.filter(function(c){return c.checked;}).length;
+ el.innerHTML="<b>"+n+" of "+owns.length+"</b> properties owned. Unowned properties, and any tasks that need them, are hidden from the daily run.";
+}
+function refreshAll(){progress();board();empSummary();}
+
+document.addEventListener("change",function(e){
+ if(e.target.id&&isShared(e.target.id))saveShared();else savePersonal();
+ refreshAll();});
+document.addEventListener("input",function(e){
+ if(e.target.tagName!=="TEXTAREA")return;
+ if(isShared(e.target.id))saveShared();else savePersonal();});
+
+function setOwnership(nodes,on){
+ nodes.forEach(function(n){
+  if(n.checked===on)return;
+  n.checked=on;n.dispatchEvent(new Event("change",{bubbles:true}));});
+}
+[].slice.call(document.querySelectorAll(".catbtn")).forEach(function(b){
+ b.addEventListener("click",function(e){
+  e.preventDefault();e.stopPropagation();
+  var cat=b.getAttribute("data-cat"),act=b.getAttribute("data-act");
+  var nodes=[].slice.call(document.querySelectorAll('.empcat[data-cat="'+cat+'"] input[id^="own-"]'));
+  setOwnership(nodes,act==="all");});});
+var ownAllBtn=document.getElementById("own-all"),ownNoneBtn=document.getElementById("own-none");
+if(ownAllBtn)ownAllBtn.addEventListener("click",function(){
+ setOwnership([].slice.call(document.querySelectorAll('#p-emp input[id^="own-"]')),true);});
+if(ownNoneBtn)ownNoneBtn.addEventListener("click",function(){
+ setOwnership([].slice.call(document.querySelectorAll('#p-emp input[id^="own-"]')),false);});
+
+document.getElementById("newday").addEventListener("click",function(){
+ [].slice.call(document.querySelectorAll("#p-day .tickbox")).forEach(function(c){c.checked=false;});
+ S.day="";rollover();savePersonal();refreshAll();});
+document.getElementById("cy-clear").addEventListener("click",function(){
+ fields().forEach(function(n){if(isShared(n.id))writeNode(n,n.type==="checkbox"?0:"");});
+ saveShared();refreshAll();});
+document.getElementById("bkshow").addEventListener("click",function(){
+ collect();document.getElementById("bkbox").value=JSON.stringify({p:S,s:SH});});
+document.getElementById("bkload").addEventListener("click",function(){
+ var b=document.getElementById("bkbox");
+ try{var o=JSON.parse(b.value);if(!o||!o.p)throw 0;
+  S=o.p;if(o.s)SH=o.s;apply();savePersonal();saveShared();refreshAll();b.value="Loaded.";}
+ catch(e){b.value="That is not valid setup text. Paste the whole line including the braces.";}});
+document.getElementById("bkreset").addEventListener("click",function(){
+ S={v:{},day:"",week:"",seen:0};SH={v:{},week:"",wk:null,stamp:Date.now()};
+ fields().forEach(function(n){
+  if(n.type==="checkbox"||n.type==="radio")
+   n.checked=(n.id.indexOf("own-")===0||n.id.indexOf("upg-")===0||n.id==="t-week"||n.id==="f-all");
+  else n.value="";});
+ savePersonal();saveShared();refreshAll();});
+
+document.addEventListener("visibilitychange",function(){
+ if(document.visibilityState!=="visible")return;
+ if(rollover()){apply();savePersonal();}
+ pollShared();refreshAll();maybeAutoRefresh();});
+setInterval(clock,1000);
+setInterval(pollShared,15000);
+setInterval(function(){if(rollover()){apply();savePersonal();refreshAll();}maybeAutoRefresh();},60000);
+
+get(PKEY,false).then(function(raw){
+ if(raw){try{var p=JSON.parse(raw);if(p&&p.v)S=p;}catch(e){}}
+ return get(SKEY,true);
+}).then(function(raw){
+ if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
+ rollover();apply();clock();refreshAll();status();maybeAutoRefresh();
+},function(){clock();refreshAll();status();});
+})();
+</script></body></html>
