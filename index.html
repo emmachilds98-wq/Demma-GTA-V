@@ -230,8 +230,8 @@ details.bk summary{cursor:pointer;font-size:13.5px;color:var(--muted);min-height
  padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left))}
 .openhelp b{color:var(--amber)}
 @media(max-width:430px){
- .tabs label{padding:11px 7px;font-size:13.5px}
- .tabs{gap:0}
+ .tabs{gap:0;overflow:hidden;justify-content:space-between}
+ .tabs label{flex:1;justify-content:center;padding:11px 2px;font-size:11.5px}
  .topin{padding-top:10px}
  .brand{font-size:21px}
  .unit{min-width:46px}
@@ -407,12 +407,12 @@ body:has(#own-kosatka:not(:checked)) .heist-cayo,body:has(#own-arcade:not(:check
 <div class="brandrow"><span class="brand">The Demma <em>Ops Centre</em></span>
 <span class="sub">GTA Online &middot; PC Legacy</span><span class="crew-switch js-only" role="group" aria-label="Private board profile"><button type="button" data-player="emma" aria-pressed="true">Emma</button><button type="button" data-player="dave" aria-pressed="false">Dave</button></span></div>
 <div class="tabs">
-<label class="tab-week" for="t-week">✦ This week</label>
-<label class="tab-day" for="t-day">✓ Daily</label>
-<label class="tab-jobs" for="t-jobs">✦ Jobs</label>
-<label class="tab-cayo" for="t-cayo">◈ Cayo</label>
-<label class="tab-heists" for="t-heists">✦ Heists</label>
-<label class="tab-emp" for="t-emp">⚙ Empire</label>
+<label class="tab-week" for="t-week">Week</label>
+<label class="tab-day" for="t-day">Daily</label>
+<label class="tab-jobs" for="t-jobs">Jobs</label>
+<label class="tab-cayo" for="t-cayo">Cayo</label>
+<label class="tab-heists" for="t-heists">Heists</label>
+<label class="tab-emp" for="t-emp">Empire</label>
 </div></div></header><main class="wrap">
 <section class="app-hero" aria-label="Emma and Dave's GTA Online operations board">
 <img src="assets/los-santos-ops-hero.jpg" alt="Night-time fictional coastal city and island route map">
