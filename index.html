@@ -71,7 +71,7 @@ body:has(#t-cayo:checked) .tab-cayo,body:has(#t-heists:checked) .tab-heists,body
 .task:has(.tickbox:checked) .badge{opacity:.3}
 .task:has(.skipbox:checked){opacity:.4}
 .task:has(.skipbox:checked) .t{text-decoration:line-through;text-decoration-style:dotted}
-body:has(#hidedone:checked) .task:has(.tickbox:checked){display:none}
+body:has(#hidedone:checked) .task:not(.quick-task):has(.tickbox:checked){display:none}
 body:has(#hideskip:checked) .task:has(.skipbox:checked){display:none}
 input[type=checkbox],input[type=radio]{-webkit-appearance:none;appearance:none;flex:0 0 auto;
  width:24px;height:24px;margin:0;border:1.5px solid var(--line2);border-radius:6px;background:var(--ink);
@@ -487,7 +487,7 @@ function setUpFocusedViews(){
   if(weekly&&heists){weekly.classList.add("heist-weekly");var wh=weekly.querySelector(".head h3"),wn=weekly.querySelector(".stage-n"),ws=weekly.querySelector(".pad .sub");if(wh)wh.textContent="Weekly crew resets";if(wn)wn.textContent="W";if(ws)ws.textContent="Once per weekly reset — save these for a planned two-player session.";heists.appendChild(weekly);}
   var dm=makeModal("daily-modal","Daily checklist","Pick what you are doing now. The full list only shows the businesses this profile owns."),body=dm.querySelector(".modal-body"),controls=day.querySelector(":scope > .bar");if(controls)body.appendChild(controls);body.appendChild(dailyGrid);day.appendChild(dm);
   function openDaily(id){var f=document.getElementById(id);if(f){f.checked=true;f.dispatchEvent(new Event("change",{bubbles:true}));}if(typeof dm.showModal==="function")dm.showModal();else dm.setAttribute("open","");}
-  var route=day.querySelector(".route");if(route){route.innerHTML='<div class="head"><h3>What are you doing?</h3><span class="sub">pick one</span></div><div class="quick-actions"><button type="button" class="btn go" data-daily-filter="f-collect">✓ Start session<small>Setup, safes and daily claims</small></button><button type="button" class="btn" data-daily-filter="f-restock">▣ Stock up<small>Only when supplies are low</small></button><button type="button" class="btn" data-daily-filter="f-sell">↗ Sell stock<small>Only when a business is ready</small></button><button type="button" class="btn" data-daily-filter="f-earn">✦ Active job<small>Make money while things tick</small></button></div>';[].slice.call(route.querySelectorAll("[data-daily-filter]")).forEach(function(b){b.addEventListener("click",function(){openDaily(b.getAttribute("data-daily-filter"));});});}
+  var route=day.querySelector(".route");if(route){route.innerHTML='<div class="head"><h3>Today\'s checklist</h3><span class="sub">tick as you go</span></div><div class="task quick-task"><label class="tick"><input type="checkbox" class="tickbox" id="q-start"><span class="txt"><span class="t">Start the session</span><span class="d">Setup, safes and daily claims.</span></span></label><button type="button" class="btn" data-daily-filter="f-collect">Open</button></div><div class="task quick-task"><label class="tick"><input type="checkbox" class="tickbox" id="q-stock"><span class="txt"><span class="t">Stock businesses</span><span class="d">Only if supplies are low.</span></span></label><button type="button" class="btn" data-daily-filter="f-restock">Open</button></div><div class="task quick-task"><label class="tick"><input type="checkbox" class="tickbox" id="q-sell"><span class="txt"><span class="t">Sell ready stock</span><span class="d">Only when a business is ready.</span></span></label><button type="button" class="btn" data-daily-filter="f-sell">Open</button></div><div class="task quick-task"><label class="tick"><input type="checkbox" class="tickbox" id="q-earn"><span class="txt"><span class="t">Choose an active job</span><span class="d">Make money while businesses tick.</span></span></label><button type="button" class="btn" data-daily-filter="f-earn">Open</button></div><div class="pad"><button type="button" class="btn go" data-daily-filter="f-all">Open full daily checklist</button></div>';[].slice.call(route.querySelectorAll("[data-daily-filter]")).forEach(function(b){b.addEventListener("click",function(){openDaily(b.getAttribute("data-daily-filter"));});});}
  }
  var cayo=document.getElementById("p-cayo"),loot=cayo&&cayo.querySelector(":scope > .card");
  if(cayo&&loot){var sm=makeModal("cayo-scope-modal","Scope the island","Pick only the loot stacks you actually found, then assign them to Emma or Dave.");sm.querySelector(".modal-body").appendChild(loot);cayo.appendChild(sm);var sb=document.createElement("button");sb.type="button";sb.className="btn js-only scope-launch";sb.textContent="⌕ Scope loot";var cb=cayo.querySelector(":scope > .bar");cb.insertBefore(sb,document.getElementById("cy-clear"));launchModal(sb,sm);
@@ -565,7 +565,7 @@ function saveShared(){clearTimeout(st);st=setTimeout(function(){
  collect();SH.stamp=Date.now();put(SKEY,JSON.stringify(SH),true).then(function(ok){CANSHARE=ok;status();});},350);}
 
 /* ---- cycles ---- */
-var DAILY=/^(s-|p-|nc-|r-|e-|sl-|o-)/, WEEKLY=/^(w[bc]\d|w-|r\d)/;
+var DAILY=/^(s-|p-|nc-|r-|e-|sl-|o-|q-)/, WEEKLY=/^(w[bc]\d|w-|r\d)/;
 function dayKey(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
 function lonOff(d){
  try{var p=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/London",hour12:false,year:"numeric",
@@ -602,15 +602,13 @@ function clock(){
 
 /* ---- daily progress ---- */
 function progress(){
- var rows=[].slice.call(document.querySelectorAll("#p-day .task")).filter(function(r){return !!r.querySelector(".tickbox");}),t=0,d=0;
+ var quick=[].slice.call(document.querySelectorAll("#p-day .quick-task")),rows=quick.length?quick:[].slice.call(document.querySelectorAll("#p-day .task")).filter(function(r){return !!r.querySelector(".tickbox");}),t=0,d=0;
  rows.forEach(function(r){
-  if(r.querySelector(".skipbox").checked)return;
-  var tick=r.querySelector(".tickbox");
-  if(getComputedStyle(r).display==="none"&&!tick.checked)return;
-  t++;if(tick.checked)d++;});
+  var skip=r.querySelector(".skipbox"),tick=r.querySelector(".tickbox");if(skip&&skip.checked)return;
+  if(getComputedStyle(r).display==="none"&&!tick.checked)return;t++;if(tick.checked)d++;});
  var pct=t?Math.round(d/t*100):0;
  document.getElementById("progbar").style.width=pct+"%";
- document.getElementById("proglbl").textContent=d+" of "+t+" done, skipped lines excluded";
+ document.getElementById("proglbl").textContent=d+" of "+t+" daily actions done";
 }
 
 /* ---- cayo target board ---- */
