@@ -36,6 +36,7 @@ header.top{position:sticky;top:0;z-index:40;background:rgba(14,17,22,.97);
 .crew-switch{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
 .crew-switch button{-webkit-appearance:none;appearance:none;border:0;border-radius:999px;background:transparent;color:var(--muted);padding:5px 10px;min-height:30px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
 .crew-switch button[aria-pressed="true"]{background:var(--text);color:var(--ink)}
+.crew-settings{margin-left:2px;padding:5px 8px!important;font-size:17px!important;line-height:1;border-left:1px solid var(--line)!important;border-radius:0 999px 999px 0!important}.crew-settings:active,body:has(#t-emp:checked) .crew-settings{color:var(--hot);background:rgba(255,63,127,.12)!important}
 .tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tabs label{flex:0 0 auto;color:var(--muted);font-weight:600;font-size:14.5px;padding:11px 14px;
@@ -408,14 +409,13 @@ body:has(#own-kosatka:not(:checked)) .heist-cayo,body:has(#own-arcade:not(:check
 <div class="state"><input type="radio" name="tab" id="t-week" checked><input type="radio" name="tab" id="t-day"><input type="radio" name="tab" id="t-jobs"><input type="radio" name="tab" id="t-cayo"><input type="radio" name="tab" id="t-heists"><input type="radio" name="tab" id="t-emp"></div>
 <header class="top"><div class="topin">
 <div class="brandrow"><span class="brand">The Demma <em>Ops Centre</em></span>
-<span class="sub">GTA Online &middot; PC Legacy</span><span class="crew-switch js-only" role="group" aria-label="Private board profile"><button type="button" data-player="emma" aria-pressed="true">Emma</button><button type="button" data-player="dave" aria-pressed="false">Dave</button></span></div>
+<span class="sub">GTA Online &middot; PC Legacy</span><span class="crew-switch js-only" role="group" aria-label="Private board profile"><button type="button" data-player="emma" aria-pressed="true">Emma</button><button type="button" data-player="dave" aria-pressed="false">Dave</button><button type="button" class="crew-settings" data-open-tab="emp" aria-label="Open settings" title="Settings">⚙</button></span></div>
 <div class="tabs">
 <label class="tab-week" for="t-week">Week</label>
 <label class="tab-day" for="t-day">Daily</label>
 <label class="tab-jobs" for="t-jobs">Jobs</label>
 <label class="tab-cayo" for="t-cayo">Cayo</label>
 <label class="tab-heists" for="t-heists">Heists</label>
-<label class="tab-emp" for="t-emp">Settings</label>
 </div></div></header><main class="wrap">
 <section class="app-hero" aria-label="Emma and Dave's GTA Online operations board">
 <img src="assets/los-santos-ops-hero.jpg" alt="Night-time fictional coastal city and island route map">
