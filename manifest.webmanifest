@@ -1,0 +1,9 @@
+{
+  "name": "Emma & Dave's Los Santos Ops Board",
+  "short_name": "Ops Board",
+  "description": "A two-player GTA V Legacy operations checklist for PC.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0E1116",
+  "theme_color": "#0E1116"
+}
