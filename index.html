@@ -256,6 +256,7 @@ body:not(:has(#t-week:checked)) .app-hero{display:none}
 #emp-modal .empcat,#emp-modal .ownsum{display:block!important}#emp-modal .bar{margin:12px 0}
 #cayo-scope-modal .card{margin-top:12px}.scope-launch{margin-left:auto}
 .quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px 15px}.quick-actions .btn{min-height:58px;text-align:left;line-height:1.2}.quick-actions .btn small{display:block;margin-top:4px;color:var(--muted);font-weight:400}
+.heist-tick{margin-left:auto;display:inline-flex;gap:7px;align-items:center;color:var(--muted);font-size:12px;font-weight:600}.heist-tick input{width:20px;height:20px}.heist-tick input:checked+span{color:var(--cash)}
 @media(max-width:430px){.ops-modal{width:calc(100vw - 14px);max-height:91vh}.modal-body{padding:0 8px 10px}.modal-head{padding:11px 12px}}
 @supports not selector(:has(*)){
  .panel{display:block!important;margin-bottom:26px}.tabs{display:none}
@@ -500,6 +501,13 @@ function setUpFocusedViews(){
  if(empire&&cog){var em=makeModal("emp-modal","Empire setup","Choose what this profile owns. The daily route immediately hides anything switched off.");var eb=em.querySelector(".modal-body");[empire.querySelector("#emp-summary"),empire.querySelector("#own-all").parentNode].concat([].slice.call(empire.querySelectorAll(":scope > .empcat"))).forEach(function(n){n.open=false;eb.appendChild(n);});empire.appendChild(em);cog.textContent="⚙ Setup";cog.setAttribute("aria-label","Open Empire setup");launchModal(cog,em);}
 }
 setUpFocusedViews();
+function addFinishingTouches(){
+ var week=document.getElementById("p-week"),shop=document.getElementById("l-shop"),shopCard=shop&&shop.closest(".card"),notes=document.getElementById("cy-weeknotes"),notesCard=notes&&notes.closest(".card");
+ if(week&&(shopCard||notesCard)){var wm=makeModal("week-extras-modal","This week — extras","Discounts, Gun Van notes and the shared plan are kept here so the main weekly page stays focused.");var wb=wm.querySelector(".modal-body");if(shopCard)wb.appendChild(shopCard);if(notesCard)wb.appendChild(notesCard);week.appendChild(wm);var wbtn=document.createElement("button");wbtn.type="button";wbtn.className="btn js-only";wbtn.textContent="☰ Extras";week.querySelector(":scope > .bar").appendChild(wbtn);launchModal(wbtn,wm);}
+ var heists=document.getElementById("p-heists"),hero=heists&&heists.querySelector(":scope > .hero"),items=[["heist-cayo","hr-cayo","Cayo planned"],["heist-casino","hr-casino","Casino planned"],["heist-doomsday","hr-doomsday","Doomsday planned"],["heist-cluckin","hr-cluckin","Cluckin planned"],["heist-kortz","hr-kortz","Kortz planned"]];
+ if(heists){items.forEach(function(x){var c=heists.querySelector("."+x[0]),head=c&&c.querySelector(".head");if(!head||document.getElementById(x[1]))return;var l=document.createElement("label");l.className="heist-tick";l.innerHTML='<input type="checkbox" class="tickbox" id="'+x[1]+'"><span>'+x[2]+'</span>';head.appendChild(l);});if(hero){var clear=document.createElement("button");clear.type="button";clear.className="btn js-only";clear.textContent="Clear heist ticks";clear.style.marginTop="12px";clear.onclick=function(){[].slice.call(heists.querySelectorAll("[id^=hr-]")).forEach(function(n){if(n.checked){n.checked=false;n.dispatchEvent(new Event("change",{bubbles:true}));}});};hero.appendChild(clear);}}
+}
+addFinishingTouches();
 [].slice.call(document.querySelectorAll("[data-open-tab]")).forEach(function(b){b.addEventListener("click",function(){var tab=document.getElementById("t-"+b.getAttribute("data-open-tab"));if(tab){tab.checked=true;tab.dispatchEvent(new Event("change",{bubbles:true}));window.scrollTo({top:0,behavior:"smooth"});}});});
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("service-worker.js").catch(function(){});});}
 var PKEY_BASE="gta-ops-personal-v4-", PKEY="", SKEY="gta-ops-shared-v3", PLAYER_KEY="gta-ops-active-player-v1", activePlayer="emma";
