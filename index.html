@@ -782,11 +782,11 @@ addFinishingTouches();
   var row=document.createElement("div");row.className="cdrow";
   row.innerHTML='<button type="button" class="btn cd-start">&#9201; Finale done</button>'+
    '<span class="cd-out"></span>'+
-   (h.solo!==h.crew?'<label class="chip"><input type="checkbox" class="cd-solobox" id="hcd-solo-'+h.key+'"><span>Solo</span></label>':"")+
+   (h.solo!==h.crew?'<label class="chip"><input type="checkbox" class="cd-solobox" id="cy-hcd-solo-'+h.key+'"><span>Solo</span></label>':"")+
    '<button type="button" class="btn cd-clear" hidden>Reset</button>'+
-   '<input type="hidden" id="hcd-'+h.key+'">';
+   '<input type="hidden" id="cy-hcd-'+h.key+'">';
   host.appendChild(row);
-  var r={h:h,out:row.querySelector(".cd-out"),store:row.querySelector("#hcd-"+h.key),
+  var r={h:h,out:row.querySelector(".cd-out"),store:row.querySelector("#cy-hcd-"+h.key),
          solo:row.querySelector(".cd-solobox"),clear:row.querySelector(".cd-clear")};
   row.querySelector(".cd-start").addEventListener("click",function(){stamp(r,Date.now());});
   r.clear.addEventListener("click",function(){stamp(r,"");});
