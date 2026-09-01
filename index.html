@@ -37,7 +37,7 @@ var SWATCHES=[
 function hsl(h,s,l){return "hsl("+h+" "+s+"% "+l+"%)";}
 function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
 function load(){
- var d={mode:"auto",accent:"pink",bright:50,depth:50};
+ var d={mode:"dark",accent:"pink",bright:50,depth:50};
  try{
   var raw=localStorage.getItem(KEY);
   if(raw){var p=JSON.parse(raw);for(var k in d)if(p[k]!==undefined)d[k]=p[k];}
@@ -389,7 +389,7 @@ details.bk summary{cursor:pointer;font-size:13.5px;color:var(--muted);min-height
 .app-hero{position:relative;isolation:isolate;min-height:218px;margin:16px 0 4px;border:1px solid var(--line2);border-radius:var(--r);overflow:hidden;background:#07101d}
 .app-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:-2;opacity:.86}
 .app-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,12,21,.97) 0%,rgba(7,12,21,.75) 43%,rgba(7,12,21,.14) 100%),linear-gradient(0deg,rgba(7,12,21,.55),transparent 56%)}
-.app-hero .copy{max-width:410px;padding:22px 20px 18px}.eyebrow{margin:0 0 7px;color:var(--cash);font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.app-hero h1{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:37px;line-height:.86;letter-spacing:.025em;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,.26)}.app-hero h1 em{font-style:normal;color:var(--accent)}.app-hero p{margin:10px 0 0;color:#c5cedb;font-size:13.5px;line-height:1.45}.crew{display:inline-flex;gap:7px;align-items:center;margin-top:15px;padding:6px 9px;border:1px solid rgba(230,233,238,.2);border-radius:999px;background:rgba(14,17,22,.55);font-size:12px;color:var(--text)}.crew i{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 3px rgba(95,212,138,.15)}
+.app-hero .copy{max-width:410px;padding:22px 20px 18px}.eyebrow{margin:0 0 7px;color:var(--cash);font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.app-hero h1{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:37px;line-height:.86;letter-spacing:.025em;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,.26);color:#F3F0EA}.app-hero h1 em{font-style:normal;color:var(--accent)}.app-hero p{margin:10px 0 0;color:#c5cedb;font-size:13.5px;line-height:1.45}.crew{display:inline-flex;gap:7px;align-items:center;margin-top:15px;padding:6px 9px;border:1px solid rgba(230,233,238,.2);border-radius:999px;background:rgba(14,17,22,.55);font-size:12px;color:#F3F0EA}.crew i{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 3px rgba(95,212,138,.15)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--line2)}
 .dot.on{background:var(--cash)}
 /* Focused views keep the board useful mid-session: the quick view stays short; detailed checklists and ownership live in an intentional pop-up. */
@@ -613,7 +613,7 @@ body:has(#own-arcade:not(:checked)) .heist-casino,body:has(#own-facility:not(:ch
 </section>
 <section class="panel" id="p-emp" data-name="Settings"><div class="bar emp-control"><div><h2>Empire</h2><span class="sub">Your crew control centre</span></div><button class="btn cog" id="emp-cog" aria-expanded="false">⚙️</button></div>
 <div class="card settings-appearance"><div class="head"><h3>Appearance</h3><span class="sub">Saved on this phone only — each of you can run your own look.</span></div><div class="pad">
-<div class="setrow"><h4>Mode</h4><p class="sethint">Auto follows your iPhone's system setting.</p><div class="segrow" role="radiogroup" aria-label="Appearance mode"><input type="radio" name="apmode" id="ap-auto" class="apmode" value="auto" checked><label for="ap-auto">Auto</label><input type="radio" name="apmode" id="ap-light" class="apmode" value="light"><label for="ap-light">Light</label><input type="radio" name="apmode" id="ap-dark" class="apmode" value="dark"><label for="ap-dark">Dark</label></div></div>
+<div class="setrow"><h4>Mode</h4><p class="sethint">Auto follows your iPhone's system setting.</p><div class="segrow" role="radiogroup" aria-label="Appearance mode"><input type="radio" name="apmode" id="ap-auto" class="apmode" value="auto"><label for="ap-auto">Auto</label><input type="radio" name="apmode" id="ap-light" class="apmode" value="light"><label for="ap-light">Light</label><input type="radio" name="apmode" id="ap-dark" class="apmode" value="dark" checked><label for="ap-dark">Dark</label></div></div>
 <div class="setrow"><h4>Accent colour</h4><p class="sethint">Colours the tabs, badges and buttons everywhere.</p><div class="swatches" id="swatches" role="radiogroup" aria-label="Accent colour"></div></div>
 <div class="setrow"><h4>Brightness</h4><input type="range" min="0" max="100" value="50" class="slide" id="app-bright"><div class="sliderow"><span>Dim</span><span>Bright</span></div></div>
 <div class="setrow"><h4>Depth</h4><input type="range" min="0" max="100" value="50" class="slide" id="app-depth"><div class="sliderow"><span>Flat</span><span>Deep</span></div></div>
@@ -1119,8 +1119,8 @@ loadPersonalProfile().then(function(raw){
  if(depthEl){depthEl.value=cfg.depth;depthEl.addEventListener("input",function(){t.set({depth:+depthEl.value});});}
  var resetEl=document.getElementById("theme-reset");
  if(resetEl)resetEl.addEventListener("click",function(){
-  t.set({mode:"auto",accent:"pink",bright:50,depth:50});
-  var a=document.getElementById("ap-auto");if(a)a.checked=true;
+  t.set({mode:"dark",accent:"pink",bright:50,depth:50});
+  var a=document.getElementById("ap-dark");if(a)a.checked=true;
   [].slice.call(swWrap.querySelectorAll('input[name="accent"]')).forEach(function(i){i.checked=(i.value==="pink");});
   if(brightEl)brightEl.value=50;
   if(depthEl)depthEl.value=50;
