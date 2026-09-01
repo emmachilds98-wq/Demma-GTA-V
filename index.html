@@ -629,7 +629,7 @@ body:has(#own-arcade:not(:checked)) .heist-casino,body:has(#own-facility:not(:ch
 <p class="stat js-only" id="stat"></p>
 <p class="stat nojs-only"><b>Quick Look is read-only.</b> Open the board in a full browser, then add or install it so changes save.</p>
 <details class="bk js-only"><summary>Back up or move your setup</summary>
-<p class="sub" style="margin:8px 0 0">Works between iPhone and PC. Tap Share or Copy, send the plan to Dave or Emma, then paste it here on the other device and tap Load.</p>
+<p class="sub" style="margin:8px 0 0">Covers both profiles, the shared Cayo board and your colour settings — not just what's loaded right now. Works between iPhone and PC. Tap Share or Copy, keep it somewhere safe (Notes, an email to yourself), and Load it back any time — after clearing site data, moving devices, or just as a just-in-case.</p>
 <textarea class="notes" id="bkbox" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
 <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
 <button class="btn" id="bkcopy">Copy setup</button>
@@ -1042,7 +1042,13 @@ var newDay=document.getElementById("newday");if(newDay)newDay.addEventListener("
 document.getElementById("cy-clear").addEventListener("click",function(){
  fields().forEach(function(n){if(isShared(n.id))writeNode(n,n.type==="checkbox"?0:"");});
  saveShared();refreshAll();});
-function exportSetup(){collect();return JSON.stringify({p:S,s:SH});}
+function exportSetup(){
+ collect();
+ var other=activePlayer==="dave"?"emma":"dave",ls=probe("l"),otherRaw=null,appearance=null;
+ try{otherRaw=ls&&ls.getItem(PKEY_BASE+other);}catch(e){}
+ try{appearance=localStorage.getItem("gta-ops-appearance-v1");}catch(e){}
+ return JSON.stringify({player:activePlayer,p:S,s:SH,other:{profile:other,raw:otherRaw},appearance:appearance});
+}
 function showSetup(){var b=document.getElementById("bkbox");b.value=exportSetup();b.focus();b.select();return b.value;}
 function flashButton(b,label){var old=b.textContent;b.textContent=label;setTimeout(function(){b.textContent=old;},1400);}
 document.getElementById("bkcopy").addEventListener("click",function(){
@@ -1059,7 +1065,12 @@ document.getElementById("bkshare").addEventListener("click",function(){
 document.getElementById("bkload").addEventListener("click",function(){
  var b=document.getElementById("bkbox");
  try{var o=JSON.parse(b.value);if(!o||!o.p)throw 0;
-  S=o.p;if(o.s)SH=o.s;apply();savePersonal();saveShared();refreshAll();b.value="Loaded.";}
+  if(o.other&&o.other.profile&&o.other.raw){try{var ls0=probe("l");if(ls0)ls0.setItem(PKEY_BASE+o.other.profile,o.other.raw);}catch(e){}}
+  if(o.player&&(o.player==="dave"||o.player==="emma")&&o.player!==activePlayer){
+   activePlayer=o.player;setPersonalKey();var ls1=probe("l");if(ls1)ls1.setItem(PLAYER_KEY,activePlayer);paintProfile();}
+  S=o.p;if(o.s)SH=o.s;
+  if(o.appearance){try{var ap=JSON.parse(o.appearance);if(window.OpsTheme)window.OpsTheme.set(ap);}catch(e){}}
+  apply();savePersonal();saveShared();refreshAll();b.value="Loaded — both profiles and colours restored.";}
  catch(e){b.value="That is not valid setup text. Paste the whole line including the braces.";}});
 document.getElementById("bkreset").addEventListener("click",function(){
  S={v:{},day:"",week:"",seen:0};SH={v:{},week:"",wk:null,stamp:Date.now()};
