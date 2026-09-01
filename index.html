@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E1116">
+<meta name="theme-color" content="#0E1116" id="meta-theme">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ops Board">
@@ -10,10 +10,111 @@
 <title>Los Santos Ops Board</title>
 <link rel="apple-touch-icon" sizes="180x180" href="assets/demma-ops-icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
+<script>
+(function(){
+"use strict";
+var KEY="gta-ops-appearance-v1";
+var SWATCHES=[
+ {id:"pink",name:"Hot Pink",dark:"#FF3F7F",light:"#E11D48"},
+ {id:"rose",name:"Rose",dark:"#FB7185",light:"#E11D48"},
+ {id:"red",name:"Red",dark:"#F87171",light:"#DC2626"},
+ {id:"orange",name:"Orange",dark:"#FB923C",light:"#EA580C"},
+ {id:"amber",name:"Amber",dark:"#FBBF24",light:"#D97706"},
+ {id:"yellow",name:"Yellow",dark:"#FACC15",light:"#CA8A04"},
+ {id:"lime",name:"Lime",dark:"#A3E635",light:"#65A30D"},
+ {id:"green",name:"Green",dark:"#4ADE80",light:"#16A34A"},
+ {id:"emerald",name:"Emerald",dark:"#34D399",light:"#059669"},
+ {id:"teal",name:"Teal",dark:"#2DD4BF",light:"#0D9488"},
+ {id:"cyan",name:"Cyan",dark:"#22D3EE",light:"#0891B2"},
+ {id:"sky",name:"Sky",dark:"#38BDF8",light:"#0284C7"},
+ {id:"blue",name:"Blue",dark:"#60A5FA",light:"#2563EB"},
+ {id:"indigo",name:"Indigo",dark:"#818CF8",light:"#4F46E5"},
+ {id:"violet",name:"Violet",dark:"#A78BFA",light:"#7C3AED"},
+ {id:"purple",name:"Purple",dark:"#C084FC",light:"#9333EA"},
+ {id:"fuchsia",name:"Fuchsia",dark:"#E879F9",light:"#C026D3"},
+ {id:"slate",name:"Slate",dark:"#94A3B8",light:"#475569"}
+];
+function hsl(h,s,l){return "hsl("+h+" "+s+"% "+l+"%)";}
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+function load(){
+ var d={mode:"auto",accent:"pink",bright:50,depth:50};
+ try{
+  var raw=localStorage.getItem(KEY);
+  if(raw){var p=JSON.parse(raw);for(var k in d)if(p[k]!==undefined)d[k]=p[k];}
+ }catch(e){}
+ return d;
+}
+function save(cfg){try{localStorage.setItem(KEY,JSON.stringify(cfg));}catch(e){}}
+function resolvedMode(cfg){
+ if(cfg.mode==="light"||cfg.mode==="dark")return cfg.mode;
+ try{return window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}
+ catch(e){return "dark";}
+}
+function palette(mode,bright,depth){
+ var hue=222,sat=16;
+ if(mode==="dark"){
+  var Link=4+(bright/100)*10, step=3+(depth/100)*7;
+  var Lpanel=Link+step, Lpanel2=Lpanel+step*.6, Lline=Lpanel2+step*.55, Lline2=Lline+step*.9;
+  return {
+   ink:hsl(hue,sat,clamp(Link,3,20)), panel:hsl(hue,sat,clamp(Lpanel,4,30)),
+   panel2:hsl(hue,sat,clamp(Lpanel2,4,34)), line:hsl(hue,sat-2,clamp(Lline,6,40)),
+   line2:hsl(hue,sat-2,clamp(Lline2,8,46)),
+   text:hsl(hue,14,clamp(90+(bright/100)*4,88,96)), muted:hsl(hue,10,clamp(50+bright*0.12,48,64)),
+   shadowA:clamp(.18+(depth/100)*.24,.14,.46)
+  };
+ }
+ var Link=90+(bright/100)*9, step=2+(depth/100)*6;
+ var Lpanel=clamp(Link+step,90,100), Lpanel2=clamp(Lpanel-step*.8,84,100),
+     Lline=clamp(Lpanel2-step*1.3,68,96), Lline2=clamp(Lline-step*1.1,52,92);
+ return {
+  ink:hsl(42,24,clamp(Link,88,99)), panel:hsl(42,16,Lpanel),
+  panel2:hsl(42,22,Lpanel2), line:hsl(38,22,Lline), line2:hsl(36,20,Lline2),
+  text:hsl(30,20,clamp(14-(bright/100)*4,9,15)), muted:hsl(30,14,clamp(46-(bright/100)*6,36,48)),
+  shadowA:clamp(.06+(depth/100)*.1,.04,.18)
+ };
+}
+function apply(cfg){
+ var mode=resolvedMode(cfg);
+ var root=document.documentElement;
+ root.setAttribute("data-theme",mode);
+ var sw=null;
+ for(var i=0;i<SWATCHES.length;i++)if(SWATCHES[i].id===cfg.accent){sw=SWATCHES[i];break;}
+ if(!sw)sw=SWATCHES[0];
+ var pal=palette(mode,cfg.bright,cfg.depth);
+ var s=root.style;
+ s.setProperty("--ink",pal.ink);s.setProperty("--panel",pal.panel);
+ s.setProperty("--panel2",pal.panel2);s.setProperty("--line",pal.line);
+ s.setProperty("--line2",pal.line2);s.setProperty("--text",pal.text);
+ s.setProperty("--muted",pal.muted);s.setProperty("--accent",sw[mode]);
+ s.setProperty("--shadow","0 10px 24px rgba(0,0,0,"+pal.shadowA+")");
+ s.setProperty("color-scheme",mode);
+ var mt=document.getElementById("meta-theme");
+ if(mt)mt.setAttribute("content",pal.ink);
+}
+var cfg=load();
+apply(cfg);
+window.OpsTheme={swatches:SWATCHES,load:load,save:save,apply:apply,get:function(){return cfg;},
+ set:function(patch){for(var k in patch)cfg[k]=patch[k];save(cfg);apply(cfg);}};
+try{
+ window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",function(){
+  if(cfg.mode==="auto")apply(cfg);
+ });
+}catch(e){}
+})();
+</script>
 <style>
 :root{--ink:#0E1116;--panel:#151B24;--panel2:#1C2432;--line:#28303D;--line2:#3A4557;
- --text:#E6E9EE;--muted:#8C97A8;--cash:#5FD48A;--hot:#FF3F7F;--amber:#FFB43D;
- --sky:#5AB6FF;--dave:#5AB6FF;--emma:#C88BFF;--r:10px}
+ --text:#E6E9EE;--muted:#8C97A8;--cash:#5FD48A;--accent:#FF3F7F;--amber:#FFB43D;
+ --sky:#5AB6FF;--dave:#5AB6FF;--emma:#C88BFF;--r:10px;
+ --shadow:0 10px 24px rgba(0,0,0,.30);color-scheme:dark}
+:root[data-theme="light"]{--ink:#F3F0E9;--panel:#FFFFFF;--panel2:#F8F5EF;--line:#E6E0D3;
+ --line2:#D2C9B6;--text:#211C14;--muted:#736B58;--shadow:0 10px 22px rgba(90,68,30,.12);
+ color-scheme:light}
+@media(prefers-color-scheme:light){
+ :root:not([data-theme="dark"]):not([data-theme="light"]){--ink:#F3F0E9;--panel:#FFFFFF;
+  --panel2:#F8F5EF;--line:#E6E0D3;--line2:#D2C9B6;--text:#211C14;--muted:#736B58;
+  --shadow:0 10px 22px rgba(90,68,30,.12);color-scheme:light}
+}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
 body{margin:0;background:var(--ink);color:var(--text);
@@ -26,17 +127,17 @@ button,input,textarea,select{font-family:inherit}
 .state{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .wrap{max-width:1080px;margin:0 auto;
  padding:0 max(16px,env(safe-area-inset-left)) calc(90px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right))}
-header.top{position:sticky;top:0;z-index:40;background:rgba(14,17,22,.97);
+header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ink) 97%,transparent);
  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
 .topin{max-width:1080px;margin:0 auto;padding:12px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
-.brand{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:25px;line-height:.92;letter-spacing:.035em;text-transform:uppercase;text-shadow:2px 2px 0 rgba(0,0,0,.26)}.brand em{font-style:normal;color:var(--hot)}
+.brand{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:25px;line-height:.92;letter-spacing:.035em;text-transform:uppercase;text-shadow:2px 2px 0 rgba(0,0,0,.26)}.brand em{font-style:normal;color:var(--accent)}
 .sub{color:var(--muted);font-size:12.5px}
 .brandrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .crew-switch{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
 .crew-switch button{-webkit-appearance:none;appearance:none;border:0;border-radius:999px;background:transparent;color:var(--muted);padding:5px 10px;min-height:30px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation}
 .crew-switch button[aria-pressed="true"]{background:var(--text);color:var(--ink)}
-.crew-settings{margin-left:2px;padding:5px 8px!important;font-size:17px!important;line-height:1;border-left:1px solid var(--line)!important;border-radius:0 999px 999px 0!important}.crew-settings:active,body:has(#t-emp:checked) .crew-settings{color:var(--hot);background:rgba(255,63,127,.12)!important}
+.crew-settings{margin-left:2px;padding:5px 8px!important;font-size:17px!important;line-height:1;border-left:1px solid var(--line)!important;border-radius:0 999px 999px 0!important}.crew-settings:active,body:has(#t-emp:checked) .crew-settings{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)!important}
 .tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tabs label{flex:0 0 auto;color:var(--muted);font-weight:600;font-size:14.5px;padding:11px 14px;
@@ -47,19 +148,20 @@ body:has(#t-week:checked) #p-week,body:has(#t-day:checked) #p-day,
 body:has(#t-jobs:checked) #p-jobs,body:has(#t-cayo:checked) #p-cayo,body:has(#t-heists:checked) #p-heists,body:has(#t-emp:checked) #p-emp{display:block}
 body:has(#t-week:checked) .tab-week,body:has(#t-day:checked) .tab-day,
 body:has(#t-jobs:checked) .tab-jobs,body:has(#t-cayo:checked) .tab-cayo,body:has(#t-heists:checked) .tab-heists,body:has(#t-emp:checked) .tab-emp
- {color:var(--text);border-bottom-color:var(--hot);background:var(--panel)}
+ {color:var(--text);border-bottom-color:var(--accent);background:var(--panel)}
 .grid{display:grid;gap:12px;margin-top:14px}
 .grid.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
-.card{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);overflow:hidden}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);overflow:hidden;
+ box-shadow:var(--shadow)}
 .card>.head{display:flex;align-items:baseline;gap:9px;padding:12px 15px;
  border-bottom:1px solid var(--line);background:var(--panel2);flex-wrap:wrap}
 .card>.head h3{font-size:16px}
 .card>.head .mins{margin-left:auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .card .pad{padding:14px 15px}
 .stage-n{display:inline-grid;place-content:center;width:22px;height:22px;border-radius:6px;
- background:var(--hot);color:#0E1116;font-size:12.5px;font-weight:800;flex:0 0 auto}
+ background:var(--accent);color:#0E1116;font-size:12.5px;font-weight:800;flex:0 0 auto}
 .task{display:flex;gap:12px;padding:11px 13px 11px 15px;min-height:52px;align-items:flex-start;
- border-bottom:1px solid rgba(40,48,61,.55)}
+ border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
 .task:last-child{border-bottom:0}
 .task .txt{flex:1;min-width:0;display:block}
 .task .t{font-size:14.5px;font-weight:500;display:block}
@@ -89,12 +191,12 @@ input:focus-visible,select:focus-visible{outline:2px solid var(--sky);outline-of
 .task:has(.skipbox:checked) .skip{color:var(--amber);border-color:var(--amber)}
 .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:4px;
  margin-left:7px;white-space:nowrap;vertical-align:1px}
-.b-bonus{background:rgba(95,212,138,.16);color:var(--cash);border:1px solid rgba(95,212,138,.35)}
-.payout{display:inline-flex;align-items:center;margin-left:auto;padding:3px 7px;border:1px solid rgba(95,212,138,.35);border-radius:999px;background:rgba(95,212,138,.11);color:var(--cash);font-size:11px;font-weight:700;white-space:nowrap}.task .payout{margin-left:7px;vertical-align:1px}.setup-label{display:block;color:var(--muted);font-size:12px;font-weight:700}.setup-select{margin-top:5px;font-size:13px;min-height:38px}
-.b-week{background:rgba(90,182,255,.14);color:var(--sky);border:1px solid rgba(90,182,255,.32)}
-.b-hot{background:rgba(255,63,127,.16);color:var(--hot);border:1px solid rgba(255,63,127,.35)}
-.b-time{background:rgba(255,180,61,.14);color:var(--amber);border:1px solid rgba(255,180,61,.32)}
-.b-dead{background:rgba(140,151,168,.1);color:var(--muted);border:1px solid var(--line2)}
+.b-bonus{background:color-mix(in srgb,var(--cash) 16%,transparent);color:var(--cash);border:1px solid color-mix(in srgb,var(--cash) 35%,transparent)}
+.payout{display:inline-flex;align-items:center;margin-left:auto;padding:3px 7px;border:1px solid color-mix(in srgb,var(--cash) 35%,transparent);border-radius:999px;background:color-mix(in srgb,var(--cash) 11%,transparent);color:var(--cash);font-size:11px;font-weight:700;white-space:nowrap}.task .payout{margin-left:7px;vertical-align:1px}.setup-label{display:block;color:var(--muted);font-size:12px;font-weight:700}.setup-select{margin-top:5px;font-size:13px;min-height:38px}
+.b-week{background:color-mix(in srgb,var(--sky) 14%,transparent);color:var(--sky);border:1px solid color-mix(in srgb,var(--sky) 32%,transparent)}
+.b-hot{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 38%,transparent)}
+.b-time{background:color-mix(in srgb,var(--amber) 14%,transparent);color:var(--amber);border:1px solid color-mix(in srgb,var(--amber) 32%,transparent)}
+.b-dead{background:color-mix(in srgb,var(--muted) 10%,transparent);color:var(--muted);border:1px solid var(--line2)}
 .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 2px}
 .chip{background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:13.5px;
  font-weight:500;padding:9px 14px;border-radius:999px;cursor:pointer;display:inline-flex;
@@ -161,7 +263,7 @@ select.who-e{border-color:var(--emma);color:var(--emma);font-weight:600}
 
 /* ---------- target board ---------- */
 .board{margin:16px 0 4px;border:1px solid var(--line2);border-radius:var(--r);
- background:radial-gradient(130% 150% at 0% 0%,rgba(95,212,138,.12),transparent 60%),var(--panel);
+ background:radial-gradient(130% 150% at 0% 0%,color-mix(in srgb,var(--cash) 12%,transparent),transparent 60%),var(--panel);
  overflow:hidden}
 .board .bhead{display:flex;align-items:flex-end;gap:14px;padding:16px 18px;flex-wrap:wrap}
 .board .big{font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;
@@ -178,11 +280,11 @@ select.who-e{border-color:var(--emma);color:var(--emma);font-weight:600}
  font-family:'Avenir Next Condensed','Arial Narrow',sans-serif}
 .split .bits{font-size:12px;color:var(--muted);margin-top:2px}
 .warnline{padding:10px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--amber);
- background:rgba(255,180,61,.07)}
+ background:color-mix(in srgb,var(--amber) 7%,transparent)}
 
 /* ---------- loot rows ---------- */
 .lootrow{display:grid;grid-template-columns:1fr 128px 118px;gap:10px;align-items:center;
- padding:11px 15px;border-bottom:1px solid rgba(40,48,61,.55)}
+ padding:11px 15px;border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
 .lootrow:last-child{border-bottom:0}
 .lootrow .nm{font-size:14.5px;font-weight:500}
 .lootrow .nm small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
@@ -193,14 +295,14 @@ select.who-e{border-color:var(--emma);color:var(--emma);font-weight:600}
 .plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;padding:14px 15px}
 .plan label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:600}
 .opt{display:flex;gap:11px;align-items:center;padding:10px 15px;min-height:48px;
- border-bottom:1px solid rgba(40,48,61,.4);cursor:pointer;touch-action:manipulation;font-size:14px}
+ border-bottom:1px solid color-mix(in srgb,var(--line) 55%,transparent);cursor:pointer;touch-action:manipulation;font-size:14px}
 .opt:last-child{border-bottom:0}
 .notes{width:100%;min-height:78px;background:var(--ink);border:1px solid var(--line2);color:var(--text);
  font-size:16px;padding:10px 12px;border-radius:8px;resize:vertical;-webkit-appearance:none;appearance:none}
 .nlab{font-size:12.5px;font-weight:700;margin-bottom:6px;display:block}
 .nlab.d{color:var(--dave)}.nlab.e{color:var(--emma)}
 .hero{margin:18px 0 6px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r);
- background:radial-gradient(120% 160% at 100% 0%,rgba(255,63,127,.15),transparent 55%),var(--panel)}
+ background:radial-gradient(120% 160% at 100% 0%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 55%),var(--panel)}
 .hero h2{font-size:18.5px;line-height:1.25}
 .hero p{margin:7px 0 0;color:var(--muted);font-size:13.5px;max-width:62ch}
 .clock{display:flex;gap:9px;margin-bottom:14px}
@@ -214,6 +316,37 @@ select.who-e{border-color:var(--emma);color:var(--emma);font-weight:600}
 .btn:active{color:var(--text);border-color:var(--text)}
 .btn.go{border-color:var(--cash);color:var(--cash)}
 .btn[disabled]{opacity:.4}
+
+/* ---------- appearance settings ---------- */
+.settings-appearance .setrow{margin-top:14px}
+.settings-appearance .setrow:first-child{margin-top:0}
+.settings-appearance h4{font-size:13.5px;margin-bottom:4px}
+.settings-appearance .sethint{font-size:12px;color:var(--muted);margin:2px 0 10px}
+.segrow{display:flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.segrow input{position:absolute;opacity:0;width:0;height:0}
+.segrow label{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;
+ color:var(--muted);cursor:pointer;min-height:44px;display:flex;align-items:center;justify-content:center;
+ touch-action:manipulation;-webkit-user-select:none;user-select:none;border-left:1px solid var(--line2)}
+.segrow label:first-of-type{border-left:0}
+.segrow input:checked+label{background:var(--accent);color:#0E1116}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:9px}
+.swatches input{position:absolute;opacity:0;width:0;height:0}
+.swatches label{display:block;width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;
+ border:2px solid transparent;box-sizing:border-box;touch-action:manipulation;position:relative;
+ min-height:40px;min-width:40px}
+.swatches input:checked+label{border-color:var(--text)}
+.swatches input:checked+label::after{content:"";position:absolute;inset:0;margin:auto;width:9px;height:5px;
+ border:2.5px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translateY(-1px);
+ filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
+.settings-appearance .slide{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+ background:var(--panel2);outline:none;touch-action:manipulation}
+.settings-appearance .slide::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;
+ border-radius:50%;background:var(--accent);border:3px solid var(--ink);cursor:pointer;
+ box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.sliderow{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:5px}
+.settings-appearance .steps{margin:8px 0 0;padding-left:20px;font-size:13px;color:var(--text)}
+.settings-appearance .steps li{margin-bottom:5px}
+.settings-appearance .steps li:last-child{margin-bottom:0}
 .note{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line2);padding-left:12px;margin:16px 0}
 .kv{display:grid;grid-template-columns:1fr auto;gap:4px 14px;font-size:13px}
 .kv .k{color:var(--muted)}.kv .v{font-variant-numeric:tabular-nums}
@@ -227,7 +360,7 @@ details.bk summary{cursor:pointer;font-size:13.5px;color:var(--muted);min-height
 .js-only{display:none}.hasjs .js-only{display:block}.hasjs .nojs-only{display:none}
 .hasjs .bar .js-only{display:inline-flex}
 .hasjs .clock.js-only{display:flex}
-.openhelp{background:rgba(255,180,61,.13);border-bottom:1px solid rgba(255,180,61,.35);
+.openhelp{background:color-mix(in srgb,var(--amber) 13%,transparent);border-bottom:1px solid color-mix(in srgb,var(--amber) 35%,transparent);
  color:var(--text);font-size:12.5px;line-height:1.5;
  padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left))}
 .openhelp b{color:var(--amber)}
@@ -244,7 +377,7 @@ details.bk summary{cursor:pointer;font-size:13.5px;color:var(--muted);min-height
 .app-hero{position:relative;isolation:isolate;min-height:218px;margin:16px 0 4px;border:1px solid var(--line2);border-radius:var(--r);overflow:hidden;background:#07101d}
 .app-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;z-index:-2;opacity:.86}
 .app-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,12,21,.97) 0%,rgba(7,12,21,.75) 43%,rgba(7,12,21,.14) 100%),linear-gradient(0deg,rgba(7,12,21,.55),transparent 56%)}
-.app-hero .copy{max-width:410px;padding:22px 20px 18px}.eyebrow{margin:0 0 7px;color:var(--cash);font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.app-hero h1{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:37px;line-height:.86;letter-spacing:.025em;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,.26)}.app-hero h1 em{font-style:normal;color:var(--hot)}.app-hero p{margin:10px 0 0;color:#c5cedb;font-size:13.5px;line-height:1.45}.crew{display:inline-flex;gap:7px;align-items:center;margin-top:15px;padding:6px 9px;border:1px solid rgba(230,233,238,.2);border-radius:999px;background:rgba(14,17,22,.55);font-size:12px;color:var(--text)}.crew i{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 3px rgba(95,212,138,.15)}
+.app-hero .copy{max-width:410px;padding:22px 20px 18px}.eyebrow{margin:0 0 7px;color:var(--cash);font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}.app-hero h1{font-family:Impact,'Avenir Next Condensed','Arial Narrow',sans-serif;font-size:37px;line-height:.86;letter-spacing:.025em;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,.26)}.app-hero h1 em{font-style:normal;color:var(--accent)}.app-hero p{margin:10px 0 0;color:#c5cedb;font-size:13.5px;line-height:1.45}.crew{display:inline-flex;gap:7px;align-items:center;margin-top:15px;padding:6px 9px;border:1px solid rgba(230,233,238,.2);border-radius:999px;background:rgba(14,17,22,.55);font-size:12px;color:var(--text)}.crew i{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 3px rgba(95,212,138,.15)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--line2)}
 .dot.on{background:var(--cash)}
 /* Focused views keep the board useful mid-session: the quick view stays short; detailed checklists and ownership live in an intentional pop-up. */
@@ -266,7 +399,7 @@ body:not(:has(#t-week:checked)) .app-hero{display:none}
 @supports not selector(:has(*)){
  .panel{display:block!important;margin-bottom:26px}.tabs{display:none}
  .panel::before{content:attr(data-name);display:block;margin:20px 0 2px;
-  font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:21px;color:var(--hot)}
+  font-family:'Avenir Next Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:21px;color:var(--accent)}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 body:has(#own-nightclub:not(:checked)) .b-nightclub{display:none}
@@ -462,7 +595,16 @@ body:has(#own-kosatka:not(:checked)) .heist-cayo,body:has(#own-arcade:not(:check
 <div class="card heist-cayo"><div class="head"><h3>Recommended next</h3><span class="badge b-bonus">Cayo · 2 players</span><span class="payout">Scoped take</span></div><div class="pad"><h3 id="heist-cayo-title">Scope Cayo first</h3><p class="sub" id="heist-cayo-copy" style="margin:6px 0 12px">Add a primary target and the loot you find; this will recommend whether the two of you should run it now.</p><button type="button" class="btn go" data-open-tab="cayo">◈ Open Cayo board</button></div></div>
 <div class="grid two"><div class="card heist-casino"><div class="head"><h3>Diamond Casino</h3><span class="payout">~$1.6–2.5M gross</span></div><div class="pad"><p class="sub" style="margin:0 0 10px">A good two-player choice when you both want one longer planned run.</p><label class="setup-label">Target <select id="ht-casino-target" class="setup-select"><option value="">Not scoped</option><option>Cash</option><option>Artwork</option><option>Gold</option><option>Diamonds</option></select></label></div></div><div class="card heist-doomsday"><div class="head"><h3>Doomsday</h3><span class="payout">~$650k–1.5M gross</span></div><div class="pad"><p class="sub" style="margin:0 0 10px">Keep it for a committed session — best when both of you are ready for the full chain.</p><label class="setup-label">Current act <select id="ht-doomsday-act" class="setup-select"><option value="">Not started</option><option>Act I</option><option>Act II</option><option>Act III</option><option>Finale ready</option></select></label></div></div><div class="card heist-cluckin"><div class="head"><h3>Cluckin' Bell Farm Raid</h3><span class="payout">$500k leader</span></div><div class="pad"><p class="sub" style="margin:0 0 10px">The quick crew option when you want a proper heist-style run without a long setup.</p><label class="setup-label">Run status <select id="ht-cluckin-status" class="setup-select"><option value="">Not started</option><option>Preps in progress</option><option>Finale ready</option></select></label></div></div><div class="card heist-kortz"><div class="head"><h3>Kortz Center</h3><span class="payout">Check weekly take</span></div><div class="pad"><p class="sub" style="margin:0 0 10px">Check This week first — prioritise it when its rotating reward is worth the time.</p><label class="setup-label">Crew setup <select id="ht-kortz-status" class="setup-select"><option value="">Not planned</option><option>Art Studio ready</option><option>Preps in progress</option><option>Finale ready</option></select></label><button type="button" class="btn" data-open-tab="week" style="margin-top:12px">✦ View weekly rewards</button></div></div></div>
 </section>
-<section class="panel" id="p-emp" data-name="Settings"><div class="bar emp-control"><div><h2>Empire</h2><span class="sub">Your crew control centre</span></div><button class="btn cog" id="emp-cog" aria-expanded="false">⚙️</button></div><div class="emp-overview"><div class="card"><p class="eyebrow">Regularly</p><h3>Daily routine</h3><p class="sub" style="margin:7px 0 12px">Safes, passive stock and the jobs worth doing now.</p><button type="button" class="btn go" data-open-tab="day">✓ Open daily</button></div><div class="card"><p class="eyebrow">Less often</p><h3>Plan the big money</h3><p class="sub" style="margin:7px 0 12px">Weekly bonuses, robberies and larger sales.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-open-tab="week">✦ This week</button><button type="button" class="btn" data-open-tab="heists">✦ Heists</button></div></div><div class="card"><p class="eyebrow">Shared</p><h3>Buy next</h3><textarea class="notes" id="cy-buylist" placeholder="Next property, vehicle or upgrade."></textarea></div></div><div class="bar"><span class="sub">Untick what you do not own. Anything switched off disappears from the daily run and the badges on its tasks. These settings are private to you.</span></div>
+<section class="panel" id="p-emp" data-name="Settings"><div class="bar emp-control"><div><h2>Empire</h2><span class="sub">Your crew control centre</span></div><button class="btn cog" id="emp-cog" aria-expanded="false">⚙️</button></div>
+<div class="card settings-appearance"><div class="head"><h3>Appearance</h3><span class="sub">Saved on this phone only — each of you can run your own look.</span></div><div class="pad">
+<div class="setrow"><h4>Mode</h4><p class="sethint">Auto follows your iPhone's system setting.</p><div class="segrow" role="radiogroup" aria-label="Appearance mode"><input type="radio" name="apmode" id="ap-auto" class="apmode" value="auto" checked><label for="ap-auto">Auto</label><input type="radio" name="apmode" id="ap-light" class="apmode" value="light"><label for="ap-light">Light</label><input type="radio" name="apmode" id="ap-dark" class="apmode" value="dark"><label for="ap-dark">Dark</label></div></div>
+<div class="setrow"><h4>Accent colour</h4><p class="sethint">Colours the tabs, badges and buttons everywhere.</p><div class="swatches" id="swatches" role="radiogroup" aria-label="Accent colour"></div></div>
+<div class="setrow"><h4>Brightness</h4><input type="range" min="0" max="100" value="50" class="slide" id="app-bright"><div class="sliderow"><span>Dim</span><span>Bright</span></div></div>
+<div class="setrow"><h4>Depth</h4><input type="range" min="0" max="100" value="50" class="slide" id="app-depth"><div class="sliderow"><span>Flat</span><span>Deep</span></div></div>
+<div class="setrow"><button type="button" class="btn" id="theme-reset">Reset appearance to default</button></div>
+<div class="setrow"><h4>Add to your Home Screen</h4><p class="sethint">Do this once each, on each phone.</p><ol class="steps"><li>Open this page in <b>Safari</b> (not Chrome).</li><li>Tap the <b>Share</b> icon, then <b>Add to Home Screen</b>.</li></ol></div>
+</div></div>
+<div class="emp-overview"><div class="card"><p class="eyebrow">Regularly</p><h3>Daily routine</h3><p class="sub" style="margin:7px 0 12px">Safes, passive stock and the jobs worth doing now.</p><button type="button" class="btn go" data-open-tab="day">✓ Open daily</button></div><div class="card"><p class="eyebrow">Less often</p><h3>Plan the big money</h3><p class="sub" style="margin:7px 0 12px">Weekly bonuses, robberies and larger sales.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-open-tab="week">✦ This week</button><button type="button" class="btn" data-open-tab="heists">✦ Heists</button></div></div><div class="card"><p class="eyebrow">Shared</p><h3>Buy next</h3><textarea class="notes" id="cy-buylist" placeholder="Next property, vehicle or upgrade."></textarea></div></div><div class="bar"><span class="sub">Untick what you do not own. Anything switched off disappears from the daily run and the badges on its tasks. These settings are private to you.</span></div>
 <p class="ownsum" id="emp-summary">Loading…</p><div class="bar"><button type="button" class="btn" id="own-all">Own everything</button><button type="button" class="btn" id="own-none">Own nothing</button><span class="sub" style="margin-left:auto">Tap a category name to collapse it</span></div><details class="empcat" data-cat="nightclub" open><summary><span class="cattitle"><h3>Nightclub &amp; Contraband</h3><span class="catsub">Passive warehouse income and product sale routes.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="nightclub" data-act="all">All</button><button type="button" class="catbtn" data-cat="nightclub" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-nightclub"><div class="top2"><input type="checkbox" id="own-nightclub" checked><label class="nm" for="own-nightclub">Nightclub<small>Passive warehouse and safe</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-nightclub-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-nightclub-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-nightclub-security" checked><span>Security</span></label></div></div><div class="emp emp-acid"><div class="top2"><input type="checkbox" id="own-acid" checked><label class="nm" for="own-acid">Acid Lab<small>Freakshop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-acid-equip" checked><span>Equipment upgrade</span></label></div></div></div></details><details class="empcat" data-cat="mc" open><summary><span class="cattitle"><h3>MC Businesses &amp; Clubhouse</h3><span class="catsub">Gunrunning, product labs, and the clubhouse that runs them.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="mc" data-act="all">All</button><button type="button" class="catbtn" data-cat="mc" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-bunker"><div class="top2"><input type="checkbox" id="own-bunker" checked><label class="nm" for="own-bunker">Bunker<small>Gunrunning</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-bunker-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-bunker-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-bunker-security" checked><span>Security</span></label></div></div><div class="emp emp-coke"><div class="top2"><input type="checkbox" id="own-coke" checked><label class="nm" for="own-coke">Cocaine Lockup<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-coke-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-coke-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-coke-security" checked><span>Security</span></label></div></div><div class="emp emp-meth"><div class="top2"><input type="checkbox" id="own-meth" checked><label class="nm" for="own-meth">Meth Lab<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-meth-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-meth-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-meth-security" checked><span>Security</span></label></div></div><div class="emp emp-cash"><div class="top2"><input type="checkbox" id="own-cash" checked><label class="nm" for="own-cash">Counterfeit Cash<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-cash-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-cash-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-cash-security" checked><span>Security</span></label></div></div><div class="emp emp-weed"><div class="top2"><input type="checkbox" id="own-weed" checked><label class="nm" for="own-weed">Weed Farm<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-weed-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-weed-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-weed-security" checked><span>Security</span></label></div></div><div class="emp emp-docs"><div class="top2"><input type="checkbox" id="own-docs" checked><label class="nm" for="own-docs">Document Forgery<small>MC business</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-docs-equip" checked><span>Equipment</span></label><label class="upg"><input type="checkbox" id="upg-docs-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-docs-security" checked><span>Security</span></label></div></div><div class="emp emp-clubhouse"><div class="top2"><input type="checkbox" id="own-clubhouse" checked><label class="nm" for="own-clubhouse">Clubhouse<small>MC hub</small></label></div></div></div></details><details class="empcat" data-cat="vip" open><summary><span class="cattitle"><h3>VIP Work &amp; Security Contracts</h3><span class="catsub">Agency, Auto Shop, Salvage Yard, Bail Office, Garment Factory.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="vip" data-act="all">All</button><button type="button" class="catbtn" data-cat="vip" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-agency"><div class="top2"><input type="checkbox" id="own-agency" checked><label class="nm" for="own-agency">Agency<small>Franklin and Chop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-agency-weapon" checked><span>Weapon workshop</span></label><label class="upg"><input type="checkbox" id="upg-agency-vehicle" checked><span>Vehicle workshop</span></label></div></div><div class="emp emp-autoshop"><div class="top2"><input type="checkbox" id="own-autoshop" checked><label class="nm" for="own-autoshop">Auto Shop<small>LS Tuners</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-autoshop-staff" checked><span>Staff for deliveries</span></label></div></div><div class="emp emp-salvage"><div class="top2"><input type="checkbox" id="own-salvage" checked><label class="nm" for="own-salvage">Salvage Yard<small>Chop Shop</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-salvage-staff" checked><span>Staff for tow truck</span></label></div></div><div class="emp emp-bail"><div class="top2"><input type="checkbox" id="own-bail" checked><label class="nm" for="own-bail">Bail Office<small>Bottom Dollar Bounties</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-bail-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-bail-cctv" checked><span>Surveillance kit</span></label></div></div><div class="emp emp-garment"><div class="top2"><input type="checkbox" id="own-garment" checked><label class="nm" for="own-garment">Garment Factory<small>FIB Files base</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-garment-staff" checked><span>Staff</span></label><label class="upg"><input type="checkbox" id="upg-garment-equip" checked><span>Equipment</span></label></div></div></div></details><details class="empcat" data-cat="moneyfronts" open><summary><span class="cattitle"><h3>Money Fronts</h3><span class="catsub">The current money-laundering businesses.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="moneyfronts" data-act="all">All</button><button type="button" class="catbtn" data-cat="moneyfronts" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-carwash"><div class="top2"><input type="checkbox" id="own-carwash" checked><label class="nm" for="own-carwash">Hands On Car Wash<small>Money Fronts base and legal income</small></label></div></div><div class="emp emp-smoke"><div class="top2"><input type="checkbox" id="own-smoke" checked><label class="nm" for="own-smoke">Smoke on the Water<small>Money Fronts dispensary</small></label></div></div><div class="emp emp-higgins"><div class="top2"><input type="checkbox" id="own-higgins" checked><label class="nm" for="own-higgins">Higgins Helitours<small>Money Fronts aviation business</small></label></div></div></div></details><details class="empcat" data-cat="heist" open><summary><span class="cattitle"><h3>Heist Bases &amp; Prep</h3><span class="catsub">Arcade, Kosatka, Facility, Terrorbyte — the setups behind the big paydays.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="heist" data-act="all">All</button><button type="button" class="catbtn" data-cat="heist" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-villa"><div class="top2"><input type="checkbox" id="own-villa" checked><label class="nm" for="own-villa">Richman Villa<small>Crew HQ · business terminal and fast travel</small></label></div></div><div class="emp emp-arcade"><div class="top2"><input type="checkbox" id="own-arcade" checked><label class="nm" for="own-arcade">Arcade<small>Casino Heist base</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-arcade-drone" checked><span>Drone station</span></label><label class="upg"><input type="checkbox" id="upg-arcade-cctv" checked><span>Security cameras</span></label></div></div><div class="emp emp-kosatka"><div class="top2"><input type="checkbox" id="own-kosatka" checked><label class="nm" for="own-kosatka">Kosatka<small>Cayo Perico</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-kosatka-sonar" checked><span>Sonar</span></label><label class="upg"><input type="checkbox" id="upg-kosatka-goc" checked><span>Guerrilla Ops Centre</span></label><label class="upg"><input type="checkbox" id="upg-kosatka-sparrow" checked><span>Sparrow</span></label></div></div><div class="emp emp-apartment"><div class="top2"><input type="checkbox" id="own-apartment" checked><label class="nm" for="own-apartment">High-End Apartment<small>Fleeca and classic heist host</small></label></div></div><div class="emp emp-facility"><div class="top2"><input type="checkbox" id="own-facility" checked><label class="nm" for="own-facility">Facility<small>Doomsday</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-facility-orbital" checked><span>Orbital cannon</span></label></div></div><div class="emp emp-terrorbyte"><div class="top2"><input type="checkbox" id="own-terrorbyte" checked><label class="nm" for="own-terrorbyte">Terrorbyte<small>Client Jobs and business control</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-terrorbyte-workshop" checked><span>Weapon workshop</span></label></div></div><div class="emp emp-moc"><div class="top2"><input type="checkbox" id="own-moc" checked><label class="nm" for="own-moc">Mobile Operations Center<small>Bunker support vehicle</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-moc-workshop" checked><span>Weapon &amp; vehicle workshop</span></label></div></div></div></details><details class="empcat" data-cat="cargo" open><summary><span class="cattitle"><h3>Special Cargo &amp; Vehicle Trade</h3><span class="catsub">CEO warehouses, vehicle export, air freight.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="cargo" data-act="all">All</button><button type="button" class="catbtn" data-cat="cargo" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-office"><div class="top2"><input type="checkbox" id="own-office" checked><label class="nm" for="own-office">CEO Office<small>CEO, VIP and Special Cargo access</small></label></div></div><div class="emp emp-cargowh"><div class="top2"><input type="checkbox" id="own-cargowh" checked><label class="nm" for="own-cargowh">Special Cargo Warehouses<small>Crate sourcing and sales</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-office-large" checked><span>Large warehouse</span></label></div></div><div class="emp emp-vehiclewh"><div class="top2"><input type="checkbox" id="own-vehiclewh" checked><label class="nm" for="own-vehiclewh">Vehicle Warehouse<small>Import and Export</small></label></div></div><div class="emp emp-mckenzie"><div class="top2"><input type="checkbox" id="own-mckenzie" checked><label class="nm" for="own-mckenzie">McKenzie Field Hangar<small>Oscar Guzman arms trafficking</small></label></div></div><div class="emp emp-hangar"><div class="top2"><input type="checkbox" id="own-hangar" checked><label class="nm" for="own-hangar">Hangar<small>Air Freight Cargo</small></label></div><div class="upgs"><label class="upg"><input type="checkbox" id="upg-hangar-workshop" checked><span>Aircraft workshop</span></label></div></div></div></details><details class="empcat" data-cat="social" open><summary><span class="cattitle"><h3>Weekly Heists &amp; Memberships</h3><span class="catsub">Casino, Car Meet, and the weekly heist rotation.</span></span><span class="catactions"><button type="button" class="catbtn" data-cat="social" data-act="all">All</button><button type="button" class="catbtn" data-cat="social" data-act="none">None</button></span></summary><div class="grid two"><div class="emp emp-casino"><div class="top2"><input type="checkbox" id="own-casino" checked><label class="nm" for="own-casino">Casino Penthouse<small>Diamond Casino</small></label></div></div><div class="emp emp-carmeet"><div class="top2"><input type="checkbox" id="own-carmeet" checked><label class="nm" for="own-carmeet">LS Car Meet<small>Membership</small></label></div></div><div class="emp emp-cluckin"><div class="top2"><input type="checkbox" id="own-cluckin" checked><label class="nm" for="own-cluckin">Cluckin&#x27; Bell Farm Raid<small>Weekly heist</small></label></div></div><div class="emp emp-kortz"><div class="top2"><input type="checkbox" id="own-kortz" checked><label class="nm" for="own-kortz">Kortz Center Heist<small>Weekly heist</small></label></div></div><div class="emp emp-toreador"><div class="top2"><input type="checkbox" id="own-toreador" checked><label class="nm" for="own-toreador">Toreador<small>Sea-delivery defence</small></label></div></div><div class="emp emp-stromberg"><div class="top2"><input type="checkbox" id="own-stromberg" checked><label class="nm" for="own-stromberg">Stromberg<small>Sea-delivery defence</small></label></div></div></div></details>
 <p class="stat js-only" id="stat"></p>
 <p class="stat nojs-only"><b>Quick Look is read-only.</b> Open the board in a full browser, then add or install it so changes save.</p>
@@ -559,7 +701,8 @@ function put(key,val,shared){
  return Promise.resolve(false);
 }
 
-function fields(){return [].slice.call(document.querySelectorAll("input[id],textarea[id],select[id]"));}
+function fields(){return [].slice.call(document.querySelectorAll("input[id],textarea[id],select[id]"))
+ .filter(function(n){return !(/^ap-(auto|light|dark)$/.test(n.id)||/^sw-/.test(n.id)||n.id==="app-bright"||n.id==="app-depth");});}
 function readNode(n){
  if(n.type==="checkbox"||n.type==="radio")return n.checked?1:0;
  return n.value||"";
@@ -918,5 +1061,38 @@ loadPersonalProfile().then(function(raw){
  if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
  rollover();apply();clock();refreshAll();status();paintProfile();maybeAutoRefresh();
 },function(){clock();refreshAll();status();});
+
+/* ---- settings tab: appearance controls ---- */
+(function(){
+ var t=window.OpsTheme;if(!t)return;
+ var cfg=t.get();
+ var swWrap=document.getElementById("swatches");
+ if(swWrap){
+  swWrap.innerHTML=t.swatches.map(function(s){
+   return '<input type="radio" name="accent" id="sw-'+s.id+'" value="'+s.id+'"'+
+    (cfg.accent===s.id?" checked":"")+'><label for="sw-'+s.id+'" style="background:'+s.dark+
+    '" title="'+s.name+'"></label>';
+  }).join("");
+  swWrap.addEventListener("change",function(e){
+   if(e.target.name==="accent")t.set({accent:e.target.value});
+  });
+ }
+ var apId={auto:"ap-auto",light:"ap-light",dark:"ap-dark"}[cfg.mode]||"ap-auto";
+ var apEl=document.getElementById(apId);if(apEl)apEl.checked=true;
+ [].slice.call(document.querySelectorAll(".apmode")).forEach(function(r){
+  r.addEventListener("change",function(){if(r.checked)t.set({mode:r.value});});
+ });
+ var brightEl=document.getElementById("app-bright"),depthEl=document.getElementById("app-depth");
+ if(brightEl){brightEl.value=cfg.bright;brightEl.addEventListener("input",function(){t.set({bright:+brightEl.value});});}
+ if(depthEl){depthEl.value=cfg.depth;depthEl.addEventListener("input",function(){t.set({depth:+depthEl.value});});}
+ var resetEl=document.getElementById("theme-reset");
+ if(resetEl)resetEl.addEventListener("click",function(){
+  t.set({mode:"auto",accent:"pink",bright:50,depth:50});
+  var a=document.getElementById("ap-auto");if(a)a.checked=true;
+  [].slice.call(swWrap.querySelectorAll('input[name="accent"]')).forEach(function(i){i.checked=(i.value==="pink");});
+  if(brightEl)brightEl.value=50;
+  if(depthEl)depthEl.value=50;
+ });
+})();
 })();
 </script></body></html>
