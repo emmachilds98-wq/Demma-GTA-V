@@ -582,7 +582,7 @@ body:has(#own-arcade:not(:checked)) .heist-casino,body:has(#own-facility:not(:ch
 <section class="panel" id="p-week" data-name="This week">
 <div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Auto Shop Robbery Contracts pay double all week.</h2><p id="wk-sub">Everything else boosted is racing. Run contracts for the money, take the flat $100k drift challenge, and get the weekly first-run heists done before anything else.</p></div>
 <div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><a class="sub" style="margin-left:auto" href="https://www.rockstargames.com/newswire/article/o3921k3734ok35/take-in-triple-rewards-shifting-shape-in-new-random-transform-races" target="_blank" rel="noopener">Official event update ↗</a></div>
-<div class="sub js-only" id="wk-stamp" style="margin-top:6px"></div>
+<div class="sub" id="wk-stamp" style="margin-top:6px">Refreshed for the week of 27 August 2026</div>
 <details class="bk js-only" id="wk-hist" style="margin-top:12px"><summary>Previous weeks</summary>
 <div class="pad">
 <select class="histpick"><option value="">Nothing saved yet — refreshes get archived here</option></select>
@@ -932,57 +932,6 @@ document.addEventListener("change",function(e){
  if(e.target.classList&&e.target.classList.contains("histpick"))renderHist(e.target.value);
 });
 
-var btn=document.getElementById("refresh");
-var refreshing=false, autoTriedFor=null;
-function doRefresh(auto){
- if(refreshing)return;
- refreshing=true;
- var stamp=document.getElementById("wk-stamp");
- if(!auto){btn.disabled=true;btn.textContent="Searching…";}
- else if(stamp)stamp.textContent="Checking for this week's update…";
- fetch("https://api.anthropic.com/v1/messages",{
-  method:"POST",headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,
-   tools:[{type:"web_search_20250305",name:"web_search"}],
-   messages:[{role:"user",content:
-    "Search the web for the CURRENT GTA Online weekly update (GTA 5 Online, this week's bonuses). "+
-    "Today is "+new Date().toDateString()+". Return ONLY a JSON object, no markdown, no preamble, shaped exactly:\n"+
-    '{"week_label":"","headline":"","summary":"","bonuses":[{"title":"","detail":"","tag":""}],'+
-    '"claims":[{"title":"","detail":"","tag":""}],"discounts":[{"name":"","price":""}],"gun_van":""}\n'+
-    "bonuses = multiplier boosts (2X/3X etc). claims = podium vehicle, prize ride, weekly challenge, "+
-    "free items, priority file. discounts = discounted vehicles with prices. Keep each detail under 20 words. "+
-    "This crew has base GTA Online only, no GTA+ subscription — leave out any bonus, claim, discount or gun van "+
-    "item that requires GTA+ membership."}]})
- }).then(function(r){return r.json();}).then(function(data){
-  var txt=(data.content||[]).filter(function(b){return b.type==="text";})
-   .map(function(b){return b.text;}).join("\n").replace(/```json|```/g,"").trim();
-  var m=txt.match(/\{[\s\S]*\}/);
-  if(!m)throw new Error("no json");
-  var wk=JSON.parse(m[0]);
-  if(SH.wk&&SH.wkKey&&SH.wkKey!==weekKey()){
-   SH.history=SH.history||[];
-   SH.history.push({wkKey:SH.wkKey,wk:SH.wk,stamp:SH.stamp});
-   if(SH.history.length>12)SH.history=SH.history.slice(-12);
-  }
-  SH.wk=wk;SH.stamp=Date.now();SH.wkKey=weekKey();
-  Object.keys(S.v).forEach(function(k){if(WEEKLY.test(k))delete S.v[k];});
-  paintWeek(wk);paintHistPicker();apply();saveShared();savePersonal();
-  refreshing=false;
-  if(!auto){btn.textContent="Refresh this week";btn.disabled=false;}
- }).catch(function(){
-  refreshing=false;
-  if(!auto){
-   btn.textContent="Refresh this week";btn.disabled=false;
-   if(stamp)stamp.textContent="Refresh needs the board open in Claude with a connection. Nothing was changed.";
-  }else if(stamp&&!SH.wk){
-   stamp.textContent="Auto-update needs the board open in Claude. Tap Refresh this week once you're there.";
-  }else if(stamp){
-   stamp.textContent=(SH.stamp?"Updated "+new Date(SH.stamp).toLocaleString()+" — ":"")+"couldn't check for a newer week just now.";
-  }
- });
-}
-if(btn)btn.addEventListener("click",function(){doRefresh(false);});
-function maybeAutoRefresh(){return;}
 
 /* ---- shared polling ---- */
 function pollShared(){
@@ -1099,17 +1048,17 @@ function switchProfile(next){
 document.addEventListener("visibilitychange",function(){
  if(document.visibilityState!=="visible")return;
  if(rollover()){apply();savePersonal();}
- pollShared();refreshAll();maybeAutoRefresh();});
+ pollShared();refreshAll();});
 setInterval(clock,1000);
 setInterval(pollShared,15000);
-setInterval(function(){if(rollover()){apply();savePersonal();refreshAll();}maybeAutoRefresh();},60000);
+setInterval(function(){if(rollover()){apply();savePersonal();refreshAll();}},60000);
 
 loadPersonalProfile().then(function(raw){
  if(raw){try{var p=JSON.parse(raw);if(p&&p.v)S=p;}catch(e){}}
  return get(SKEY,true);
 }).then(function(raw){
  if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
- rollover();apply();clock();refreshAll();status();paintProfile();maybeAutoRefresh();
+ rollover();apply();clock();refreshAll();status();paintProfile();
 },function(){clock();refreshAll();status();});
 
 /* ---- settings tab: appearance controls ---- */
