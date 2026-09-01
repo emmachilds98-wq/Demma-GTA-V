@@ -1,4 +1,4 @@
-const CACHE_NAME = "demma-gta-ops-v26";
+const CACHE_NAME = "demma-gta-ops-v27";
 const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/los-santos-ops-hero.jpg", "./assets/demma-ops-icon-180.png"];
 
 self.addEventListener("install", event => {
