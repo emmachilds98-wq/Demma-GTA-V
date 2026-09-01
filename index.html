@@ -93,15 +93,15 @@ function resolvedMode(cfg){
 function palette(mode,bright,depth,tint,ah){
  var t=clamp((tint||0)/100,0,1);
  if(mode==="dark"){
-  var Link=4+(bright/100)*10, step=3+(depth/100)*7;
+  var Link=4+(bright/100)*10, step=4.5+(depth/100)*7.5;
   var Lpanel=Link+step, Lpanel2=Lpanel+step*.6, Lline=Lpanel2+step*.55, Lline2=Lline+step*.9;
   return {
-   ink:blend(222,16,ah,44,clamp(Link,3,20),t), panel:blend(222,16,ah,44,clamp(Lpanel,4,30),t),
-   panel2:blend(222,16,ah,46,clamp(Lpanel2,4,34),t), line:blend(222,14,ah,48,clamp(Lline,6,40),t),
-   line2:blend(222,14,ah,50,clamp(Lline2,8,46),t),
+   ink:blend(222,16,ah,44,clamp(Link,3,20),t), panel:blend(222,16,ah,44,clamp(Lpanel,4,32),t),
+   panel2:blend(222,16,ah,46,clamp(Lpanel2,4,37),t), line:blend(222,14,ah,48,clamp(Lline,6,44),t),
+   line2:blend(222,14,ah,50,clamp(Lline2,8,50),t),
    text:blend(222,14,ah,18,clamp(90+(bright/100)*4,88,96),t),
    muted:blend(222,10,ah,26,clamp(50+bright*0.12,48,64),t),
-   shadowA:clamp(.18+(depth/100)*.24,.14,.46)
+   shadowA:clamp(.22+(depth/100)*.26,.16,.5)
   };
  }
  var Link=90+(bright/100)*9, step=2+(depth/100)*6;
@@ -433,8 +433,8 @@ body:has(#cy-more-cellar1:checked) #cy-extra-cellarb,body:has(#cy-more-office1:c
 .kv{display:grid;grid-template-columns:1fr auto;gap:4px 14px;font-size:13px}
 .kv .k{color:var(--muted)}.kv .v{font-variant-numeric:tabular-nums}
 .kv .v .was{text-decoration:line-through;color:var(--muted);font-weight:400;margin-right:7px}
-.prog{height:5px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:14px 0 4px}
-.prog i{display:block;height:100%;background:var(--cash);width:0;transition:width .25s}
+.prog{height:6px;background:var(--line2);border-radius:99px;overflow:hidden;margin:14px 0 4px}
+.prog i{display:block;height:100%;background:var(--cash);width:0;min-width:6px;transition:width .25s}
 .stat{font-size:12px;color:var(--muted);margin-top:14px}
 .stat b{color:var(--cash);font-weight:600}.stat.warn b{color:var(--amber)}
 details.bk{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:12px 15px}
@@ -471,8 +471,8 @@ body:not(:has(#t-week:checked)) .app-hero{display:none}
 .modal-head h2{font-size:18px;flex:1}.modal-body{padding:0 12px 14px}.modal-body>.sub{display:block;margin:11px 3px 0}
 .modal-close{min-width:40px;padding:8px 11px;color:var(--text);font-size:17px}
 .settings-owned-item .upgs{display:none!important}.settings-profile{margin:14px 2px 0!important}.settings-backup{margin-top:12px!important}.settings-foot{margin-top:18px!important}
-.settings-ownership{overflow:hidden;padding:0}.settings-ownership>.head{padding:14px 15px}.settings-actions{display:flex;gap:8px;padding:0 15px 12px}.settings-actions .btn{flex:1}.settings-ownership .ownsum{margin:0;padding:9px 15px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px}.settings-owned-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.settings-owned-item{margin:0!important;padding:0!important;border:0!important;border-bottom:1px solid var(--line);min-width:0}.settings-owned-item:nth-child(odd){border-right:1px solid var(--line)}.settings-owned-item .top2{gap:10px;padding:11px 12px}.settings-owned-item .nm{font-size:14px}.settings-owned-item .nm small{font-size:11px}.settings-buy{margin-top:12px}.settings-buy h3{font-size:16px}@media(max-width:560px){.settings-owned-list{grid-template-columns:1fr}.settings-owned-item:nth-child(odd){border-right:0}}
-.daily-checklist{padding:0;overflow:hidden}.daily-checklist>.head{padding:14px 15px}.visit-group{border-top:1px solid var(--line);padding:10px 0}.visit-group h4{margin:0;padding:0 15px 6px;color:var(--amber);font-size:11px;letter-spacing:.09em;text-transform:uppercase}.visit-group h4 .grouptime{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px}.daily-checklist .task{padding:0 15px}.daily-checklist .task+.task{border-top:1px solid color-mix(in srgb,var(--line2) 55%,transparent)}.daily-checklist .tick{margin:0 -15px;padding:11px 15px;align-items:center}.daily-checklist .t{font-size:15px}.daily-checklist .d{display:block;margin-top:1px;font-size:12px;color:var(--muted);line-height:1.35}.daily-actions{display:flex;align-items:center;gap:12px;padding:12px 15px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--panel2) 45%,transparent)}.daily-actions .btn{min-width:112px}.daily-actions .sub{font-size:12px}
+.settings-ownership{overflow:hidden;padding:0}.settings-ownership>.head{padding:14px 15px}.settings-actions{display:flex;gap:8px;padding:0 15px 12px}.settings-actions .btn{flex:1}.settings-ownership .ownsum{margin:0;padding:9px 15px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px}.settings-owned-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.settings-owned-cat{grid-column:1/-1;padding:9px 12px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--panel2) 60%,transparent);border-bottom:1px solid var(--line)}.settings-owned-cat:first-child{border-top:0}.settings-owned-item{margin:0!important;padding:0!important;border:0!important;border-bottom:1px solid var(--line);min-width:0}.settings-owned-item.col-a{border-right:1px solid var(--line)}.settings-owned-item .top2{gap:10px;padding:11px 12px}.settings-owned-item .nm{font-size:14px}.settings-owned-item .nm small{font-size:11px}.settings-buy{margin-top:12px}.settings-buy h3{font-size:16px}#ready-now-body{display:flex;flex-wrap:wrap;gap:6px;align-items:center}#ready-now-body .badge{font-size:12px;padding:5px 10px}@media(max-width:560px){.settings-owned-list{grid-template-columns:1fr}.settings-owned-item.col-a{border-right:0}}
+.daily-checklist{padding:0;overflow:hidden}.daily-checklist>.head{padding:14px 15px}.visit-group{border-top:1px solid var(--line);padding:12px 0;background:color-mix(in srgb,var(--panel2) 32%,transparent)}.visit-group:nth-child(odd){background:transparent}.visit-group h4{margin:0 15px 8px;padding:5px 10px;color:var(--amber);font-size:11px;letter-spacing:.09em;text-transform:uppercase;display:inline-block;border-radius:99px;background:color-mix(in srgb,var(--amber) 14%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)}.visit-group h4 .grouptime{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px}.daily-checklist .task{padding:0 15px}.daily-checklist .task+.task{border-top:1px solid color-mix(in srgb,var(--line2) 55%,transparent)}.daily-checklist .tick{margin:0 -15px;padding:11px 15px;align-items:center}.daily-checklist .t{font-size:15px}.daily-checklist .d{display:block;margin-top:1px;font-size:12px;color:var(--muted);line-height:1.35}.daily-actions{display:flex;align-items:center;gap:12px;padding:12px 15px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--panel2) 45%,transparent)}.daily-actions .btn{min-width:112px}.daily-actions .sub{font-size:12px}
 #daily-modal .grid{display:grid;margin-top:12px}#daily-modal .card{display:block!important}
 #emp-modal .empcat,#emp-modal .ownsum{display:block!important}#emp-modal .bar{margin:12px 0}
 #cayo-scope-modal .card{margin-top:12px}.scope-launch{margin-left:auto}
@@ -644,6 +644,7 @@ body:has(#own-arcade:not(:checked)) .heist-casino,body:has(#own-facility:not(:ch
 </section>
 <section class="panel" id="p-week" data-name="This week">
 <div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Auto Shop Robbery Contracts pay double all week.</h2><p id="wk-sub">Everything else boosted is racing. Run contracts for the money, take the flat $100k drift challenge, and get the weekly first-run heists done before anything else.</p></div>
+<div class="card ready-now-card js-only" id="ready-now-card" style="margin:14px 0"><div class="head"><h3>Ready right now</h3><span class="sub">heists off cooldown</span></div><div class="pad" id="ready-now-body"><span class="sub">Checking…</span></div></div>
 <div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><a class="sub" style="margin-left:auto" href="https://www.rockstargames.com/newswire/article/o3921k3734ok35/take-in-triple-rewards-shifting-shape-in-new-random-transform-races" target="_blank" rel="noopener">Official event update ↗</a></div>
 <div class="sub" id="wk-stamp" style="margin-top:6px">Refreshed for the week of 27 August 2026</div>
 <details class="bk js-only" id="wk-hist" style="margin-top:12px"><summary>Previous weeks</summary>
@@ -740,9 +741,11 @@ function setUpFocusedViews(){
  if(empire){
   empire.dataset.name="Settings";var heading=empire.querySelector(".emp-control h2"),sub=empire.querySelector(".emp-control .sub"),cog=document.getElementById("emp-cog");if(heading)heading.textContent="Settings";if(sub)sub.textContent="What this profile owns";if(cog)cog.remove();
   var overview=empire.querySelector(".emp-overview"),buy=overview&&overview.lastElementChild;if(overview)overview.remove();
-  var summary=empire.querySelector("#emp-summary"),toolbar=empire.querySelector("#own-all")&&empire.querySelector("#own-all").parentNode,items=[].slice.call(empire.querySelectorAll(".empcat .emp")),card=document.createElement("div"),list=document.createElement("div"),stat=empire.querySelector("#stat"),backup=empire.querySelector(":scope > details.bk"),foot=empire.querySelector(":scope > .foot");
+  var summary=empire.querySelector("#emp-summary"),toolbar=empire.querySelector("#own-all")&&empire.querySelector("#own-all").parentNode,cats=[].slice.call(empire.querySelectorAll(".empcat")),card=document.createElement("div"),list=document.createElement("div"),stat=empire.querySelector("#stat"),backup=empire.querySelector(":scope > details.bk"),foot=empire.querySelector(":scope > .foot");
   card.className="card settings-ownership";card.innerHTML='<div class="head"><h3>Owned things</h3><span class="sub">Tick what you have — the Ops Centre updates around it.</span></div>';list.className="settings-owned-list";
-  items.forEach(function(item){item.classList.add("settings-owned-item");var upgrades=item.querySelector(".upgs");if(upgrades)upgrades.hidden=true;list.appendChild(item);});
+  cats.forEach(function(cat){var h3=cat.querySelector(".cattitle h3"),items=[].slice.call(cat.querySelectorAll(".emp"));
+   if(h3){var gh=document.createElement("div");gh.className="settings-owned-cat";gh.textContent=h3.textContent;list.appendChild(gh);}
+   items.forEach(function(item,i){item.classList.add("settings-owned-item",i%2===0?"col-a":"col-b");var upgrades=item.querySelector(".upgs");if(upgrades)upgrades.hidden=true;list.appendChild(item);});});
   if(toolbar){toolbar.className="settings-actions";toolbar.querySelectorAll(".sub").forEach(function(n){n.remove();});card.appendChild(toolbar);}if(summary)card.appendChild(summary);card.appendChild(list);
   [].slice.call(empire.querySelectorAll(".empcat,.bar:not(.emp-control)")).forEach(function(n){n.remove();});empire.appendChild(card);if(buy){buy.className="card settings-buy";buy.querySelector(".eyebrow")&&buy.querySelector(".eyebrow").remove();var bh=buy.querySelector("h3");if(bh)bh.textContent="Buy next";empire.appendChild(buy);}if(stat){stat.classList.add("settings-profile");empire.appendChild(stat);}if(backup){backup.classList.add("settings-backup");empire.appendChild(backup);}if(foot){foot.classList.add("settings-foot");empire.appendChild(foot);}
  }
@@ -762,12 +765,12 @@ addFinishingTouches();
    Solo switch; the rest are the same either way. */
 (function(){
  var HEISTS=[
-  {key:"cayo",crew:48,solo:144,into:"#p-cayo .cayo-controls"},
-  {key:"kortz",crew:48,solo:144,into:"#p-heists .heist-kortz .pad"},
-  {key:"casino",crew:48,solo:48,into:"#p-heists .heist-casino .pad"},
-  {key:"doomsday",crew:48,solo:48,into:"#p-heists .heist-doomsday .pad"},
-  {key:"cluckin",crew:60,solo:60,into:"#p-heists .heist-cluckin .pad"},
-  {key:"fleeca",crew:48,solo:48,into:"#p-heists .heist-apartment .pad"}
+  {key:"cayo",name:"Cayo Perico",crew:48,solo:144,into:"#p-cayo .cayo-controls",owns:"own-kosatka"},
+  {key:"kortz",name:"Kortz Center",crew:48,solo:144,into:"#p-heists .heist-kortz .pad",owns:"own-kortz"},
+  {key:"casino",name:"Diamond Casino",crew:48,solo:48,into:"#p-heists .heist-casino .pad",owns:"own-arcade"},
+  {key:"doomsday",name:"Doomsday",crew:48,solo:48,into:"#p-heists .heist-doomsday .pad",owns:"own-facility"},
+  {key:"cluckin",name:"Cluckin' Bell",crew:60,solo:60,into:"#p-heists .heist-cluckin .pad",owns:"own-cluckin"},
+  {key:"fleeca",name:"Classic Heists",crew:48,solo:48,into:"#p-heists .heist-apartment .pad",owns:"own-apartment"}
  ];
  function spell(m){var h=Math.floor(m/60),r=m%60;return h?(h+" hr"+(r?" "+r+" min":"")):(r+" min");}
  function countdown(ms){
@@ -786,7 +789,7 @@ addFinishingTouches();
    '<button type="button" class="btn cd-clear" hidden>Reset</button>'+
    '<input type="hidden" id="cy-hcd-'+h.key+'">';
   host.appendChild(row);
-  var r={h:h,out:row.querySelector(".cd-out"),store:row.querySelector("#cy-hcd-"+h.key),
+  var r={h:h,host:host,out:row.querySelector(".cd-out"),store:row.querySelector("#cy-hcd-"+h.key),
          solo:row.querySelector(".cd-solobox"),clear:row.querySelector(".cd-clear")};
   row.querySelector(".cd-start").addEventListener("click",function(){stamp(r,Date.now());});
   r.clear.addEventListener("click",function(){stamp(r,"");});
@@ -815,9 +818,29 @@ addFinishingTouches();
   if(r.last===html)return;
   r.last=html;r.out.className=cls;r.out.innerHTML=html;r.clear.hidden=!(started>0);
  }
+ function owned(r){var box=document.getElementById(r.h.owns);return box?box.checked:true;}
+ function paintReadyNow(){
+  var box=document.getElementById("ready-now-body");if(!box)return;
+  var ready=[],waiting=[];
+  rows.forEach(function(r){
+   if(!owned(r))return;
+   var started=parseInt(r.store.value,10),total=waitFor(r),
+       remain=started>0?started+total-Date.now():0;
+   if(remain>0)waiting.push({name:r.h.name,remain:remain});else ready.push(r.h.name);
+  });
+  var html=ready.length?ready.map(function(n){return '<span class="badge b-bonus">'+n+"</span>";}).join(""):
+   '<span class="sub">Nothing off cooldown right now.</span>';
+  if(waiting.length){
+   waiting.sort(function(a,b){return a.remain-b.remain;});
+   html+='<span class="sub" style="width:100%;margin-top:2px">Next up: '+
+    waiting.map(function(w){return w.name+" in "+countdown(w.remain);}).join(", ")+"</span>";
+  }
+  if(box.dataset.last===html)return;
+  box.dataset.last=html;box.innerHTML=html;
+ }
  if(rows.length){
-  rows.forEach(paint);
-  setInterval(function(){rows.forEach(paint);},1000);
+  rows.forEach(paint);paintReadyNow();
+  setInterval(function(){rows.forEach(paint);paintReadyNow();},1000);
  }
 })();
 var jobsClear=document.getElementById("jobs-clear");if(jobsClear)jobsClear.addEventListener("click",function(){[].slice.call(document.querySelectorAll("#p-jobs .tickbox")).forEach(function(n){if(n.checked){n.checked=false;n.dispatchEvent(new Event("change",{bubbles:true}));}});});
