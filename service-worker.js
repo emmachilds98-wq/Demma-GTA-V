@@ -1,4 +1,4 @@
-const CACHE_NAME = "demma-gta-ops-v47";
+const CACHE_NAME = "demma-gta-ops-v48";
 const APP_SHELL = ["./", "./index.html", "./week.json", "./manifest.webmanifest", "./assets/los-santos-ops-hero.jpg", "./assets/demma-ops-icon-180.png"];
 
 self.addEventListener("install", event => {
@@ -25,6 +25,18 @@ self.addEventListener("fetch", event => {
     }).catch(() => caches.match("./week.json")));
     return;
   }
+  // The page itself is network-first too, so a new build lands on an ordinary
+  // refresh. Cache-first meant every app update needed the in-app reset button.
+  if (event.request.mode === "navigate" || new URL(event.request.url).pathname.endsWith("/index.html")) {
+    event.respondWith(fetch(event.request).then(response => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
+      return response;
+    }).catch(() => caches.match("./index.html")));
+    return;
+  }
+  // Everything else (icons, the hero image) is versioned by cache name and
+  // never changes within a release, so cache-first is right for those.
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
     const copy = response.clone();
     caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));

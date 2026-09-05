@@ -952,7 +952,7 @@ function apply(){
    n.checked=has?true:(n.id==="own-villa"?true:((S.seen||isShared(n.id))?false:dflt));
   } else n.value=has?box[n.id]:(CAYO_DEFAULTS[n.id]||"");
  });
- if(SH.wk)paintWeek(SH.wk);
+ paintCurrentWeek();
  paintHistPicker();
 }
 var pt,st;
@@ -1149,6 +1149,12 @@ function paintWeekStamp(){
  st.textContent="This is the "+((FEED?FEED.current:{}).week_label||"previous")+
   " board. The new week started on "+weekStartLabel()+" and has not been pulled in yet \u2014 tap \u21bb to try again.";
 }
+/* The week comes from the feed, or from the markup when there is no feed.
+   Never from saved state — that is what went stale on the devices. */
+function paintCurrentWeek(){
+ if(FEED&&FEED.current)paintWeek(FEED.current);
+ else paintWeekStamp();
+}
 function applyFeed(feed){
  if(!feed||!feed.current)return false;
  FEED=feed;feedFetchedAt=Date.now();
@@ -1292,6 +1298,7 @@ loadPersonalProfile().then(function(raw){
  return get(SKEY,true);
 }).then(function(raw){
  if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
+ if(SH.wk){SH.wk=null;saveShared();}
  rollover();apply();clock();refreshAll();status();paintProfile();
 },function(){clock();refreshAll();status();}).then(function(){
  return loadWeekFeed();
