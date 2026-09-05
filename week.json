@@ -1,6 +1,6 @@
 {
   "wkKey": "2026-09-10",
-  "updated": "2026-09-05T08:30:00Z",
+  "updated": "2026-09-05T12:00:00Z",
   "current": {
     "week_label": "3 – 9 September 2026",
     "headline": "Business Rivalries opens with Executive week — a free office and $1,000,000 for shifting cargo.",
@@ -84,33 +84,154 @@
         "tag": "GTA+ only"
       }
     ],
+    "discounts_lead": "All 17 discounted vehicles, biggest saving first, plus the free office. The Cyclone II at 70% off is the only deep cut — everything else is 30% off.",
     "discounts": [
       {
         "name": "Arcadius Business Center",
-        "price": "Free this week"
+        "meta": "Executive Office · Dynasty 8 Executive",
+        "off": "Free",
+        "was": "$2,250,000",
+        "now": "Free",
+        "save": "Saves $2,250,000"
       },
       {
         "name": "Coil Cyclone II",
-        "price": "70% off"
+        "meta": "Super · Legendary Motorsport",
+        "off": "70% off",
+        "was": "$2,250,000",
+        "now": "$675,000",
+        "save": "Saves $1,575,000"
       },
       {
-        "name": "Karin S95",
-        "price": "70% off"
+        "name": "HVY Insurgent Pick-Up",
+        "meta": "Off-Road · Warstock Cache & Carry",
+        "off": "30% off",
+        "was": "$1,795,500",
+        "now": "$1,256,850",
+        "save": "Saves $538,650"
       },
       {
-        "name": "Pfister Astron Custom",
-        "price": "70% off"
+        "name": "Übermacht Rhinehart",
+        "meta": "Sedan · Legendary Motorsport",
+        "off": "30% off",
+        "was": "$1,598,000",
+        "now": "$1,118,600",
+        "save": "Saves $479,400"
       },
       {
-        "name": "Imponte Arbiter GT",
-        "price": "70% off"
+        "name": "Dewbauchee Vagner",
+        "meta": "Super · Premium Deluxe showroom",
+        "off": "30% off",
+        "was": "$1,535,000",
+        "now": "$1,074,500",
+        "save": "Saves $460,500"
       },
       {
-        "name": "Thirteen more vehicles",
-        "price": "Up to 70% off"
+        "name": "Ocelot Jugular",
+        "meta": "Sports · Car Meet test ride",
+        "off": "30% off",
+        "was": "$1,225,000",
+        "now": "$857,500",
+        "save": "Saves $367,500"
+      },
+      {
+        "name": "Declasse Yosemite 1500",
+        "meta": "Off-Road · Southern S.A. Super Autos",
+        "off": "30% off",
+        "was": "$1,205,000",
+        "now": "$843,500",
+        "save": "Saves $361,500"
+      },
+      {
+        "name": "Western Co. Seabreeze",
+        "meta": "Plane · Elitás Travel",
+        "off": "30% off",
+        "was": "$1,130,500",
+        "now": "$791,350",
+        "save": "Saves $339,150"
+      },
+      {
+        "name": "Mammoth Squaddie",
+        "meta": "SUV · Warstock Cache & Carry",
+        "off": "30% off",
+        "was": "$1,130,000",
+        "now": "$791,000",
+        "save": "Saves $339,000"
+      },
+      {
+        "name": "Coil Cyclone",
+        "meta": "Super · Premium Deluxe showroom",
+        "off": "30% off",
+        "was": "$1,034,000",
+        "now": "$723,800",
+        "save": "Saves $310,200"
+      },
+      {
+        "name": "Karin 190z",
+        "meta": "Sports Classic · Premium Deluxe showroom",
+        "off": "30% off",
+        "was": "$900,000",
+        "now": "$630,000",
+        "save": "Saves $270,000"
+      },
+      {
+        "name": "Överflöd Entity XF",
+        "meta": "Super · Premium Deluxe showroom",
+        "off": "30% off",
+        "was": "$795,000",
+        "now": "$556,500",
+        "save": "Saves $238,500"
+      },
+      {
+        "name": "Buckingham Maverick",
+        "meta": "Helicopter · Elitás Travel",
+        "off": "30% off",
+        "was": "$780,000",
+        "now": "$546,000",
+        "save": "Saves $234,000"
+      },
+      {
+        "name": "Vapid Dominator GTX",
+        "meta": "Muscle · Car Meet test ride",
+        "off": "30% off",
+        "was": "$725,000",
+        "now": "$507,500",
+        "save": "Saves $217,500"
+      },
+      {
+        "name": "Grotti Cheetah",
+        "meta": "Super · Premium Deluxe showroom",
+        "off": "30% off",
+        "was": "$650,000",
+        "now": "$455,000",
+        "save": "Saves $195,000"
+      },
+      {
+        "name": "Lampadati Novak",
+        "meta": "SUV · Premium Test Ride",
+        "off": "30% off",
+        "was": "$608,000",
+        "now": "$425,600",
+        "save": "Saves $182,400"
+      },
+      {
+        "name": "Dewbauchee Specter",
+        "meta": "Sports · Legendary Motorsport",
+        "off": "30% off",
+        "was": "$599,000",
+        "now": "$419,300",
+        "save": "Saves $179,700"
+      },
+      {
+        "name": "Vapid Ellie",
+        "meta": "Muscle · Southern S.A. Super Autos",
+        "off": "30% off",
+        "was": "$565,000",
+        "now": "$395,500",
+        "save": "Saves $169,500"
       }
     ],
-    "gun_van": "Gun Van moves daily at 07:00 UK time. 10% under list for everyone, 20% under for GTA+. Stock rotates each Thursday — check the featured weapon in game."
+    "gun_van": "Gun Van moves daily at 07:00 UK time. This week's feature is the Precision Rifle at 50% off, $225,000 down from $450,000. Everything else is 10% under list, 20% under for GTA+. Stock rotates each Thursday."
   },
   "history": [
     {
