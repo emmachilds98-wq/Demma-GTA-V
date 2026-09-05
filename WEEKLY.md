@@ -25,8 +25,8 @@ signal that `week.json` needs a manual update.
     "headline":   "One sentence, the thing worth knowing.",
     "summary":    "Two sentences on what to actually do.",
     "source_url": "https://www.rockstargames.com/newswire",
-    "bonuses":   [{"title": "", "detail": "", "tag": ""}],
-    "claims":    [{"title": "", "detail": "", "tag": ""}],
+    "bonuses":   [{"title": "", "detail": "", "payout": "", "rp": "", "tag": ""}],
+    "claims":    [{"title": "", "detail": "", "payout": "", "tag": ""}],
     "discounts": [{"name": "", "price": ""}],
     "gun_van":   "One line."
   },
@@ -41,6 +41,23 @@ stale. For the week of 3–9 September, `wkKey` is `2026-09-10`.
 `tag` is the small coloured badge. Keep it to two or three words (`All week`,
 `Free $1M`, `GTA+ only`, `Weekend`) or leave it empty. `stamp` is the reset
 timestamp in epoch milliseconds; only the ordering matters.
+
+`payout` is the green money pill and `rp` the blue one next to it. Both are
+optional — leave them out rather than guess. What goes in `payout` depends on
+the kind of item:
+
+| Kind | Give | Example |
+| --- | --- | --- |
+| Repeatable activity | a rate | `~$80–140k a run` |
+| A sale or a business run | what you clear | `~$1.55M clear` |
+| One-off reward | the total | `$1,000,000` |
+| Free item | what it normally costs | `Worth $2,250,000` |
+| Boosted but base pay varies | say so | `Varies by job` |
+
+**Order both arrays best first.** The cards say "best first" on them, so the
+order is a recommendation, not a list. Lead with whatever earns most per hour
+of actually playing, not whatever has the biggest multiplier — a 4X on
+something that pays $5,000 loses to a 2X on something that pays $200,000.
 
 ## Updating it by hand
 

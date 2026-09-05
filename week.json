@@ -1,62 +1,71 @@
 {
   "wkKey": "2026-09-10",
-  "updated": "2026-09-05T08:00:00Z",
+  "updated": "2026-09-05T08:30:00Z",
   "current": {
     "week_label": "3 – 9 September 2026",
     "headline": "Business Rivalries opens with Executive week — a free office and $1,000,000 for shifting cargo.",
-    "summary": "Claim the free Arcadius office first, then run Special Cargo. Selling $1,000,000 of it pays a $1,000,000 challenge bonus on top, and staff sourcing is at double speed all week.",
+    "summary": "Ordered best first. The cargo run is the week: a full warehouse sells for about $2.22M and the challenge pays another $1,000,000 on top. Claim the free office first — it unlocks both.",
     "source_url": "https://www.rockstargames.com/newswire",
     "bonuses": [
       {
-        "title": "4X GTA$ and RP — Special Vehicle Work",
-        "detail": "The headline multiplier. Needs an Executive Office and a Vehicle Warehouse.",
-        "tag": "All week"
-      },
-      {
-        "title": "3X GTA$ and RP — Community Mission Series",
-        "detail": "Rotating playlist, no property needed.",
-        "tag": "All week"
-      },
-      {
         "title": "Special Cargo staff sourcing at double speed",
-        "detail": "Crates arrive twice as fast, which is what makes the $1M challenge realistic in one session.",
+        "detail": "The week's real earner. Sourcing at double speed fills a large warehouse in roughly half the usual time. All 111 crates sell for about $2,220,000, near enough $1,554,000 clear once you account for the buy cost, and about half as much again if you sell from a public session.",
+        "payout": "~$1.55M clear",
         "tag": "All week"
       },
       {
-        "title": "2X GTA$ and RP — Export Mixed Goods",
-        "detail": "Run from the assistant in your Executive Office.",
+        "title": "4X GTA$ and RP — Special Vehicle Work",
+        "detail": "Best rate per minute on the list. Base pay is about $20–35k a mission, so 4X lands between $80k and $140k. Needs an Executive Office and a Vehicle Warehouse, and four Vehicle Cargo missions to unlock it.",
+        "payout": "~$80–140k a run",
         "tag": "All week"
       },
       {
         "title": "2X GTA$ and RP — Madrazo Hits",
-        "detail": "From the Agency. Quick filler between cargo buys.",
+        "detail": "From the Agency. $20,000 base, $30,000 if you kill the target with Madrazo's weapon of choice, doubled this week. Good filler while crate buys are on cooldown.",
+        "payout": "~$40–60k a hit",
+        "rp": "1,000 RP",
+        "tag": "All week"
+      },
+      {
+        "title": "2X GTA$ and RP — Export Mixed Goods",
+        "detail": "Run from the assistant in your Executive Office. Worth doing on the way past rather than making a trip for.",
+        "tag": "All week"
+      },
+      {
+        "title": "3X GTA$ and RP — Community Mission Series",
+        "detail": "Player-made jobs, no property needed. Base pay differs job to job, so treat 3X as a bonus on something you fancied playing rather than a target to grind.",
+        "payout": "Varies by job",
         "tag": "All week"
       },
       {
         "title": "2X GTA$ and RP — Diamond Adversary Series",
-        "detail": "Only worth it if you fancy the mode.",
+        "detail": "Lowest value on the list. Only if you fancy the mode.",
         "tag": "All week"
       }
     ],
     "claims": [
       {
-        "title": "Free Arcadius Business Center office",
-        "detail": "Claim it through Dynasty 8 Executive before 9 September. Free, and it unlocks the 4X Special Vehicle Work above.",
-        "tag": "Free office"
-      },
-      {
         "title": "Weekly Challenge — sell $1,000,000 of Special Cargo",
-        "detail": "Pays a 10X reward of $1,000,000 plus the Yeti x LS Customs Tracksuit. Biggest free money on the board this week.",
+        "detail": "A 10X reward of $1,000,000 plus the Yeti x LS Customs Tracksuit, and it stacks on top of the sale itself. A full 111-crate warehouse clears the target in one sale.",
+        "payout": "$1,000,000",
         "tag": "Free $1M"
       },
       {
+        "title": "Free Arcadius Business Center office",
+        "detail": "Free through Dynasty 8 Executive before 9 September, normally $2,250,000. Claim it first — it is what unlocks the 4X Special Vehicle Work and the cargo challenge above.",
+        "payout": "Worth $2,250,000",
+        "tag": "Free office"
+      },
+      {
         "title": "Free Penaud La Coureuse with a free HSW upgrade",
-        "detail": "Finish at least one Weekly Challenge across the next three weeks. The car is delivered when you play between 24 and 30 September.",
+        "detail": "Finish at least one Weekly Challenge across the next three weeks. Delivered when you play between 24 and 30 September. Normally $1,990,000.",
+        "payout": "Worth $1,990,000",
         "tag": "Free car"
       },
       {
         "title": "Lucky Wheel podium — Declasse Impaler SZ",
-        "detail": "One spin per day at the Diamond Casino.",
+        "detail": "One spin per day at the Diamond Casino. Normally $1,280,000 at Southern S.A. Super Autos.",
+        "payout": "Worth $1,280,000",
         "tag": "Podium car"
       },
       {
@@ -66,7 +75,7 @@
       },
       {
         "title": "Business Battle crates pay guaranteed clothing",
-        "detail": "Deliver crates for the Six Figure Tee, Ride or Die Tee, red and white Ammu-Nation Cap or Bourgeoix Tee.",
+        "detail": "Cosmetic only — Six Figure Tee, Ride or Die Tee, red and white Ammu-Nation Cap or Bourgeoix Tee.",
         "tag": ""
       },
       {
@@ -76,12 +85,30 @@
       }
     ],
     "discounts": [
-      {"name": "Arcadius Business Center", "price": "Free this week"},
-      {"name": "Coil Cyclone II", "price": "70% off"},
-      {"name": "Karin S95", "price": "70% off"},
-      {"name": "Pfister Astron Custom", "price": "70% off"},
-      {"name": "Imponte Arbiter GT", "price": "70% off"},
-      {"name": "Thirteen more vehicles", "price": "Up to 70% off"}
+      {
+        "name": "Arcadius Business Center",
+        "price": "Free this week"
+      },
+      {
+        "name": "Coil Cyclone II",
+        "price": "70% off"
+      },
+      {
+        "name": "Karin S95",
+        "price": "70% off"
+      },
+      {
+        "name": "Pfister Astron Custom",
+        "price": "70% off"
+      },
+      {
+        "name": "Imponte Arbiter GT",
+        "price": "70% off"
+      },
+      {
+        "name": "Thirteen more vehicles",
+        "price": "Up to 70% off"
+      }
     ],
     "gun_van": "Gun Van moves daily at 07:00 UK time. 10% under list for everyone, 20% under for GTA+. Stock rotates each Thursday — check the featured weapon in game."
   },
@@ -94,14 +121,35 @@
         "headline": "3X on the Community Mission Series, plus two free-car chances.",
         "summary": "A quieter week between events. Best value was the Community Series multiplier and a couple of claimable cars.",
         "bonuses": [
-          {"title": "3X GTA$ and RP — Community Mission Series", "detail": "All week.", "tag": "All week"}
+          {
+            "title": "3X GTA$ and RP — Community Mission Series",
+            "detail": "All week.",
+            "tag": "All week"
+          }
         ],
         "claims": [
-          {"title": "Podium Vehicle — Übermacht Cypher", "detail": "Daily Casino spin. Normally $1,550,000 at Legendary Motorsport.", "tag": ""},
-          {"title": "Claimable Pfister Comet S2 Cabrio", "detail": "Free this week — check the in-game conditions.", "tag": "Free car"},
-          {"title": "Chance to unlock the Karin Boor for free", "detail": "Claimable this week — check the in-game conditions.", "tag": "Free car"}
+          {
+            "title": "Podium Vehicle — Übermacht Cypher",
+            "detail": "Daily Casino spin. Normally $1,550,000 at Legendary Motorsport.",
+            "tag": ""
+          },
+          {
+            "title": "Claimable Pfister Comet S2 Cabrio",
+            "detail": "Free this week — check the in-game conditions.",
+            "tag": "Free car"
+          },
+          {
+            "title": "Chance to unlock the Karin Boor for free",
+            "detail": "Claimable this week — check the in-game conditions.",
+            "tag": "Free car"
+          }
         ],
-        "discounts": [{"name": "Selected vehicles and properties", "price": "Up to 60% off"}],
+        "discounts": [
+          {
+            "name": "Selected vehicles and properties",
+            "price": "Up to 60% off"
+          }
+        ],
         "gun_van": ""
       }
     },
@@ -113,13 +161,33 @@
         "headline": "Panther Statue guaranteed on Cayo Perico, plus a free $1,000,000 for logging in.",
         "summary": "Second week of the Summer Heist Event. Guaranteed top-value Cayo Perico loot and a big login giveaway.",
         "bonuses": [
-          {"title": "Weekly completion bonuses reset", "detail": "Bigger first-time payout across every Heist and Contact Mission except Cayo Perico.", "tag": ""}
+          {
+            "title": "Weekly completion bonuses reset",
+            "detail": "Bigger first-time payout across every Heist and Contact Mission except Cayo Perico.",
+            "tag": ""
+          }
         ],
         "claims": [
-          {"title": "Panther Statue guaranteed — Cayo Perico Heist Finale", "detail": "100% spawn chance on your first completion this week. Also unlocks the Panther Tour Jacket.", "tag": "Guaranteed"},
-          {"title": "End of Summer Giveaway", "detail": "Log in between 6–12 August for $1,000,000 within 72 hours, plus two cosmetics.", "tag": "Free $1M"},
-          {"title": "Cayo Perico Survival — three waves", "detail": "Noise Rockstar Logo Aged Tee plus $100,000.", "tag": ""},
-          {"title": "Assault on Cayo Perico and Cayo Perico Zombie Survival return", "detail": "Both pay bonus rewards this week.", "tag": ""}
+          {
+            "title": "Panther Statue guaranteed — Cayo Perico Heist Finale",
+            "detail": "100% spawn chance on your first completion this week. Also unlocks the Panther Tour Jacket.",
+            "tag": "Guaranteed"
+          },
+          {
+            "title": "End of Summer Giveaway",
+            "detail": "Log in between 6–12 August for $1,000,000 within 72 hours, plus two cosmetics.",
+            "tag": "Free $1M"
+          },
+          {
+            "title": "Cayo Perico Survival — three waves",
+            "detail": "Noise Rockstar Logo Aged Tee plus $100,000.",
+            "tag": ""
+          },
+          {
+            "title": "Assault on Cayo Perico and Cayo Perico Zombie Survival return",
+            "detail": "Both pay bonus rewards this week.",
+            "tag": ""
+          }
         ],
         "discounts": [],
         "gun_van": ""
@@ -133,15 +201,43 @@
         "headline": "Brand Wars kicks off — 4X on Hotring Circuit and Freemode, big Twitch Drops running.",
         "summary": "First week of the two-week Sprunk vs eCola event. Free branded gear just for logging in, plus reset completion bonuses.",
         "bonuses": [
-          {"title": "4X GTA$ and RP — Hotring Circuit Series and Freemode Events", "detail": "Runs through 26 August.", "tag": "To 26 Aug"},
-          {"title": "3X GTA$ and RP — Odd Jobs and Community Series", "detail": "Paper Route, Firefighter, Forklift Operator, QuickiePharm and Safeguard Deliveries.", "tag": ""},
-          {"title": "Heist and Mission completion bonuses reset", "detail": "Bigger first-time payout across a range of Heists and Contact Missions.", "tag": ""}
+          {
+            "title": "4X GTA$ and RP — Hotring Circuit Series and Freemode Events",
+            "detail": "Runs through 26 August.",
+            "tag": "To 26 Aug"
+          },
+          {
+            "title": "3X GTA$ and RP — Odd Jobs and Community Series",
+            "detail": "Paper Route, Firefighter, Forklift Operator, QuickiePharm and Safeguard Deliveries.",
+            "tag": ""
+          },
+          {
+            "title": "Heist and Mission completion bonuses reset",
+            "detail": "Bigger first-time payout across a range of Heists and Contact Missions.",
+            "tag": ""
+          }
         ],
         "claims": [
-          {"title": "Weekly Challenge — three Business Battles", "detail": "Impotent Rage Sweatsuit plus a 2.5X reward of $250,000.", "tag": "Free $250k"},
-          {"title": "Free Declasse Hotring Sabre", "detail": "Sprunk x eCola livery and branded plates. Log in any time through 26 August.", "tag": "Free car"},
-          {"title": "Free Sprunk and eCola bodysuits", "detail": "Clothing stores around the city, for the event's duration.", "tag": ""},
-          {"title": "Brand Wars Twitch Drops begin", "detail": "Link Twitch and Rockstar accounts, pick a side. Up to $2,000,000 total through 26 August.", "tag": ""}
+          {
+            "title": "Weekly Challenge — three Business Battles",
+            "detail": "Impotent Rage Sweatsuit plus a 2.5X reward of $250,000.",
+            "tag": "Free $250k"
+          },
+          {
+            "title": "Free Declasse Hotring Sabre",
+            "detail": "Sprunk x eCola livery and branded plates. Log in any time through 26 August.",
+            "tag": "Free car"
+          },
+          {
+            "title": "Free Sprunk and eCola bodysuits",
+            "detail": "Clothing stores around the city, for the event's duration.",
+            "tag": ""
+          },
+          {
+            "title": "Brand Wars Twitch Drops begin",
+            "detail": "Link Twitch and Rockstar accounts, pick a side. Up to $2,000,000 total through 26 August.",
+            "tag": ""
+          }
         ],
         "discounts": [],
         "gun_van": ""
@@ -155,17 +251,50 @@
         "headline": "Brand Wars finale — 5X GTA$ and RP on VIP Work, plus a reset Kortz Center bonus.",
         "summary": "Second half of the two-week Brand Wars event. Big VIP Work weekend, Kortz Center resets with a no-death bonus, and the Warden goes on general sale.",
         "bonuses": [
-          {"title": "5X GTA$ and RP — VIP Work", "detail": "Weekend only, 21–23 August.", "tag": "Weekend"},
-          {"title": "4X GTA$ and RP — Hotring Circuit Series and select Freemode", "detail": "Runs the full week.", "tag": "All week"},
-          {"title": "Kortz Center Heist bonus reset", "detail": "New Primary Targets. A no-death completion adds an extra $400,000.", "tag": ""}
+          {
+            "title": "5X GTA$ and RP — VIP Work",
+            "detail": "Weekend only, 21–23 August.",
+            "tag": "Weekend"
+          },
+          {
+            "title": "4X GTA$ and RP — Hotring Circuit Series and select Freemode",
+            "detail": "Runs the full week.",
+            "tag": "All week"
+          },
+          {
+            "title": "Kortz Center Heist bonus reset",
+            "detail": "New Primary Targets. A no-death completion adds an extra $400,000.",
+            "tag": ""
+          }
         ],
         "claims": [
-          {"title": "Weekly Challenge — win three Races", "detail": "Princess Racing Tracksuit plus a 2.5X reward of $250,000.", "tag": "Free $250k"},
-          {"title": "Gallivanter Warden now on general sale", "detail": "$1,597,500 at Legendary Motorsport.", "tag": ""},
-          {"title": "FIB Priority File — The Brute Force File", "detail": "Pays more than the standard files.", "tag": ""},
-          {"title": "Brand Wars Twitch Drops close out", "detail": "Link Twitch and Rockstar accounts. Up to $2,000,000 total across the full event.", "tag": ""}
+          {
+            "title": "Weekly Challenge — win three Races",
+            "detail": "Princess Racing Tracksuit plus a 2.5X reward of $250,000.",
+            "tag": "Free $250k"
+          },
+          {
+            "title": "Gallivanter Warden now on general sale",
+            "detail": "$1,597,500 at Legendary Motorsport.",
+            "tag": ""
+          },
+          {
+            "title": "FIB Priority File — The Brute Force File",
+            "detail": "Pays more than the standard files.",
+            "tag": ""
+          },
+          {
+            "title": "Brand Wars Twitch Drops close out",
+            "detail": "Link Twitch and Rockstar accounts. Up to $2,000,000 total across the full event.",
+            "tag": ""
+          }
         ],
-        "discounts": [{"name": "Emperor ETR1", "price": "Discounted this week"}],
+        "discounts": [
+          {
+            "name": "Emperor ETR1",
+            "price": "Discounted this week"
+          }
+        ],
         "gun_van": ""
       }
     },
@@ -177,23 +306,72 @@
         "headline": "Auto Shop Robbery Contracts pay double all week.",
         "summary": "Everything else boosted was racing. Contracts were the money, with a flat $100k drift challenge alongside.",
         "bonuses": [
-          {"title": "2X GTA$, RP and Car Meet Rep — Auto Shop Robbery Contracts", "detail": "The only real money on the boosted list. Back-to-back contracts ran near $700k an hour.", "tag": "All week"},
-          {"title": "3X GTA$ and RP — Random Transform Races", "detail": "Known Unknowns and Unknown Unknowns playlists. Five new races added.", "tag": "All week"},
-          {"title": "2X GTA$ and RP — Drift Races", "detail": "Doubled Car Meet Rep too, which sped up the Prize Ride.", "tag": "All week"},
-          {"title": "6X GTA$ and RP — select Drift and Transform Races", "detail": "Weekend window only, 28–30 August.", "tag": "Weekend"}
+          {
+            "title": "2X GTA$, RP and Car Meet Rep — Auto Shop Robbery Contracts",
+            "detail": "The only real money on the boosted list. Back-to-back contracts ran near $700k an hour.",
+            "tag": "All week"
+          },
+          {
+            "title": "3X GTA$ and RP — Random Transform Races",
+            "detail": "Known Unknowns and Unknown Unknowns playlists. Five new races added.",
+            "tag": "All week"
+          },
+          {
+            "title": "2X GTA$ and RP — Drift Races",
+            "detail": "Doubled Car Meet Rep too, which sped up the Prize Ride.",
+            "tag": "All week"
+          },
+          {
+            "title": "6X GTA$ and RP — select Drift and Transform Races",
+            "detail": "Weekend window only, 28–30 August.",
+            "tag": "Weekend"
+          }
         ],
         "claims": [
-          {"title": "Weekly Challenge — three Drift Races for $100,000", "detail": "You only needed to take part; winning was not required.", "tag": "Free $100k"},
-          {"title": "Free Glitch Camo drift livery", "detail": "Finish a Drift Race in the Übermacht Cypher. The livery arrives within 72 hours.", "tag": ""},
-          {"title": "Lucky Wheel podium — Karin Sultan Classic", "detail": "Normally $1,718,000, or a $1,288,500 trade price for finishing the Diamond Casino Heist finale as leader with it as the getaway car.", "tag": "Worth $1.72M"},
-          {"title": "Prize Ride — Dinka Veto Classic", "detail": "Top 5 in the Car Meet Series for four consecutive days.", "tag": ""},
-          {"title": "FIB Priority File — The Fine Art File", "detail": "The boosted weekly FIB File.", "tag": ""},
-          {"title": "GTA+ — free Gallivanter Warden", "detail": "Also 2X FIB Files and 60% off the Garment Factory.", "tag": "GTA+ only"}
+          {
+            "title": "Weekly Challenge — three Drift Races for $100,000",
+            "detail": "You only needed to take part; winning was not required.",
+            "tag": "Free $100k"
+          },
+          {
+            "title": "Free Glitch Camo drift livery",
+            "detail": "Finish a Drift Race in the Übermacht Cypher. The livery arrives within 72 hours.",
+            "tag": ""
+          },
+          {
+            "title": "Lucky Wheel podium — Karin Sultan Classic",
+            "detail": "Normally $1,718,000, or a $1,288,500 trade price for finishing the Diamond Casino Heist finale as leader with it as the getaway car.",
+            "tag": "Worth $1.72M"
+          },
+          {
+            "title": "Prize Ride — Dinka Veto Classic",
+            "detail": "Top 5 in the Car Meet Series for four consecutive days.",
+            "tag": ""
+          },
+          {
+            "title": "FIB Priority File — The Fine Art File",
+            "detail": "The boosted weekly FIB File.",
+            "tag": ""
+          },
+          {
+            "title": "GTA+ — free Gallivanter Warden",
+            "detail": "Also 2X FIB Files and 60% off the Garment Factory.",
+            "tag": "GTA+ only"
+          }
         ],
         "discounts": [
-          {"name": "Annis ZR350 (30% off)", "price": "$1,130,500"},
-          {"name": "Cheval Taipan (30% off)", "price": "$1,386,000"},
-          {"name": "Vapid Flash GT (30% off)", "price": "$1,172,500"}
+          {
+            "name": "Annis ZR350 (30% off)",
+            "price": "$1,130,500"
+          },
+          {
+            "name": "Cheval Taipan (30% off)",
+            "price": "$1,386,000"
+          },
+          {
+            "name": "Vapid Flash GT (30% off)",
+            "price": "$1,172,500"
+          }
         ],
         "gun_van": "30% off the Military Rifle. Stock included the Railgun, Grenade Launcher, Heavy Pistol, Crowbar, Pipe Bombs, Tear Gas and Grenades."
       }
