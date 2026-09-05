@@ -27,7 +27,8 @@ signal that `week.json` needs a manual update.
     "source_url": "https://www.rockstargames.com/newswire",
     "bonuses":   [{"title": "", "detail": "", "payout": "", "rp": "", "tag": ""}],
     "claims":    [{"title": "", "detail": "", "payout": "", "tag": ""}],
-    "discounts": [{"name": "", "price": ""}],
+    "discounts_lead": "One line above the list.",
+    "discounts": [{"name": "", "meta": "", "off": "", "was": "", "now": "", "save": ""}],
     "gun_van":   "One line."
   },
   "history": [{"wkKey": "", "stamp": 0, "wk": { /* same as current */ }}]
@@ -53,6 +54,25 @@ the kind of item:
 | One-off reward | the total | `$1,000,000` |
 | Free item | what it normally costs | `Worth $2,250,000` |
 | Boosted but base pay varies | say so | `Varies by job` |
+
+`discounts` is the Shopping card. **List every discounted vehicle** — the whole
+week's sale, not a sample with "and thirteen more" on the end. One entry each,
+biggest saving first, with the free property or office at the top if there is
+one.
+
+| Field | Is | Example |
+| --- | --- | --- |
+| `name` | Manufacturer and model | `Dewbauchee Vagner` |
+| `meta` | Class and where you buy it | `Super · Premium Deluxe showroom` |
+| `off` | The cut, as the amber badge | `30% off`, `Free` |
+| `was` | Full price, shown struck through | `$1,535,000` |
+| `now` | What you pay, the green number | `$1,074,500` |
+| `save` | The difference, spelled out | `Saves $460,500` |
+
+Only `name` is required; a row with just `name` and `now` renders fine, and
+archived weeks written under the old `{"name", "price"}` shape still display.
+Check the arithmetic — `was` minus `now` has to equal `save`, and the percentage
+has to agree with both.
 
 **Order both arrays best first.** The cards say "best first" on them, so the
 order is a recommendation, not a list. Lead with whatever earns most per hour
