@@ -1,5 +1,5 @@
-const CACHE_NAME = "demma-gta-ops-v46";
-const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest", "./assets/los-santos-ops-hero.jpg", "./assets/demma-ops-icon-180.png"];
+const CACHE_NAME = "demma-gta-ops-v47";
+const APP_SHELL = ["./", "./index.html", "./week.json", "./manifest.webmanifest", "./assets/los-santos-ops-hero.jpg", "./assets/demma-ops-icon-180.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)));
@@ -13,6 +13,18 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  // The weekly feed has to be network-first or a cached copy would pin the app
+  // to whichever week it first saw. Cache is only the offline fallback.
+  if (new URL(event.request.url).pathname.endsWith("/week.json")) {
+    // Stored under the bare path, not the cache-busting ?v= the page adds, so
+    // the offline copy is one entry rather than one per visit.
+    event.respondWith(fetch(event.request).then(response => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put("./week.json", copy));
+      return response;
+    }).catch(() => caches.match("./week.json")));
+    return;
+  }
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
     const copy = response.clone();
     caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
