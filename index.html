@@ -429,6 +429,7 @@ body:has(#cy-more-cellar1:checked) #cy-extra-cellarb,body:has(#cy-more-office1:c
 .settings-appearance .steps{margin:8px 0 0;padding-left:20px;font-size:13px;color:var(--text)}
 .settings-appearance .steps li{margin-bottom:5px}
 .settings-appearance .steps li:last-child{margin-bottom:0}
+.wk-stale{color:var(--amber)!important;font-weight:600;border-left:2px solid var(--amber);padding-left:10px}
 .note{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line2);padding-left:12px;margin:16px 0}
 .kv{display:grid;grid-template-columns:1fr auto;gap:4px 14px;font-size:13px}
 .kv .k{color:var(--muted)}.kv .v{font-variant-numeric:tabular-nums}
@@ -643,20 +644,20 @@ body:has(#own-arcade:not(:checked)) .heist-casino,body:has(#own-facility:not(:ch
 <div class="copy"><p class="eyebrow">Emma &amp; Dave · crew command</p><h1>The Demma<br><em>Ops Centre</em></h1><span class="crew"><i></i> GTA Online · PC Legacy</span></div>
 </section>
 <section class="panel" id="p-week" data-name="This week">
-<div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Auto Shop Robbery Contracts pay double all week.</h2><p id="wk-sub">Everything else boosted is racing. Run contracts for the money, take the flat $100k drift challenge, and get the weekly first-run heists done before anything else.</p></div>
+<div class="hero"><div class="clock js-only" id="clock"></div><h2 id="wk-head">Business Rivalries opens with Executive week — a free office and $1,000,000 for shifting cargo.</h2><p id="wk-sub">Claim the free Arcadius office first, then run Special Cargo. Selling $1,000,000 of it pays a $1,000,000 challenge bonus on top, and staff sourcing is at double speed all week.</p></div>
 <div class="card ready-now-card js-only" id="ready-now-card" style="margin:14px 0"><div class="head"><h3>Ready right now</h3><span class="sub">heists off cooldown</span></div><div class="pad" id="ready-now-body"><span class="sub">Checking…</span></div></div>
-<div class="bar"><span class="sub" id="wk-label">27 August – 2 September 2026</span><a class="sub" style="margin-left:auto" href="https://www.rockstargames.com/newswire/article/o3921k3734ok35/take-in-triple-rewards-shifting-shape-in-new-random-transform-races" target="_blank" rel="noopener">Official event update ↗</a></div>
-<div class="sub" id="wk-stamp" style="margin-top:6px">Refreshed for the week of 27 August 2026</div>
+<div class="bar"><span class="sub" id="wk-label">3 – 9 September 2026</span><a class="sub" id="wk-source" style="margin-left:auto" href="https://www.rockstargames.com/newswire" target="_blank" rel="noopener">Official Newswire ↗</a></div>
+<div class="sub" id="wk-stamp" style="margin-top:6px">Checking for this week’s update…</div>
 <details class="bk js-only" id="wk-hist" style="margin-top:12px"><summary>Previous weeks</summary>
 <div class="pad">
 <select class="histpick"><option value="">Nothing saved yet — refreshes get archived here</option></select>
 <div id="hist-view"></div>
 </div>
 </details>
-<div class="grid two"><div class="card"><div class="head"><h3>Boosted payouts</h3></div><div id="l-bonus"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb0"><span class="txt"><span class="t">2X GTA$, RP and Car Meet Rep — Auto Shop Robbery Contracts<span class="badge b-week">All week</span></span><span class="d">The only real money on the boosted list. Back-to-back contracts run near $700k an hour.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb1"><span class="txt"><span class="t">3X GTA$ and RP — Random Transform Races<span class="badge b-week">All week</span></span><span class="d">Known Unknowns and Unknown Unknowns playlists. Five new races added this week.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb2"><span class="txt"><span class="t">2X GTA$ and RP — Drift Races<span class="badge b-week">All week</span></span><span class="d">Doubles Car Meet Rep too, which speeds up the Prize Ride.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb3"><span class="txt"><span class="t">6X GTA$ and RP — select Drift and Transform Races<span class="badge b-dead">Ended</span></span><span class="d">Weekend window only, 28–30 August.</span></span></label></div></div></div>
-<div class="card"><div class="head"><h3>Claim before Thursday</h3><span class="sub">free or limited-time</span></div><div id="l-claim"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc0"><span class="txt"><span class="t">Weekly Challenge — three Drift Races for $100,000<span class="badge b-hot">Free $100k</span></span><span class="d">You only need to take part; winning is not required.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc1"><span class="txt"><span class="t">Free Glitch Camo drift livery</span><span class="d">Finish a Drift Race in the Übermacht Cypher. The livery arrives within 72 hours.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc2"><span class="txt"><span class="t">Lucky Wheel podium — Karin Sultan Classic<span class="badge b-hot">Worth $1.72M</span></span><span class="d">One spin per day at the Diamond Casino. Normally $1,718,000 — or unlock it at a $1,288,500 trade price by finishing the Diamond Casino Heist finale as leader with it as your getaway car.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc3"><span class="txt"><span class="t">Prize Ride — Dinka Veto Classic</span><span class="d">Place Top 5 in the Car Meet Series for four consecutive days.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc4"><span class="txt"><span class="t">FIB Priority File — The Fine Art File</span><span class="d">The boosted weekly FIB File.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc6"><span class="txt"><span class="t">GTA+ — free Gallivanter Warden<span class="badge b-week">GTA+ only</span></span><span class="d">Also 2X FIB Files and 60% off the Garment Factory through 9 September.</span></span></label></div></div></div></div>
+<div class="grid two"><div class="card"><div class="head"><h3>Boosted payouts</h3></div><div id="l-bonus"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb0"><span class="txt"><span class="t">4X GTA$ and RP — Special Vehicle Work<span class="badge b-week">All week</span></span><span class="d">The headline multiplier. Needs an Executive Office and a Vehicle Warehouse.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb1"><span class="txt"><span class="t">3X GTA$ and RP — Community Mission Series<span class="badge b-week">All week</span></span><span class="d">Rotating playlist, no property needed.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb2"><span class="txt"><span class="t">Special Cargo staff sourcing at double speed<span class="badge b-week">All week</span></span><span class="d">Crates arrive twice as fast, which is what makes the $1M challenge realistic in one session.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb3"><span class="txt"><span class="t">2X GTA$ and RP — Export Mixed Goods<span class="badge b-week">All week</span></span><span class="d">Run from the assistant in your Executive Office.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb4"><span class="txt"><span class="t">2X GTA$ and RP — Madrazo Hits<span class="badge b-week">All week</span></span><span class="d">From the Agency. Quick filler between cargo buys.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wb5"><span class="txt"><span class="t">2X GTA$ and RP — Diamond Adversary Series<span class="badge b-week">All week</span></span><span class="d">Only worth it if you fancy the mode.</span></span></label></div></div></div>
+<div class="card"><div class="head"><h3>Claim before Thursday</h3><span class="sub">free or limited-time</span></div><div id="l-claim"><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc0"><span class="txt"><span class="t">Free Arcadius Business Center office<span class="badge b-hot">Free office</span></span><span class="d">Claim it through Dynasty 8 Executive before 9 September. Free, and it unlocks the 4X Special Vehicle Work above.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc1"><span class="txt"><span class="t">Weekly Challenge — sell $1,000,000 of Special Cargo<span class="badge b-hot">Free $1M</span></span><span class="d">Pays a 10X reward of $1,000,000 plus the Yeti x LS Customs Tracksuit. Biggest free money on the board this week.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc2"><span class="txt"><span class="t">Free Penaud La Coureuse with a free HSW upgrade<span class="badge b-hot">Free car</span></span><span class="d">Finish at least one Weekly Challenge across the next three weeks. The car is delivered when you play between 24 and 30 September.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc3"><span class="txt"><span class="t">Lucky Wheel podium — Declasse Impaler SZ<span class="badge b-hot">Podium car</span></span><span class="d">One spin per day at the Diamond Casino.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc4"><span class="txt"><span class="t">Prize Ride — Woodlander<span class="badge b-hot">Prize Ride</span></span><span class="d">Won through the Car Meet Series, as usual.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc5"><span class="txt"><span class="t">Business Battle crates pay guaranteed clothing</span><span class="d">Deliver crates for the Six Figure Tee, Ride or Die Tee, red and white Ammu-Nation Cap or Bourgeoix Tee.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="wc6"><span class="txt"><span class="t">GTA+ — 2X on FIB Files and 3X on Drift Races<span class="badge b-hot">GTA+ only</span></span><span class="d">Plus 60% off the Garment Factory, all through 9 September.</span></span></label></div></div></div></div>
 <div class="grid two"><div class="card"><div class="head"><h3>Weekly resets, do these first</h3></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r1"><span class="txt"><span class="t">Kortz Center Heist — first run of the week</span><span class="d">$1,925,000 for the primary target on the first sale after the reset, before secondary loot. Biggest single payday you have — later sales the same week drop to $481,250 and cost a $100k setup fee.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r2"><span class="txt"><span class="t">Cluckin&#x27; Bell Farm Raid — first run</span><span class="d">About $600k for roughly 20 minutes.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r3"><span class="txt"><span class="t">Cayo Perico — target value and elite challenge reset</span><span class="d">Scope it before you commit to preps. The finale cooldown is 48 minutes if you run it together, 2 hours 24 minutes solo.</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r4"><span class="txt"><span class="t">Diamond Casino Heist — first completion bonus</span></span></label></div><div class="task"><label class="tick"><input type="checkbox" class="tickbox" id="r5"><span class="txt"><span class="t">Salvage Yard — three robberies back on the board</span></span></label></div></div>
-<div class="card"><div class="head"><h3>Shopping</h3></div><div class="pad" id="l-shop"><p class="sub" style="margin:0">No property or business discounts this week — just the three vehicles below, via the Vinewood Car Club.</p><p class="sub" style="margin:14px 0 4px"><b>30% off this week</b></p><div class="kv"><div class="k">Annis ZR350</div><div class="v"><span class="was">$1,615,000</span>$1,130,500</div><div class="k">Cheval Taipan</div><div class="v"><span class="was">$1,980,000</span>$1,386,000</div><div class="k">Vapid Flash GT</div><div class="v"><span class="was">$1,675,000</span>$1,172,500</div></div><p class="sub" style="margin:14px 0 4px">Also new in the showroom, full price</p><div class="kv"><div class="k">Invetero Coquette D5</div><div class="v">$1,211,000</div><div class="k">Obey I-Wagen</div><div class="v">$1,210,300</div><div class="k">RC Bandito</div><div class="v">$1,113,000</div><div class="k">Karin Technical Aqua</div><div class="v">$1,042,720</div><div class="k">Buckingham Howard NX-25</div><div class="v">$907,725</div><div class="k">Western Company Duster 300-H</div><div class="v">$714,000</div></div><p class="note">Gun Van moves daily. 30% off the Military Rifle. Stock includes the Railgun, Grenade Launcher, Heavy Pistol, Crowbar, Pipe Bombs, Tear Gas and Grenades.</p></div></div></div>
+<div class="card"><div class="head"><h3>Shopping</h3></div><div class="pad" id="l-shop"><p class="sub" style="margin:0"><b>The office is the deal this week.</b> The Arcadius Business Center is free through Dynasty 8 Executive, and it is what unlocks the 4X Special Vehicle Work.</p><p class="sub" style="margin:14px 0 4px"><b>70% off</b></p><div class="kv"><div class="k">Coil Cyclone II</div><div class="v">70% off</div><div class="k">Karin S95</div><div class="v">70% off</div><div class="k">Pfister Astron Custom</div><div class="v">70% off</div><div class="k">Imponte Arbiter GT</div><div class="v">70% off</div></div><p class="note">Seventeen vehicles are discounted in total, up to 70% off — the four above are the deepest cuts. Gun Van moves daily at 07:00 UK, 10% under list for everyone and 20% under for GTA+; its stock rotates each Thursday, so check the featured weapon in game.</p></div></div></div>
 <div class="card" style="margin-top:12px"><div class="head"><h3>Shared notes</h3><span class="sub">both of you see this</span></div><div class="pad"><textarea class="notes" id="cy-weeknotes" placeholder="Anything the refresh missed, or what you agreed to run tonight."></textarea></div></div>
 </section>
 <section class="panel" id="p-day" data-name="Daily run">
@@ -895,7 +896,7 @@ if(refreshBtn)refreshBtn.addEventListener("click",function(){
  }).catch(function(){location.reload();});
 });
 var PKEY_BASE="gta-ops-personal-v4-", PKEY="", SKEY="gta-ops-shared-v3", PLAYER_KEY="gta-ops-active-player-v1", activePlayer="emma";
-var BACKEND="memory", CANSHARE=false, S={v:{},day:"",week:"",seen:0}, SH={v:{},week:"",wk:null,stamp:0,history:[{wkKey:"2026-08-06",stamp:Date.UTC(2026,7,6,9,0,0),wk:{week_label:"30 July – 5 August 2026",headline:"3X on the Community Mission Series, plus two free-car chances.",summary:"A quieter week between events. Best value was the Community Series multiplier and a couple of claimable cars.",bonuses:[{title:"3X GTA$ and RP — Community Mission Series",detail:"All week.",tag:"All week"}],claims:[{title:"Podium Vehicle — Übermacht Cypher",detail:"Daily Casino spin. Normally $1,550,000 at Legendary Motorsport.",tag:""},{title:"Claimable Pfister Comet S2 Cabrio",detail:"Free this week — check the in-game conditions.",tag:"Free car"},{title:"Chance to unlock the Karin Boor for free",detail:"Claimable this week — check the in-game conditions.",tag:"Free car"}],discounts:[{name:"Selected vehicles and properties",price:"Up to 60% off"}],gun_van:""}},{wkKey:"2026-08-13",stamp:Date.UTC(2026,7,13,9,0,0),wk:{week_label:"6 – 12 August 2026",headline:"Panther Statue guaranteed on Cayo Perico, plus a free $1,000,000 for logging in.",summary:"Second week of the Summer Heist Event. Guaranteed top-value Cayo Perico loot and a big login giveaway.",bonuses:[{title:"Weekly completion bonuses reset",detail:"Bigger first-time payout across every Heist and Contact Mission except Cayo Perico.",tag:""}],claims:[{title:"Panther Statue guaranteed — Cayo Perico Heist Finale",detail:"100% spawn chance on your first completion this week. Also unlocks the Panther Tour Jacket.",tag:"Guaranteed"},{title:"End of Summer Giveaway",detail:"Log in between 6–12 August for $1,000,000 within 72 hours, plus two cosmetics.",tag:"Free $1M"},{title:"Cayo Perico Survival — three waves",detail:"Noise Rockstar Logo Aged Tee plus $100,000.",tag:""},{title:"Assault on Cayo Perico and Cayo Perico Zombie Survival return",detail:"Both pay bonus rewards this week.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-20",stamp:Date.UTC(2026,7,20,9,0,0),wk:{week_label:"13 – 19 August 2026",headline:"Brand Wars kicks off — 4X on Hotring Circuit and Freemode, big Twitch Drops running.",summary:"First week of the two-week Sprunk vs eCola event. Free branded gear just for logging in, plus reset completion bonuses.",bonuses:[{title:"4X GTA$ and RP — Hotring Circuit Series and Freemode Events",detail:"Runs through 26 August.",tag:"To 26 Aug"},{title:"3X GTA$ and RP — Odd Jobs and Community Series",detail:"Paper Route, Firefighter, Forklift Operator, QuickiePharm and Safeguard Deliveries.",tag:""},{title:"Heist and Mission completion bonuses reset",detail:"Bigger first-time payout across a range of Heists and Contact Missions.",tag:""}],claims:[{title:"Weekly Challenge — three Business Battles",detail:"Impotent Rage Sweatsuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Free Declasse Hotring Sabre",detail:"Sprunk x eCola livery and branded plates. Log in any time through 26 August.",tag:"Free car"},{title:"Free Sprunk and eCola bodysuits",detail:"Clothing stores around the city, for the event's duration.",tag:""},{title:"Brand Wars Twitch Drops begin",detail:"Link Twitch and Rockstar accounts, pick a side. Up to $2,000,000 total through 26 August.",tag:""}],discounts:[],gun_van:""}},{wkKey:"2026-08-27",stamp:Date.UTC(2026,7,27,9,0,0),wk:{week_label:"20 – 26 August 2026",headline:"Brand Wars finale — 5X GTA$ and RP on VIP Work, plus a reset Kortz Center bonus.",summary:"Second half of the two-week Brand Wars event. Big VIP Work weekend, Kortz Center resets with a no-death bonus, and the Warden goes on general sale.",bonuses:[{title:"5X GTA$ and RP — VIP Work",detail:"Weekend only, 21–23 August.",tag:"Weekend"},{title:"4X GTA$ and RP — Hotring Circuit Series and select Freemode",detail:"Runs the full week.",tag:"All week"},{title:"Kortz Center Heist bonus reset",detail:"New Primary Targets. A no-death completion adds an extra $400,000.",tag:""}],claims:[{title:"Weekly Challenge — win three Races",detail:"Princess Racing Tracksuit plus a 2.5X reward of $250,000.",tag:"Free $250k"},{title:"Gallivanter Warden now on general sale",detail:"$1,597,500 at Legendary Motorsport.",tag:""},{title:"FIB Priority File — The Brute Force File",detail:"Pays more than the standard files.",tag:""},{title:"Brand Wars Twitch Drops close out",detail:"Link Twitch and Rockstar accounts. Up to $2,000,000 total across the full event.",tag:""}],discounts:[{name:"Emperor ETR1",price:"Discounted this week"}],gun_van:""}}]};
+var BACKEND="memory", CANSHARE=false, S={v:{},day:"",week:"",seen:0}, SH={v:{},week:"",wk:null,stamp:0,history:[]};
 
 /* shared = the Cayo board and week notes. Everything else stays private. */
 function isShared(id){return id.indexOf("cy-")===0;}
@@ -1073,8 +1074,11 @@ function paintWeek(wk){
    return '<div class="k">'+esc(d.name||"")+'</div><div class="v">'+esc(d.price||"")+"</div>";}).join("")+
    "</div>"+(wk.gun_van?'<p class="note">'+esc(wk.gun_van)+"</p>":"");
  }
- var st=document.getElementById("wk-stamp");
- st.textContent=SH.stamp?"Updated "+new Date(SH.stamp).toLocaleString():"";
+ if(wk.source_url){
+  var link=document.getElementById("wk-source");
+  if(link)link.href=wk.source_url;
+ }
+ paintWeekStamp();
 }
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){
  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -1088,7 +1092,7 @@ function histRows(list,cls){
 }
 function paintHistPicker(){
  var sel=document.querySelector(".histpick");if(!sel)return;
- var hist=(SH.history||[]).slice().reverse();
+ var hist=weekHistory().slice().reverse();
  var view=document.getElementById("hist-view");
  if(!hist.length){
   sel.innerHTML='<option value="">Nothing saved yet — refreshes get archived here</option>';
@@ -1101,7 +1105,7 @@ function paintHistPicker(){
 }
 function renderHist(idx){
  var view=document.getElementById("hist-view");if(!view)return;
- var hist=(SH.history||[]).slice().reverse();
+ var hist=weekHistory().slice().reverse();
  var h=idx===""||idx===null?null:hist[+idx];
  if(!h){view.innerHTML="";return;}
  var wk=h.wk||{},out="";
@@ -1116,6 +1120,49 @@ document.addEventListener("change",function(e){
  if(e.target.classList&&e.target.classList.contains("histpick"))renderHist(e.target.value);
 });
 
+
+/* ---- weekly feed ----
+   week.json holds the live Rockstar week and the archive of past ones. It is
+   fetched on every load, whenever the app comes back to the foreground, and by
+   the refresh button, so a new week lands without shipping a new app build.
+   Everything written into the HTML above is the offline fallback, and
+   BAKED_WEEK is the week that fallback describes. */
+var WEEK_FEED_URL="week.json", BAKED_WEEK="2026-09-10", FEED=null, feedFetchedAt=0;
+function weekHistory(){return (FEED&&FEED.history)||SH.history||[];}
+/* The reset that opened the week we are in now, i.e. one week before the next. */
+function weekStartLabel(){
+ return new Date(nextReset().getTime()-6048e5)
+  .toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+}
+function paintWeekStamp(){
+ var st=document.getElementById("wk-stamp");if(!st)return;
+ var live=weekKey(), showing=FEED?FEED.wkKey:BAKED_WEEK;
+ if(showing===live){
+  st.className="sub";
+  st.textContent=FEED&&FEED.updated
+   ? "Live for this week \u00b7 pulled "+new Date(FEED.updated).toLocaleDateString()
+   : "Live for this week.";
+  return;
+ }
+ /* Say so loudly rather than passing last week's boosts off as this week's. */
+ st.className="sub wk-stale";
+ st.textContent="This is the "+((FEED?FEED.current:{}).week_label||"previous")+
+  " board. The new week started on "+weekStartLabel()+" and has not been pulled in yet \u2014 tap \u21bb to try again.";
+}
+function applyFeed(feed){
+ if(!feed||!feed.current)return false;
+ FEED=feed;feedFetchedAt=Date.now();
+ paintWeek(feed.current);
+ paintHistPicker();
+ return true;
+}
+function loadWeekFeed(){
+ if(!window.fetch)return Promise.resolve(false);
+ return fetch(WEEK_FEED_URL+"?v="+Date.now(),{cache:"no-store"})
+  .then(function(r){return r.ok?r.json():null;})
+  .then(applyFeed)
+  .catch(function(){return false;});
+}
 
 /* ---- shared polling ---- */
 function pollShared(){
@@ -1232,6 +1279,9 @@ function switchProfile(next){
 document.addEventListener("visibilitychange",function(){
  if(document.visibilityState!=="visible")return;
  if(rollover()){apply();savePersonal();}
+ /* Phones keep the app suspended rather than closed, so a resume is the most
+    likely moment for a new week to be waiting. */
+ if(Date.now()-feedFetchedAt>6e5)loadWeekFeed().then(paintWeekStamp);
  pollShared();refreshAll();});
 setInterval(clock,1000);
 setInterval(pollShared,15000);
@@ -1243,7 +1293,9 @@ loadPersonalProfile().then(function(raw){
 }).then(function(raw){
  if(raw){try{var s=JSON.parse(raw);if(s&&s.v){SH=s;CANSHARE=true;}}catch(e){}}
  rollover();apply();clock();refreshAll();status();paintProfile();
-},function(){clock();refreshAll();status();});
+},function(){clock();refreshAll();status();}).then(function(){
+ return loadWeekFeed();
+}).then(paintWeekStamp);
 
 /* ---- settings tab: appearance controls ---- */
 (function(){
