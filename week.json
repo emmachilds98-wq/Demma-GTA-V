@@ -1,77 +1,71 @@
 {
-  "wkKey": "2026-09-10",
-  "updated": "2026-09-05T12:00:00Z",
+  "wkKey": "2026-10-01",
+  "updated": "2026-09-27T22:00:00Z",
   "current": {
-    "week_label": "3 – 9 September 2026",
-    "headline": "Business Rivalries opens with Executive week — a free office and $1,000,000 for shifting cargo.",
-    "summary": "Ordered best first. The cargo run is the week: a full warehouse sells for about $2.22M and the challenge pays another $1,000,000 on top. Claim the free office first — it unlocks both.",
+    "week_label": "24 – 30 September 2026",
+    "headline": "Business Rivalries finale — a free Nightclub, 2X Nightclub goods, and $1,000,000 for selling from any business.",
+    "summary": "Ordered best first. Do the Weekly Challenge first: sell $1,000,000 from whichever business is fullest and it pays another $1,000,000 on top. Then claim the free Nightclub and, if you did any of the last three challenges, the free La Coureuse — both are gone after Wednesday.",
     "source_url": "https://www.rockstargames.com/newswire",
     "bonuses": [
       {
-        "title": "Special Cargo staff sourcing at double speed",
-        "detail": "The week's real earner. Sourcing at double speed fills a large warehouse in roughly half the usual time. All 111 crates sell for about $2,220,000, near enough $1,554,000 clear once you account for the buy cost, and about half as much again if you sell from a public session.",
-        "payout": "~$1.55M clear",
+        "title": "2X GTA$ and RP — Nightclub Goods Missions",
+        "detail": "Started from Yohan in the Nightclub. They top up the basement stock, which is what you sell towards the $1M challenge. Pairs with the free Elysian Island club if you do not own one yet.",
         "tag": "All week"
       },
       {
-        "title": "4X GTA$ and RP — Special Vehicle Work",
-        "detail": "Best rate per minute on the list. Base pay is about $20–35k a mission, so 4X lands between $80k and $140k. Needs an Executive Office and a Vehicle Warehouse, and four Vehicle Cargo missions to unlock it.",
-        "payout": "~$80–140k a run",
+        "title": "2X Popularity — Nightclub Management Missions",
+        "detail": "Keeps the club near full popularity, which is what sets the safe income: $50,000 per in-game day (48 minutes) at 95% and above, falling to $10,000 around half popularity.",
+        "payout": "Up to $50k per 48 min",
         "tag": "All week"
       },
       {
-        "title": "2X GTA$ and RP — Madrazo Hits",
-        "detail": "From the Agency. $20,000 base, $30,000 if you kill the target with Madrazo's weapon of choice, doubled this week. Good filler while crate buys are on cooldown.",
-        "payout": "~$40–60k a hit",
-        "rp": "1,000 RP",
+        "title": "2X GTA$ and RP — QuickiePharm Deliveries",
+        "detail": "Quick drop-offs, no property needed. Good filler between sales.",
         "tag": "All week"
       },
       {
-        "title": "2X GTA$ and RP — Export Mixed Goods",
-        "detail": "Run from the assistant in your Executive Office. Worth doing on the way past rather than making a trip for.",
-        "tag": "All week"
-      },
-      {
-        "title": "3X GTA$ and RP — Community Mission Series",
-        "detail": "Player-made jobs, no property needed. Base pay differs job to job, so treat 3X as a bonus on something you fancied playing rather than a target to grind.",
+        "title": "2X GTA$ and RP — Featured Series",
+        "detail": "Deadline, Deadline Duet and Tiny Racers. Only if you fancy the modes.",
         "payout": "Varies by job",
         "tag": "All week"
       },
       {
-        "title": "2X GTA$ and RP — Diamond Adversary Series",
-        "detail": "Lowest value on the list. Only if you fancy the mode.",
+        "title": "2X GTA$ and RP — Community Combat Series",
+        "detail": "Player-made deathmatches. Lowest value on the list.",
+        "payout": "Varies by job",
         "tag": "All week"
       }
     ],
     "claims": [
       {
-        "title": "Weekly Challenge — sell $1,000,000 of Special Cargo",
-        "detail": "A 10X reward of $1,000,000 plus the Yeti x LS Customs Tracksuit, and it stacks on top of the sale itself. A full 111-crate warehouse clears the target in one sale.",
+        "title": "Weekly Challenge — sell $1,000,000 across all businesses",
+        "detail": "Any business counts — cargo, Bunker, MC, Acid Lab or Nightclub. Pays $1,000,000 plus the Retro Fruit Tracksuit, on top of the sale itself. The last $1M challenge of the event.",
         "payout": "$1,000,000",
         "tag": "Free $1M"
       },
       {
-        "title": "Free Arcadius Business Center office",
-        "detail": "Free through Dynasty 8 Executive before 9 September, normally $2,250,000. Claim it first — it is what unlocks the 4X Special Vehicle Work and the cargo challenge above.",
-        "payout": "Worth $2,250,000",
-        "tag": "Free office"
+        "title": "Free Elysian Island Nightclub",
+        "detail": "Through Maze Bank Foreclosures until 30 September. On its own it produces no stock — the basement fills from the other businesses you own.",
+        "payout": "Worth $1,080,000",
+        "tag": "Free club"
       },
       {
         "title": "Free Penaud La Coureuse with a free HSW upgrade",
-        "detail": "Finish at least one Weekly Challenge across the next three weeks. Delivered when you play between 24 and 30 September. Normally $1,990,000.",
+        "detail": "If you finished any Weekly Challenge between 3 and 23 September. Claim it at Legendary Motorsport this week; the HSW upgrade is on PS5, Xbox Series X|S and PC Enhanced.",
         "payout": "Worth $1,990,000",
         "tag": "Free car"
       },
       {
-        "title": "Lucky Wheel podium — Declasse Impaler SZ",
-        "detail": "One spin per day at the Diamond Casino. Normally $1,280,000 at Southern S.A. Super Autos.",
-        "payout": "Worth $1,280,000",
-        "tag": "Podium car"
+        "title": "Prize Ride — Pegassi Zorrusso",
+        "detail": "Win an LS Car Meet Series race four days in a row.",
+        "payout": "Worth $1,925,000",
+        "tag": "Prize Ride"
       },
       {
-        "title": "Prize Ride — Woodlander",
-        "detail": "Won through the Car Meet Series, as usual.",
-        "tag": "Prize Ride"
+        "title": "Lucky Wheel podium — Ocelot Penetrator",
+        "detail": "One spin a day at the Diamond Casino, two for GTA+ members.",
+        "payout": "Worth $880,000",
+        "tag": "Podium car"
       },
       {
         "title": "Business Battle crates pay guaranteed clothing",
@@ -79,159 +73,151 @@
         "tag": ""
       },
       {
-        "title": "GTA+ — 2X on FIB Files and 3X on Drift Races",
-        "detail": "Plus 60% off the Garment Factory, all through 9 September.",
+        "title": "GTA+ — Tactical SMG 30% off at the Gun Van",
+        "detail": "Plus a second daily Lucky Wheel spin.",
         "tag": "GTA+ only"
       }
     ],
-    "discounts_lead": "All 17 discounted vehicles, biggest saving first, plus the free office. The Cyclone II at 70% off is the only deep cut — everything else is 30% off.",
+    "discounts_lead": "The free Nightclub plus all 16 discounted vehicles, biggest saving first. The Arbiter GT at 70% off is the only deep cut — everything else is 30% off.",
     "discounts": [
       {
-        "name": "Arcadius Business Center",
-        "meta": "Executive Office · Dynasty 8 Executive",
+        "name": "Elysian Island Nightclub",
+        "meta": "Nightclub · Maze Bank Foreclosures",
         "off": "Free",
-        "was": "$2,250,000",
+        "was": "$1,080,000",
         "now": "Free",
-        "save": "Saves $2,250,000"
+        "save": "Saves $1,080,000"
       },
       {
-        "name": "Coil Cyclone II",
-        "meta": "Super · Legendary Motorsport",
+        "name": "Imponte Arbiter GT",
+        "meta": "Muscle · Hao's Premium Test Ride",
         "off": "70% off",
-        "was": "$2,250,000",
-        "now": "$675,000",
-        "save": "Saves $1,575,000"
+        "was": "$1,580,000",
+        "now": "$474,000",
+        "save": "Saves $1,106,000"
       },
       {
-        "name": "HVY Insurgent Pick-Up",
-        "meta": "Off-Road · Warstock Cache & Carry",
+        "name": "Vysser Neo",
+        "meta": "Sports",
         "off": "30% off",
-        "was": "$1,795,500",
-        "now": "$1,256,850",
-        "save": "Saves $538,650"
+        "was": "$1,875,000",
+        "now": "$1,312,500",
+        "save": "Saves $562,500"
       },
       {
-        "name": "Übermacht Rhinehart",
-        "meta": "Sedan · Legendary Motorsport",
+        "name": "HVY Menacer",
+        "meta": "Off-Road",
         "off": "30% off",
-        "was": "$1,598,000",
-        "now": "$1,118,600",
-        "save": "Saves $479,400"
+        "was": "$1,775,000",
+        "now": "$1,242,500",
+        "save": "Saves $532,500"
       },
       {
-        "name": "Dewbauchee Vagner",
-        "meta": "Super · Premium Deluxe showroom",
+        "name": "Benefactor Turreted Limo",
+        "meta": "Sedan",
         "off": "30% off",
-        "was": "$1,535,000",
-        "now": "$1,074,500",
-        "save": "Saves $460,500"
+        "was": "$1,650,000",
+        "now": "$1,155,000",
+        "save": "Saves $495,000"
       },
       {
-        "name": "Ocelot Jugular",
-        "meta": "Sports · Car Meet test ride",
+        "name": "Dewbauchee JB 700W",
+        "meta": "Sports Classic",
         "off": "30% off",
-        "was": "$1,225,000",
-        "now": "$857,500",
-        "save": "Saves $367,500"
+        "was": "$1,470,000",
+        "now": "$1,029,000",
+        "save": "Saves $441,000"
       },
       {
-        "name": "Declasse Yosemite 1500",
-        "meta": "Off-Road · Southern S.A. Super Autos",
+        "name": "Truffade Nero",
+        "meta": "Super",
         "off": "30% off",
-        "was": "$1,205,000",
-        "now": "$843,500",
-        "save": "Saves $361,500"
+        "was": "$1,440,000",
+        "now": "$1,008,000",
+        "save": "Saves $432,000"
       },
       {
-        "name": "Western Co. Seabreeze",
-        "meta": "Plane · Elitás Travel",
+        "name": "Declasse Drift Yosemite",
+        "meta": "Muscle · LS Car Meet test ride",
         "off": "30% off",
-        "was": "$1,130,500",
-        "now": "$791,350",
-        "save": "Saves $339,150"
+        "was": "$1,308,000",
+        "now": "$915,600",
+        "save": "Saves $392,400"
       },
       {
-        "name": "Mammoth Squaddie",
-        "meta": "SUV · Warstock Cache & Carry",
+        "name": "Enus Stafford",
+        "meta": "Sedan",
         "off": "30% off",
-        "was": "$1,130,000",
-        "now": "$791,000",
-        "save": "Saves $339,000"
+        "was": "$1,272,000",
+        "now": "$890,400",
+        "save": "Saves $381,600"
       },
       {
-        "name": "Coil Cyclone",
-        "meta": "Super · Premium Deluxe showroom",
+        "name": "Nagasaki Outlaw",
+        "meta": "Off-Road",
         "off": "30% off",
-        "was": "$1,034,000",
-        "now": "$723,800",
-        "save": "Saves $310,200"
+        "was": "$1,268,000",
+        "now": "$887,600",
+        "save": "Saves $380,400"
       },
       {
-        "name": "Karin 190z",
-        "meta": "Sports Classic · Premium Deluxe showroom",
+        "name": "Pfister Comet SR",
+        "meta": "Sports",
         "off": "30% off",
-        "was": "$900,000",
-        "now": "$630,000",
-        "save": "Saves $270,000"
+        "was": "$1,145,000",
+        "now": "$801,500",
+        "save": "Saves $343,500"
       },
       {
-        "name": "Överflöd Entity XF",
-        "meta": "Super · Premium Deluxe showroom",
+        "name": "Vapid Retinue Mk II",
+        "meta": "Sports Classic",
         "off": "30% off",
-        "was": "$795,000",
-        "now": "$556,500",
-        "save": "Saves $238,500"
+        "was": "$972,000",
+        "now": "$680,400",
+        "save": "Saves $291,600"
       },
       {
-        "name": "Buckingham Maverick",
-        "meta": "Helicopter · Elitás Travel",
+        "name": "Nagasaki Blazer Aqua",
+        "meta": "Off-Road",
         "off": "30% off",
-        "was": "$780,000",
-        "now": "$546,000",
-        "save": "Saves $234,000"
+        "was": "$953,360",
+        "now": "$667,352",
+        "save": "Saves $286,008"
       },
       {
-        "name": "Vapid Dominator GTX",
-        "meta": "Muscle · Car Meet test ride",
+        "name": "Vapid GB200",
+        "meta": "Sports · LS Car Meet test ride",
         "off": "30% off",
-        "was": "$725,000",
-        "now": "$507,500",
-        "save": "Saves $217,500"
+        "was": "$940,000",
+        "now": "$658,000",
+        "save": "Saves $282,000"
       },
       {
-        "name": "Grotti Cheetah",
-        "meta": "Super · Premium Deluxe showroom",
+        "name": "Grotti Stinger GT",
+        "meta": "Sports Classic",
         "off": "30% off",
-        "was": "$650,000",
-        "now": "$455,000",
-        "save": "Saves $195,000"
+        "was": "$875,000",
+        "now": "$612,500",
+        "save": "Saves $262,500"
       },
       {
-        "name": "Lampadati Novak",
-        "meta": "SUV · Premium Test Ride",
+        "name": "Vapid Caracara 4x4",
+        "meta": "Off-Road",
         "off": "30% off",
-        "was": "$608,000",
-        "now": "$425,600",
-        "save": "Saves $182,400"
+        "was": "$875,000",
+        "now": "$612,500",
+        "save": "Saves $262,500"
       },
       {
-        "name": "Dewbauchee Specter",
-        "meta": "Sports · Legendary Motorsport",
+        "name": "Dinka Jester Classic",
+        "meta": "Sports Classic",
         "off": "30% off",
-        "was": "$599,000",
-        "now": "$419,300",
-        "save": "Saves $179,700"
-      },
-      {
-        "name": "Vapid Ellie",
-        "meta": "Muscle · Southern S.A. Super Autos",
-        "off": "30% off",
-        "was": "$565,000",
-        "now": "$395,500",
-        "save": "Saves $169,500"
+        "was": "$790,000",
+        "now": "$553,000",
+        "save": "Saves $237,000"
       }
     ],
-    "gun_van": "Gun Van moves daily at 07:00 UK time. This week's feature is the Precision Rifle at 50% off, $225,000 down from $450,000. Everything else is 10% under list, 20% under for GTA+. Stock rotates each Thursday."
+    "gun_van": "Battle Rifle is this week's featured discount, and the Tactical SMG is 30% off for GTA+. Also stocked: Combat Shotgun, Minigun, Combat Pistol, Switchblade, Tear Gas, Molotovs and Pipe Bombs. Moves daily at 07:00 UK time."
   },
   "history": [
     {
@@ -495,6 +481,287 @@
           }
         ],
         "gun_van": "30% off the Military Rifle. Stock included the Railgun, Grenade Launcher, Heavy Pistol, Crowbar, Pipe Bombs, Tear Gas and Grenades."
+      }
+    },
+    {
+      "wkKey": "2026-09-10",
+      "stamp": 1789030800000,
+      "wk": {
+        "week_label": "3 – 9 September 2026",
+        "headline": "Business Rivalries opened with Executive week — a free office and $1,000,000 for shifting cargo.",
+        "summary": "The cargo run was the week: a full warehouse sold for about $2.22M and the challenge paid another $1,000,000 on top. The free office unlocked both.",
+        "bonuses": [
+          {
+            "title": "Special Cargo staff sourcing at double speed",
+            "detail": "The week's real earner. Sourcing at double speed fills a large warehouse in roughly half the usual time. All 111 crates sell for about $2,220,000, near enough $1,554,000 clear once you account for the buy cost, and about half as much again if you sell from a public session.",
+            "payout": "~$1.55M clear",
+            "tag": "All week"
+          },
+          {
+            "title": "4X GTA$ and RP — Special Vehicle Work",
+            "detail": "Best rate per minute on the list. Base pay is about $20–35k a mission, so 4X lands between $80k and $140k. Needs an Executive Office and a Vehicle Warehouse, and four Vehicle Cargo missions to unlock it.",
+            "payout": "~$80–140k a run",
+            "tag": "All week"
+          },
+          {
+            "title": "2X GTA$ and RP — Madrazo Hits",
+            "detail": "From the Agency. $20,000 base, $30,000 if you kill the target with Madrazo's weapon of choice, doubled this week. Good filler while crate buys are on cooldown.",
+            "payout": "~$40–60k a hit",
+            "rp": "1,000 RP",
+            "tag": "All week"
+          },
+          {
+            "title": "2X GTA$ and RP — Export Mixed Goods",
+            "detail": "Run from the assistant in your Executive Office. Worth doing on the way past rather than making a trip for.",
+            "tag": "All week"
+          },
+          {
+            "title": "3X GTA$ and RP — Community Mission Series",
+            "detail": "Player-made jobs, no property needed. Base pay differs job to job, so treat 3X as a bonus on something you fancied playing rather than a target to grind.",
+            "payout": "Varies by job",
+            "tag": "All week"
+          },
+          {
+            "title": "2X GTA$ and RP — Diamond Adversary Series",
+            "detail": "Lowest value on the list. Only if you fancy the mode.",
+            "tag": "All week"
+          }
+        ],
+        "claims": [
+          {
+            "title": "Weekly Challenge — sell $1,000,000 of Special Cargo",
+            "detail": "A 10X reward of $1,000,000 plus the Yeti x LS Customs Tracksuit, and it stacks on top of the sale itself. A full 111-crate warehouse clears the target in one sale.",
+            "payout": "$1,000,000",
+            "tag": "Free $1M"
+          },
+          {
+            "title": "Free Arcadius Business Center office",
+            "detail": "Free through Dynasty 8 Executive before 9 September, normally $2,250,000. Claim it first — it is what unlocks the 4X Special Vehicle Work and the cargo challenge above.",
+            "payout": "Worth $2,250,000",
+            "tag": "Free office"
+          },
+          {
+            "title": "Free Penaud La Coureuse with a free HSW upgrade",
+            "detail": "Finish at least one Weekly Challenge across the next three weeks. Delivered when you play between 24 and 30 September. Normally $1,990,000.",
+            "payout": "Worth $1,990,000",
+            "tag": "Free car"
+          },
+          {
+            "title": "Lucky Wheel podium — Declasse Impaler SZ",
+            "detail": "One spin per day at the Diamond Casino. Normally $1,280,000 at Southern S.A. Super Autos.",
+            "payout": "Worth $1,280,000",
+            "tag": "Podium car"
+          },
+          {
+            "title": "Prize Ride — Woodlander",
+            "detail": "Won through the Car Meet Series, as usual.",
+            "tag": "Prize Ride"
+          },
+          {
+            "title": "Business Battle crates pay guaranteed clothing",
+            "detail": "Cosmetic only — Six Figure Tee, Ride or Die Tee, red and white Ammu-Nation Cap or Bourgeoix Tee.",
+            "tag": ""
+          },
+          {
+            "title": "GTA+ — 2X on FIB Files and 3X on Drift Races",
+            "detail": "Plus 60% off the Garment Factory, all through 9 September.",
+            "tag": "GTA+ only"
+          }
+        ],
+        "discounts_lead": "All 17 discounted vehicles, biggest saving first, plus the free office. The Cyclone II at 70% off was the only deep cut.",
+        "discounts": [
+          {
+            "name": "Arcadius Business Center",
+            "meta": "Executive Office · Dynasty 8 Executive",
+            "off": "Free",
+            "was": "$2,250,000",
+            "now": "Free",
+            "save": "Saves $2,250,000"
+          },
+          {
+            "name": "Coil Cyclone II",
+            "meta": "Super · Legendary Motorsport",
+            "off": "70% off",
+            "was": "$2,250,000",
+            "now": "$675,000",
+            "save": "Saves $1,575,000"
+          },
+          {
+            "name": "HVY Insurgent Pick-Up",
+            "meta": "Off-Road · Warstock Cache & Carry",
+            "off": "30% off",
+            "was": "$1,795,500",
+            "now": "$1,256,850",
+            "save": "Saves $538,650"
+          },
+          {
+            "name": "Übermacht Rhinehart",
+            "meta": "Sedan · Legendary Motorsport",
+            "off": "30% off",
+            "was": "$1,598,000",
+            "now": "$1,118,600",
+            "save": "Saves $479,400"
+          },
+          {
+            "name": "Dewbauchee Vagner",
+            "meta": "Super · Premium Deluxe showroom",
+            "off": "30% off",
+            "was": "$1,535,000",
+            "now": "$1,074,500",
+            "save": "Saves $460,500"
+          },
+          {
+            "name": "Ocelot Jugular",
+            "meta": "Sports · Car Meet test ride",
+            "off": "30% off",
+            "was": "$1,225,000",
+            "now": "$857,500",
+            "save": "Saves $367,500"
+          },
+          {
+            "name": "Declasse Yosemite 1500",
+            "meta": "Off-Road · Southern S.A. Super Autos",
+            "off": "30% off",
+            "was": "$1,205,000",
+            "now": "$843,500",
+            "save": "Saves $361,500"
+          },
+          {
+            "name": "Western Co. Seabreeze",
+            "meta": "Plane · Elitás Travel",
+            "off": "30% off",
+            "was": "$1,130,500",
+            "now": "$791,350",
+            "save": "Saves $339,150"
+          },
+          {
+            "name": "Mammoth Squaddie",
+            "meta": "SUV · Warstock Cache & Carry",
+            "off": "30% off",
+            "was": "$1,130,000",
+            "now": "$791,000",
+            "save": "Saves $339,000"
+          },
+          {
+            "name": "Coil Cyclone",
+            "meta": "Super · Premium Deluxe showroom",
+            "off": "30% off",
+            "was": "$1,034,000",
+            "now": "$723,800",
+            "save": "Saves $310,200"
+          },
+          {
+            "name": "Karin 190z",
+            "meta": "Sports Classic · Premium Deluxe showroom",
+            "off": "30% off",
+            "was": "$900,000",
+            "now": "$630,000",
+            "save": "Saves $270,000"
+          },
+          {
+            "name": "Överflöd Entity XF",
+            "meta": "Super · Premium Deluxe showroom",
+            "off": "30% off",
+            "was": "$795,000",
+            "now": "$556,500",
+            "save": "Saves $238,500"
+          },
+          {
+            "name": "Buckingham Maverick",
+            "meta": "Helicopter · Elitás Travel",
+            "off": "30% off",
+            "was": "$780,000",
+            "now": "$546,000",
+            "save": "Saves $234,000"
+          },
+          {
+            "name": "Vapid Dominator GTX",
+            "meta": "Muscle · Car Meet test ride",
+            "off": "30% off",
+            "was": "$725,000",
+            "now": "$507,500",
+            "save": "Saves $217,500"
+          },
+          {
+            "name": "Grotti Cheetah",
+            "meta": "Super · Premium Deluxe showroom",
+            "off": "30% off",
+            "was": "$650,000",
+            "now": "$455,000",
+            "save": "Saves $195,000"
+          },
+          {
+            "name": "Lampadati Novak",
+            "meta": "SUV · Premium Test Ride",
+            "off": "30% off",
+            "was": "$608,000",
+            "now": "$425,600",
+            "save": "Saves $182,400"
+          },
+          {
+            "name": "Dewbauchee Specter",
+            "meta": "Sports · Legendary Motorsport",
+            "off": "30% off",
+            "was": "$599,000",
+            "now": "$419,300",
+            "save": "Saves $179,700"
+          },
+          {
+            "name": "Vapid Ellie",
+            "meta": "Muscle · Southern S.A. Super Autos",
+            "off": "30% off",
+            "was": "$565,000",
+            "now": "$395,500",
+            "save": "Saves $169,500"
+          }
+        ],
+        "gun_van": "The featured deal was the Precision Rifle at 50% off, $225,000 down from $450,000."
+      }
+    },
+    {
+      "wkKey": "2026-09-17",
+      "stamp": 1789635600000,
+      "wk": {
+        "week_label": "10 – 16 September 2026",
+        "headline": "Business Rivalries week two — Motorcycle Clubs and the Acid Lab.",
+        "summary": "Not pulled in at the time. The one confirmed item was the $1,000,000 Weekly Challenge.",
+        "bonuses": [],
+        "claims": [
+          {
+            "title": "Weekly Challenge — sell $1,000,000 of MC Business or Acid Lab product",
+            "detail": "Paid $1,000,000 plus the Junk Tracksuit, and counted towards the free Penaud La Coureuse.",
+            "payout": "$1,000,000",
+            "tag": "Free $1M"
+          }
+        ],
+        "discounts": [],
+        "gun_van": ""
+      }
+    },
+    {
+      "wkKey": "2026-09-24",
+      "stamp": 1790240400000,
+      "wk": {
+        "week_label": "17 – 23 September 2026",
+        "headline": "Business Rivalries week three — Bunkers.",
+        "summary": "Not pulled in at the time. The confirmed items were the Bunker challenge and the Kortz Center reset.",
+        "bonuses": [],
+        "claims": [
+          {
+            "title": "Weekly Challenge — three Bunker Research Missions",
+            "detail": "Paid $1,000,000 plus the Camo Ammu-Nation Sweatsuit, and counted towards the free Penaud La Coureuse.",
+            "payout": "$1,000,000",
+            "tag": "Free $1M"
+          },
+          {
+            "title": "Kortz Center Heist reset",
+            "detail": "New Primary Targets and a reset first-completion bonus. Finishing without dying added $400,000.",
+            "payout": "+$400,000",
+            "tag": ""
+          }
+        ],
+        "discounts": [],
+        "gun_van": ""
       }
     }
   ]
