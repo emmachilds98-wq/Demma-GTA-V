@@ -7,7 +7,10 @@ tap ↻. Nothing else needs to be rebuilt or redeployed for a new week to appear
 ## When it changes
 
 GTA Online resets **Thursday at 10:00 UK time**. A scheduled routine runs shortly
-after and commits the new week straight to `main`.
+after, pushes the new week to a `claude/weekly-<wkKey>` branch, opens a pull
+request and merges it into `main`. It does not push to `main` directly — that
+push is refused from the routine's environment, which is why 10, 17 and 24
+September never landed.
 
 If the routine misses a week the app says so rather than passing the old week off
 as current: the line under the date turns amber and reads *"This is the … board.
@@ -37,7 +40,7 @@ signal that `week.json` needs a manual update.
 
 `wkKey` is the date of the **next** reset, not the current one — it has to match
 what `weekKey()` in `index.html` computes, or the app will think the file is
-stale. For the week of 3–9 September, `wkKey` is `2026-09-10`.
+stale. For the week of 24–30 September, `wkKey` is `2026-10-01`.
 
 `tag` is the small coloured badge. Keep it to two or three words (`All week`,
 `Free $1M`, `GTA+ only`, `Weekend`) or leave it empty. `stamp` is the reset
@@ -86,7 +89,8 @@ something that pays $5,000 loses to a 2X on something that pays $200,000.
    and change its wording to past tense.
 2. Write the new week into `current` and set `wkKey` to the next reset date.
 3. Check it parses: `python3 -c "import json;json.load(open('week.json'))"`.
-4. Commit to `main`. That is the whole deploy.
+4. Get it onto `main` — by hand, commit directly; from a Claude session, push a
+   branch, open a pull request and merge it. Reaching `main` is the whole deploy.
 
 Only ever put sourced figures in. If a number cannot be confirmed, describe the
 thing without the number — the board is used to decide what to play, so a wrong
